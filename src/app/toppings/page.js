@@ -13,7 +13,6 @@ import {
   InputRightElement,
   Center,
   FormControl,
-  FormHelperText,
   FormErrorMessage,
   VStack
 } from '@chakra-ui/react';
@@ -31,8 +30,8 @@ export default function Toppings() {
     fetch('/toppings/api')
     .then(response => response.json())
     .then(({data}) => {
-      console.log({data});
-      setToppingList(data)
+      console.log({clientSideData: data});
+      setToppingList(data);
     })
     .catch(error => console.error(error));
   }, [])
