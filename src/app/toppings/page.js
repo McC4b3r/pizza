@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Heading,
   UnorderedList,
@@ -24,13 +24,18 @@ export default function Toppings() {
   const [isUpdatingTopping, setIsUpdatingTopping] = useState(false);
   const [newToppingName, setNewToppingName] = useState('');
   const [updatedToppingName, setUpdatedToppingName] = useState('');
-  const [toppingList, setToppingList] = useState(
-    [
-      { id: 1, name: 'Cheese' },
-      { id: 2, name: 'Pepperoni' },
-      { id: 3, name: 'Onions' },
-    ]
-  );
+  const [toppingList, setToppingList] = useState([]);
+
+  useEffect(() => {
+    // fetch data from the db
+    fetch('/toppings/api')
+    .then(response => response.json())
+    .then(({data}) => {
+      console.log({data});
+      setToppingList(data)
+    })
+    .catch(error => console.error(error));
+  }, [])
   
   // select topping within list
   const handleToppingClick = (toppingId) => {

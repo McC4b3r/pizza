@@ -1,5 +1,4 @@
 import { Pool } from 'pg';
-import nextConnect from 'next-connect';
 
 const pool = new Pool({
   user: process.env.DB_USERNAME,
@@ -8,11 +7,4 @@ const pool = new Pool({
   port: process.env.DB_PORT,
 });
 
-const db = nextConnect();
-
-db.use(async (req, res, next) => {
-  req.db = pool;
-  return next();
-});
-
-export default db;
+export default pool;
