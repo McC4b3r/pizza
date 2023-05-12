@@ -15,10 +15,9 @@ import {
   FormControl,
   FormErrorMessage,
   VStack,
-  Skeleton,
   Spinner
 } from '@chakra-ui/react';
-import { getAllToppings } from './queries'
+import { createTopping, getAllToppings } from './queries'
 
 export default function Toppings() {
   const [selectedToppings, setSelectedToppings] = useState([]);
@@ -28,7 +27,7 @@ export default function Toppings() {
   const [updatedToppingName, setUpdatedToppingName] = useState('');
 
   // queries
-  const { toppings, isLoading, isError } = getAllToppings();
+  const { toppings, isLoading, isError, trigger } = getAllToppings();
 
   if (isError) return <div>failed to load</div>
   if (isLoading) return <Center><Spinner /></Center>
@@ -65,9 +64,9 @@ export default function Toppings() {
   // submit new topping
   const handleToppingSubmit = () => {
     if (newToppingName.trim() !== '' && !isDuplicate) {
-      const newToppingId = toppingList.length + 1;
-      const newTopping = { id: newToppingId, name: newToppingName };
-      setToppingList([...toppingList, newTopping])
+      createTopping(newToppingName);
+      // trigger re-validates the swr cache
+      trigger();
       setNewToppingName('');
       setIsAddingTopping(false);
     }
@@ -109,8 +108,9 @@ export default function Toppings() {
       isAddingTopping ? handleToppingSubmit() : handleUpdateTopping();
     }
   }
-  
-  // const isDuplicate = toppingList.some((topping) => topping.name.toLowerCase() === newToppingName.toLowerCase());
+
+  // check for duplicate toppings
+  const isDuplicate = toppings.data.some((topping) => topping.name.toLowerCase() === newToppingName.toLowerCase());
 
   return (
     <>
