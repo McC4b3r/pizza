@@ -1,21 +1,9 @@
-import { createEdgeRouter } from "next-connect";
-import pool from '../../../../db';
-import { NextResponse } from "next/server";
+import { PrismaClient } from '@prisma/client'
 
-const router = createEdgeRouter();
+const prisma = new PrismaClient()
 
-router
-  .get(async () => {
-    const client = await pool.connect();
-    try {
-      const result = await client.query('SELECT * FROM TOPPINGS');
-      const data = result.rows;
-      return NextResponse.json({data});
-    } finally {
-      client.release();
-    }
-  })
-
-export async function GET(request, ctx) {
-  return router.run(request, ctx);
+export const GET = async() => {
+  const data = await prisma.toppings.findMany()
+  console.log({data: data})
+  return {"key": "fuck"};
 };

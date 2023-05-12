@@ -1,0 +1,18 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model toppings {
+  id   Int    @id @default(autoincrement())
+  name String @db.VarChar
+}
+
+model pizzas {
+  id   Int    @id @default(autoincrement())
+  name String @db.VarChar
+}

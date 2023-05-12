@@ -16,6 +16,7 @@ import {
   FormErrorMessage,
   VStack
 } from '@chakra-ui/react';
+import {getAllToppings} from './hooks'
 
 export default function Toppings() {
   const [selectedToppings, setSelectedToppings] = useState([]);
@@ -25,16 +26,8 @@ export default function Toppings() {
   const [updatedToppingName, setUpdatedToppingName] = useState('');
   const [toppingList, setToppingList] = useState([]);
 
-  useEffect(() => {
-    // fetch data from the db
-    fetch('/toppings/api')
-    .then(response => response.json())
-    .then(({data}) => {
-      console.log({clientSideData: data});
-      setToppingList(data);
-    })
-    .catch(error => console.error(error));
-  }, [])
+  const { toppings, isLoading, isError } = getAllToppings();
+  console.log({toppings, isError});
   
   // select topping within list
   const handleToppingClick = (toppingId) => {
@@ -64,8 +57,7 @@ export default function Toppings() {
     setNewToppingName(event.target.value);
   };
 
-  const isDuplicate = toppingList.some((topping) => topping.name.toLowerCase() === newToppingName.toLowerCase());
-
+  
   // submit new topping
   const handleToppingSubmit = () => {
     if (newToppingName.trim() !== '' && !isDuplicate) {
@@ -76,30 +68,30 @@ export default function Toppings() {
       setIsAddingTopping(false);
     }
   };
-
+  
   // allow topping name to be updated
   const handleUpdateButtonClick = () => {
     setIsUpdatingTopping(true);
   };
-
+  
   // gather name of updated topping
   const handleUpdateToppingNameChange = (event) => {
     setUpdatedToppingName(event.target.value);
     console.log({breh: event.target.value})
   };
-
+  
   // delete a selected topping
   const handleDeleteTopping = () => {
     setToppingList((prevToppings) => prevToppings.filter((topping) => !selectedToppings.includes(topping.id)));
     setSelectedToppings([]);
   }
-
+  
   // submit updated topping
   const handleUpdateTopping = () => {
     if (selectedToppings.length === 1) {
       const toppingId = selectedToppings[0];
       const updatedToppingList = toppingList.map((topping) =>
-        topping.id === toppingId ? { ...topping, name: updatedToppingName } : topping
+      topping.id === toppingId ? { ...topping, name: updatedToppingName } : topping
       );
       setToppingList(updatedToppingList);
       setUpdatedToppingName('');
@@ -107,12 +99,14 @@ export default function Toppings() {
       setIsUpdatingTopping(false);
     }
   };
-
+  
   const handleEnter = (event) => {
     if (event.key === 'Enter') {
       isAddingTopping ? handleToppingSubmit() : handleUpdateTopping();
     }
   }
+  
+  const isDuplicate = toppingList.some((topping) => topping.name.toLowerCase() === newToppingName.toLowerCase());
 
   return (
     <div>
