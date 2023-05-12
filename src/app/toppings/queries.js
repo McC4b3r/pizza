@@ -1,6 +1,6 @@
 import useSWR from 'swr'
 
-const fetcher = route => fetch(route).then(res => res)
+const fetcher = route => fetch(route).then(res => res.json())
 
 export const getAllToppings =  () => {
     const { data, error, isLoading } = useSWR('/toppings/api', fetcher)

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import {
   Heading,
   UnorderedList,
@@ -14,9 +14,11 @@ import {
   Center,
   FormControl,
   FormErrorMessage,
-  VStack
+  VStack,
+  Skeleton,
+  Spinner
 } from '@chakra-ui/react';
-import {getAllToppings} from './hooks'
+import { getAllToppings } from './queries'
 
 export default function Toppings() {
   const [selectedToppings, setSelectedToppings] = useState([]);
@@ -24,10 +26,12 @@ export default function Toppings() {
   const [isUpdatingTopping, setIsUpdatingTopping] = useState(false);
   const [newToppingName, setNewToppingName] = useState('');
   const [updatedToppingName, setUpdatedToppingName] = useState('');
-  const [toppingList, setToppingList] = useState([]);
 
+  // queries
   const { toppings, isLoading, isError } = getAllToppings();
-  console.log({toppings, isError});
+
+  if (isError) return <div>failed to load</div>
+  if (isLoading) return <Center><Spinner /></Center>
   
   // select topping within list
   const handleToppingClick = (toppingId) => {
@@ -106,15 +110,15 @@ export default function Toppings() {
     }
   }
   
-  const isDuplicate = toppingList.some((topping) => topping.name.toLowerCase() === newToppingName.toLowerCase());
+  // const isDuplicate = toppingList.some((topping) => topping.name.toLowerCase() === newToppingName.toLowerCase());
 
   return (
-    <div>
+    <>
       <Heading as="h1" size="xl" textAlign="center" mt={10}>
         Toppings
       </Heading>
         <UnorderedList mt={20} spacing={3} mx="auto" maxW="md">
-        {toppingList.map((topping) => (
+        {toppings.data.map((topping) => (
           <ListItem
             key={topping.id}
             bg={selectedToppings.includes(topping.id) ? 'gray.100' : ''}
@@ -184,6 +188,6 @@ export default function Toppings() {
           Update
         </Button>
       </HStack>
-    </div>
+    </>
   );
 }
