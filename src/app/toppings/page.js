@@ -94,11 +94,11 @@ export default function Toppings() {
   
   // submit updated topping
   const handleUpdateTopping = () => {
-      const toppingId = selectedTopping[0];
+      const toppingId = selectedTopping;
       updateTopping(toppingId, updatedToppingName)
       trigger()
       setUpdatedToppingName('');
-      setSelectedTopping([]);
+      setSelectedTopping('');
       setIsUpdatingTopping(false);
   };
 
