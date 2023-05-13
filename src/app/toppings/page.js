@@ -17,7 +17,7 @@ import {
   VStack,
   Spinner
 } from '@chakra-ui/react';
-import { createTopping, getAllToppings } from './queries'
+import { createTopping, deleteTopping, getAllToppings } from './queries'
 
 export default function Toppings() {
   const [selectedToppings, setSelectedToppings] = useState([]);
@@ -85,7 +85,8 @@ export default function Toppings() {
   
   // delete a selected topping
   const handleDeleteTopping = () => {
-    setToppingList((prevToppings) => prevToppings.filter((topping) => !selectedToppings.includes(topping.id)));
+    deleteTopping(selectedToppings);
+    trigger();
     setSelectedToppings([]);
   }
   
