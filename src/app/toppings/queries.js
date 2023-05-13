@@ -3,11 +3,11 @@ import useSWRMutation from 'swr/mutation';
 import axios from 'axios';
 
 const getAll = route => axios.get(route).then(res => res.data)
-export const createTopping = (name) => axios.post(`/toppings/api/${name}`).then(res => res.data);
+export const createTopping = (name) => axios.post(`/api/toppings/`, {name}).then(res => res.data);
 
 export const getAllToppings = () => {
-    const { data, error, isLoading } = useSWR('/toppings/api', getAll)
-    const { trigger } = useSWRMutation('/toppings/api', getAll);
+    const { data, error, isLoading } = useSWR('/api/toppings', getAll)
+    const { trigger } = useSWRMutation('/api/toppings', getAll);
    
     return {
       toppings: data,
