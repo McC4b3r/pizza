@@ -94,12 +94,13 @@ export default function Toppings() {
   
   // submit updated topping
   const handleUpdateTopping = () => {
-      const toppingId = selectedTopping;
-      updateTopping(toppingId, updatedToppingName)
+    if (updatedToppingName.trim() !== '' && !isDuplicate) {
+      updateTopping(selectedTopping, updatedToppingName)
       trigger()
       setUpdatedToppingName('');
       setSelectedTopping('');
       setIsUpdatingTopping(false);
+    }
   };
 
   const handleUpdateCancel = () => {
@@ -114,7 +115,8 @@ export default function Toppings() {
 
   // check for duplicate toppings
   const isDuplicate = toppings.data.some((topping) => (
-    topping.name.toLowerCase() === addToppingName.toLowerCase() || updatedToppingName.toLowerCase())
+    topping.name.toLowerCase() === addToppingName.toLowerCase() || topping.name.toLowerCase() === updatedToppingName.toLowerCase()
+    )
   );
 
   return (
@@ -134,6 +136,7 @@ export default function Toppings() {
               <FormControl isInvalid={isDuplicate}>
                 <InputGroup>
                   <Input
+                    focusBorderColor={isDuplicate ? 'red.500' : 'blue.500'}
                     placeholder={topping.name}
                     value={updatedToppingName}
                     onChange={handleUpdateToppingNameChange}
@@ -190,7 +193,7 @@ export default function Toppings() {
         </Box>
       )}
       <HStack mt={10} justify="center">
-        <Button colorScheme="teal" size="lg" mr={2} isDisabled={isAddButtonDisabled} onClick={handleAddButtonClick}>
+        <Button colorScheme="teal" size="lg" isDisabled={isAddButtonDisabled} onClick={handleAddButtonClick}>
           Add
         </Button>
         <Button colorScheme="red" size="lg" mr={2} onClick={handleDeleteTopping} isDisabled={selectedTopping.length < 1}>
