@@ -17,16 +17,21 @@ import {
   VStack,
   Spinner
 } from '@chakra-ui/react';
-import { createTopping, deleteTopping, getAllToppings } from './queries'
+import { 
+  createTopping,
+  getAllToppings,
+  updateTopping,
+  deleteTopping,
+} from './queries'
 
 export default function Toppings() {
-  const [selectedToppings, setSelectedToppings] = useState([]);
+  const [selectedTopping, setSelectedTopping] = useState('');
   const [isAddingTopping, setIsAddingTopping] = useState(false);
   const [isUpdatingTopping, setIsUpdatingTopping] = useState(false);
-  const [newToppingName, setNewToppingName] = useState('');
+  const [addToppingName, setAddToppingName] = useState('');
   const [updatedToppingName, setUpdatedToppingName] = useState('');
 
-  // queries
+  // query
   const { toppings, isLoading, isError, trigger } = getAllToppings();
 
   if (isError) return <div>failed to load</div>
@@ -35,39 +40,37 @@ export default function Toppings() {
   // select topping within list
   const handleToppingClick = (toppingId) => {
     if (!isUpdatingTopping) {
-      if (selectedToppings.includes(toppingId)) {
-        setSelectedToppings((prevSelected) =>
-          prevSelected.filter((topping) => topping !== toppingId)
-        );
+      if (selectedTopping === toppingId) {
+        setSelectedTopping('')
       } else {
-        setSelectedToppings((prevSelected) => [...prevSelected, toppingId]);
+        setSelectedTopping(toppingId);
       }
     }
   };
 
-  const isAddButtonDisabled = selectedToppings.length > 0;
+  const isAddButtonDisabled = selectedTopping.length > 0;
 
   const handleAddButtonClick = (event) => {
     setIsAddingTopping(true);
   };
 
-  const handleCancelAddNewTopping = () => {
+  const handleCancelAddTopping = () => {
     setIsAddingTopping(false);
   }
 
   // gather name of new topping
   const handleToppingNameChange = (event) => {
-    setNewToppingName(event.target.value);
+    setAddToppingName(event.target.value);
   };
 
   
   // submit new topping
-  const handleToppingSubmit = () => {
-    if (newToppingName.trim() !== '' && !isDuplicate) {
-      createTopping(newToppingName);
+  const handleAddToppingSubmit = () => {
+    if (addToppingName.trim() !== '' && !isDuplicate) {
+      createTopping(addToppingName);
       // trigger re-validates the swr cache
       trigger();
-      setNewToppingName('');
+      setAddToppingName('');
       setIsAddingTopping(false);
     }
   };
@@ -80,38 +83,39 @@ export default function Toppings() {
   // gather name of updated topping
   const handleUpdateToppingNameChange = (event) => {
     setUpdatedToppingName(event.target.value);
-    console.log({breh: event.target.value})
   };
   
   // delete a selected topping
   const handleDeleteTopping = () => {
-    deleteTopping(selectedToppings);
+    deleteTopping(selectedTopping);
     trigger();
-    setSelectedToppings([]);
+    setSelectedTopping([]);
   }
   
   // submit updated topping
   const handleUpdateTopping = () => {
-    if (selectedToppings.length === 1) {
-      const toppingId = selectedToppings[0];
-      const updatedToppingList = toppingList.map((topping) =>
-      topping.id === toppingId ? { ...topping, name: updatedToppingName } : topping
-      );
-      setToppingList(updatedToppingList);
+      const toppingId = selectedTopping[0];
+      updateTopping(toppingId, updatedToppingName)
+      trigger()
       setUpdatedToppingName('');
-      setSelectedToppings([]);
+      setSelectedTopping([]);
       setIsUpdatingTopping(false);
-    }
   };
+
+  const handleUpdateCancel = () => {
+    setIsUpdatingTopping(false);
+  }
   
   const handleEnter = (event) => {
     if (event.key === 'Enter') {
-      isAddingTopping ? handleToppingSubmit() : handleUpdateTopping();
+      isAddingTopping ? handleAddToppingSubmit() : handleUpdateTopping();
     }
   }
 
   // check for duplicate toppings
-  const isDuplicate = toppings.data.some((topping) => topping.name.toLowerCase() === newToppingName.toLowerCase());
+  const isDuplicate = toppings.data.some((topping) => (
+    topping.name.toLowerCase() === addToppingName.toLowerCase() || updatedToppingName.toLowerCase())
+  );
 
   return (
     <>
@@ -122,24 +126,31 @@ export default function Toppings() {
         {toppings.data.map((topping) => (
           <ListItem
             key={topping.id}
-            bg={selectedToppings.includes(topping.id) ? 'gray.100' : ''}
+            bg={selectedTopping === topping.id ? 'gray.100' : ''}
             _hover={{ cursor: 'pointer', bg: 'gray.50' }}
             onClick={() => handleToppingClick(topping.id)}
           >
-            {selectedToppings.includes(topping.id) && isUpdatingTopping ? (
-              <InputGroup>
-                <Input
-                  placeholder={topping.name}
-                  value={updatedToppingName}
-                  onChange={handleUpdateToppingNameChange}
-                  onKeyDown={handleEnter}
-                />
-                <InputRightElement>
-                  <Button colorScheme="teal" h='1.75rem' size='sm' mr={2} onClick={handleUpdateTopping}>
-                    Ok
-                  </Button>
-                </InputRightElement>
-              </InputGroup>
+            {selectedTopping === topping.id && isUpdatingTopping ? (
+              <FormControl isInvalid={isDuplicate}>
+                <InputGroup>
+                  <Input
+                    placeholder={topping.name}
+                    value={updatedToppingName}
+                    onChange={handleUpdateToppingNameChange}
+                    onKeyDown={handleEnter}
+                  />
+                  <InputRightElement>
+                    <HStack ml="-100px" >
+                      <Button colorScheme="teal" h='1.75rem' size='sm' onClick={handleUpdateTopping}>
+                        Ok
+                      </Button>
+                      <Button colorScheme="red" h='1.75rem' size='sm'  onClick={handleUpdateCancel}>
+                        Cancel
+                      </Button>
+                    </HStack>
+                  </InputRightElement>
+                </InputGroup>
+              </FormControl>
             ) : (
               topping.name
             )}
@@ -155,7 +166,7 @@ export default function Toppings() {
                   id="addInput"
                   width="250px"
                   placeholder="Enter new topping name"
-                  value={newToppingName}
+                  value={addToppingName}
                   onChange={handleToppingNameChange}
                   onKeyDown={handleEnter}
                 />
@@ -168,10 +179,10 @@ export default function Toppings() {
               </VStack>
             </Center>
             <Center mt={2}>
-              <Button colorScheme="teal" size="sm" ml={2} onClick={handleToppingSubmit}>
+              <Button colorScheme="teal" size="sm" ml={2} onClick={handleAddToppingSubmit}>
                 Ok
               </Button>
-              <Button colorScheme="red" size="sm" ml={2} onClick={handleCancelAddNewTopping}>
+              <Button colorScheme="red" size="sm" ml={2} onClick={handleCancelAddTopping}>
                 Cancel
               </Button>
             </Center>
@@ -182,10 +193,10 @@ export default function Toppings() {
         <Button colorScheme="teal" size="lg" mr={2} isDisabled={isAddButtonDisabled} onClick={handleAddButtonClick}>
           Add
         </Button>
-        <Button colorScheme="red" size="lg" mr={2} onClick={handleDeleteTopping} isDisabled={selectedToppings.length < 1}>
+        <Button colorScheme="red" size="lg" mr={2} onClick={handleDeleteTopping} isDisabled={selectedTopping.length < 1}>
           Delete
         </Button>
-        <Button colorScheme="blue" size="lg" onClick={handleUpdateButtonClick} isDisabled={selectedToppings.length < 1}>
+        <Button colorScheme="blue" size="lg" onClick={handleUpdateButtonClick} isDisabled={selectedTopping.length < 1}>
           Update
         </Button>
       </HStack>

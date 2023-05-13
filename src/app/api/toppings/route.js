@@ -29,3 +29,13 @@ export const POST = async (req) => {
     return NextResponse.json({ data })
   }
 }
+
+export const PUT = async (req) => {
+  const { id, name } = await req.json();
+  console.log({id, name})
+  const data = await prisma.toppings.update({
+    where: { id },
+    data: { name },
+  })
+  return NextResponse.json({ data })
+}
