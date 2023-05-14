@@ -32,7 +32,7 @@ export const deleteTopping = async (ids) => {
     },
     data: { ids }
   })
-    .then(res => console.log(res))
+    .then(res => console.log('Topping Deleted'))
     .catch(e => console.log(e))
 }
 

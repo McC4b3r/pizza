@@ -15,7 +15,9 @@ import {
   FormControl,
   FormErrorMessage,
   VStack,
-  Spinner
+  Spinner,
+  Link,
+  ButtonGroup
 } from '@chakra-ui/react';
 import { 
   createTopping,
@@ -23,6 +25,7 @@ import {
   updateTopping,
   deleteTopping,
 } from './queries'
+import { ArrowBackIcon } from '@chakra-ui/icons';
 
 export default function Toppings() {
   const [selectedTopping, setSelectedTopping] = useState('');
@@ -48,7 +51,7 @@ export default function Toppings() {
     }
   };
 
-  const isAddButtonDisabled = selectedTopping.length > 0;
+  const isAddButtonDisabled = !!selectedTopping
 
   const handleAddButtonClick = (event) => {
     setIsAddingTopping(true);
@@ -121,6 +124,11 @@ export default function Toppings() {
 
   return (
     <>
+      <Link href='/'>
+        <Button colorScheme='teal' leftIcon={<ArrowBackIcon />} mt={2} ml={2} size="sm" variant="ghost" >
+          Home
+        </Button>
+      </Link>
       <Heading as="h1" size="xl" textAlign="center" mt={10}>
         Toppings
       </Heading>
@@ -143,14 +151,14 @@ export default function Toppings() {
                     onKeyDown={handleEnter}
                   />
                   <InputRightElement>
-                    <HStack ml="-100px" >
+                    <ButtonGroup ml="-100px" spacing='8px'>
                       <Button colorScheme="teal" h='1.75rem' size='sm' onClick={handleUpdateTopping}>
                         Ok
                       </Button>
                       <Button colorScheme="red" h='1.75rem' size='sm'  onClick={handleUpdateCancel}>
                         Cancel
                       </Button>
-                    </HStack>
+                    </ButtonGroup>
                   </InputRightElement>
                 </InputGroup>
               </FormControl>

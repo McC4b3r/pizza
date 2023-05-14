@@ -30,9 +30,8 @@ export const POST = async (req) => {
   }
 }
 
-export const PUT = async (req) => {
+export const PUT = async (req, { params }) => {
   const { id, name } = await req.json();
-  console.log({id, name})
   const data = await prisma.toppings.update({
     where: { id },
     data: { name },
