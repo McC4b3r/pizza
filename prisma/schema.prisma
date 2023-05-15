@@ -10,9 +10,11 @@ generator client {
 model toppings {
   id   Int    @id @default(autoincrement())
   name String @db.VarChar
+  pizzas pizzas[]
 }
 
 model pizzas {
   id   Int    @id @default(autoincrement())
   name String @db.VarChar
+  toppings toppings[]
 }
