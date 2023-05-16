@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { PizzaCreationForm } from './components'
-import { createPizza, getPizzas } from './queries';
+import { getPizzas } from './queries';
 
 export default function Pizzas() {
   const [isCreatingPizza, setIsCreatingPizza] = useState(false);
@@ -30,13 +30,6 @@ export default function Pizzas() {
 
   if (error) return <div>failed to load</div>
   if (isLoading) return <Center><Spinner /></Center>
-
-  // for PizzaCreationForm
-  const handlePizzaSubmit = (pizzaInfo) => {
-    createPizza(pizzaInfo);
-    trigger();
-    handleClosePizzaCreationForm();
-  };
 
   return (
     <>
@@ -62,7 +55,6 @@ export default function Pizzas() {
       </Center>
       {isCreatingPizza &&
         <PizzaCreationForm
-          handleSubmit={handlePizzaSubmit}
           close={handleClosePizzaCreationForm}
           trigger={trigger} />}
       <HStack mt={10} justify="center">

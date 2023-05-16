@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { getAllToppings } from '../../toppings/queries'
 import {
   Box,
@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 import { createPizza } from '../queries';
 
-export const PizzaCreationForm = ({ close, trigger, handleSubmit }) => {
+export const PizzaCreationForm = ({ close, trigger }) => {
   const [selectedToppings, setSelectedToppings] = useState([]);
   const [pizzaName, setPizzaName] = useState('');
 
@@ -30,6 +30,14 @@ export const PizzaCreationForm = ({ close, trigger, handleSubmit }) => {
   };
 
   const handlePizzaName = (e) => setPizzaName(e.target.value);
+  const handlePizzaSubmit = () => {
+    createPizza({
+      name: pizzaName,
+      toppings: selectedToppings
+    });
+    trigger();
+    close();
+  }
 
   return (
     <>
@@ -58,7 +66,7 @@ export const PizzaCreationForm = ({ close, trigger, handleSubmit }) => {
 
           <HStack spacing={4} justifyContent="center" >
             <Button
-              onClick={() => handleSubmit({ name: pizzaName, toppings: selectedToppings })}
+              onClick={handlePizzaSubmit}
               colorScheme="teal">
               OK
             </Button>
