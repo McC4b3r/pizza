@@ -17,14 +17,21 @@ import {
   AccordionPanel,
 } from '@chakra-ui/react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
-import { PizzaCreationForm } from './components'
+import { PizzaCreationForm } from './components/pizzaCreationForm'
 import { getPizzas } from './queries';
 
 export default function Pizzas() {
   const [isCreatingPizza, setIsCreatingPizza] = useState(false);
+  const [selectedPizza, setSelectedPizza] = useState('');
 
   const handleCreationClick = () => setIsCreatingPizza(true);
   const handleClosePizzaCreationForm = () => setIsCreatingPizza(false);
+
+  const handlePizzaClick = (pizzaId) => {
+    setSelectedPizza(selectedPizza === pizzaId ? '' : pizzaId);
+  };
+
+  console.log({ selectedPizza })
 
   const {
     data: pizzasData,
@@ -52,18 +59,26 @@ export default function Pizzas() {
             Signature Pies
           </Heading>
           <Accordion minWidth="lg" allowToggle>
-            {pizzasData.data.map((pizza) => (
-              <AccordionItem>
+            {pizzasData.data.map((pizza, index) => (
+              <AccordionItem key={index}>
                 <Heading size="md">
-                  <AccordionButton _expanded={{ bg: '#9F7AEA', color: 'white' }}>
-                    <Box as="span" flex='1' textAlign='left'>
+                  <AccordionButton
+                    _expanded={{ bg: '#9F7AEA', color: 'white' }}
+                    onClick={() => handlePizzaClick(pizza.id)}>
+                    <Box as="span" flex="1" textAlign="left" >
                       {pizza.name}
                     </Box>
                     <AccordionIcon />
                   </AccordionButton>
                 </Heading>
                 <AccordionPanel pb={4}>
-                  {pizza.toppings.map(topping => <Box>{topping.name}</Box>)}
+                  {pizza.toppings.map((topping, index) => (
+                    <Box
+                      key={index}
+                      fontStyle="italic" >
+                      {topping.name}
+                    </Box>
+                  ))}
                 </AccordionPanel>
               </AccordionItem>
             ))}
@@ -75,13 +90,13 @@ export default function Pizzas() {
           close={handleClosePizzaCreationForm}
           trigger={trigger} />}
       <HStack mt={10} justify="center">
-        <Button colorScheme="teal" size="lg" onClick={handleCreationClick}>
+        <Button colorScheme="teal" size="lg" onClick={handleCreationClick} isDisabled={selectedPizza} >
           Create
         </Button>
-        <Button colorScheme="red" size="lg" mr={2} >
+        <Button colorScheme="red" size="lg" mr={2} isDisabled={!selectedPizza}>
           Delete
         </Button>
-        <Button colorScheme="blue" size="lg" >
+        <Button colorScheme="blue" size="lg" isDisabled={!selectedPizza}>
           Update
         </Button>
       </HStack>
