@@ -46,8 +46,8 @@ export const PizzaCreationForm = ({ close, trigger }) => {
           <Grid templateColumns='repeat(2, 1fr)' gap={24}>
             <GridItem>
               <Box textAlign="center" mb={4}>
-                <Heading size="md">
-                  Select some Toppings
+                <Heading size="md" mb={4} >
+                  Select Toppings
                 </Heading>
                 {toppings.data.map((topping) => (
                   <Box onClick={() => handleToppingClick(topping.id)}
@@ -60,6 +60,9 @@ export const PizzaCreationForm = ({ close, trigger }) => {
               </Box>
             </GridItem>
             <GridItem>
+              <Heading size="md" textAlign="center" mb={4} >
+                Give it a name
+              </Heading>
               <Input placeholder="Pizza name" mb={4} onChange={handlePizzaName} />
             </GridItem>
           </Grid>

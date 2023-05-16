@@ -4,7 +4,11 @@ import { NextResponse } from 'next/server';
 const prisma = new PrismaClient()
 
 export const GET = async () => {
-  const data = await prisma.pizzas.findMany()
+  const data = await prisma.pizzas.findMany({
+    include: {
+      toppings: true,
+    }
+  })
   return NextResponse.json({ data })
 };
 

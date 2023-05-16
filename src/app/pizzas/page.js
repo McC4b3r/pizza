@@ -10,6 +10,11 @@ import {
   Box,
   HStack,
   VStack,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionIcon,
+  AccordionPanel,
 } from '@chakra-ui/react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { PizzaCreationForm } from './components'
@@ -46,11 +51,23 @@ export default function Pizzas() {
           <Heading size="md" textAlign="center" mb={4}>
             Signature Pies
           </Heading>
-          {pizzasData.data.map((pizza) => (
-            <Box textAlign="center" key={pizza.id}>
-              {pizza.name}
-            </Box>
-          ))}
+          <Accordion minWidth="lg" allowToggle>
+            {pizzasData.data.map((pizza) => (
+              <AccordionItem>
+                <Heading size="md">
+                  <AccordionButton _expanded={{ bg: '#9F7AEA', color: 'white' }}>
+                    <Box as="span" flex='1' textAlign='left'>
+                      {pizza.name}
+                    </Box>
+                    <AccordionIcon />
+                  </AccordionButton>
+                </Heading>
+                <AccordionPanel pb={4}>
+                  {pizza.toppings.map(topping => <Box>{topping.name}</Box>)}
+                </AccordionPanel>
+              </AccordionItem>
+            ))}
+          </Accordion>
         </VStack>
       </Center>
       {isCreatingPizza &&
