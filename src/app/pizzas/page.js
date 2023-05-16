@@ -31,8 +31,6 @@ export default function Pizzas() {
     setSelectedPizza(selectedPizza === pizzaId ? '' : pizzaId);
   };
 
-  console.log({ selectedPizza })
-
   const {
     data: pizzasData,
     isLoading,

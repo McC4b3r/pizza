@@ -29,6 +29,9 @@ export const PizzaCreationForm = ({ close, trigger }) => {
     }
   };
 
+  const isPizzaValid = !!(pizzaName && selectedToppings.length > 0)
+  console.log({ isPizzaValid })
+
   const handlePizzaName = (e) => setPizzaName(e.target.value);
   const handlePizzaSubmit = () => {
     createPizza({
@@ -70,6 +73,7 @@ export const PizzaCreationForm = ({ close, trigger }) => {
           <HStack spacing={4} justifyContent="center" >
             <Button
               onClick={handlePizzaSubmit}
+              isDisabled={!isPizzaValid}
               colorScheme="teal">
               OK
             </Button>
