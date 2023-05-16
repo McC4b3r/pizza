@@ -19,7 +19,7 @@ import {
   Link,
   ButtonGroup
 } from '@chakra-ui/react';
-import { 
+import {
   createTopping,
   getAllToppings,
   updateTopping,
@@ -39,7 +39,7 @@ export default function Toppings() {
 
   if (isError) return <div>failed to load</div>
   if (isLoading) return <Center><Spinner /></Center>
-  
+
   // select topping within list
   const handleToppingClick = (toppingId) => {
     if (!isUpdatingTopping) {
@@ -66,7 +66,7 @@ export default function Toppings() {
     setAddToppingName(event.target.value);
   };
 
-  
+
   // submit new topping
   const handleAddToppingSubmit = () => {
     if (addToppingName.trim() !== '' && !isDuplicate) {
@@ -77,24 +77,24 @@ export default function Toppings() {
       setIsAddingTopping(false);
     }
   };
-  
+
   // allow topping name to be updated
   const handleUpdateButtonClick = () => {
     setIsUpdatingTopping(true);
   };
-  
+
   // gather name of updated topping
   const handleUpdateToppingNameChange = (event) => {
     setUpdatedToppingName(event.target.value);
   };
-  
+
   // delete a selected topping
   const handleDeleteTopping = () => {
     deleteTopping(selectedTopping);
     trigger();
-    setSelectedTopping([]);
+    setSelectedTopping('');
   }
-  
+
   // submit updated topping
   const handleUpdateTopping = () => {
     if (updatedToppingName.trim() !== '' && !isDuplicate) {
@@ -109,7 +109,7 @@ export default function Toppings() {
   const handleUpdateCancel = () => {
     setIsUpdatingTopping(false);
   }
-  
+
   const handleEnter = (event) => {
     if (event.key === 'Enter') {
       isAddingTopping ? handleAddToppingSubmit() : handleUpdateTopping();
@@ -119,7 +119,7 @@ export default function Toppings() {
   // check for duplicate toppings
   const isDuplicate = toppings.data.some((topping) => (
     topping.name.toLowerCase() === addToppingName.toLowerCase() || topping.name.toLowerCase() === updatedToppingName.toLowerCase()
-    )
+  )
   );
 
   return (
@@ -132,7 +132,7 @@ export default function Toppings() {
       <Heading as="h1" size="xl" textAlign="center" mt={10}>
         Toppings
       </Heading>
-        <UnorderedList mt={20} spacing={3} mx="auto" maxW="md">
+      <UnorderedList mt={20} spacing={3} mx="auto" maxW="md">
         {toppings.data.map((topping) => (
           <ListItem
             key={topping.id}
@@ -155,7 +155,7 @@ export default function Toppings() {
                       <Button colorScheme="teal" h='1.75rem' size='sm' onClick={handleUpdateTopping}>
                         Ok
                       </Button>
-                      <Button colorScheme="red" h='1.75rem' size='sm'  onClick={handleUpdateCancel}>
+                      <Button colorScheme="red" h='1.75rem' size='sm' onClick={handleUpdateCancel}>
                         Cancel
                       </Button>
                     </ButtonGroup>
@@ -182,10 +182,10 @@ export default function Toppings() {
                   onKeyDown={handleEnter}
                 />
                 {
-                  isDuplicate && 
-                    <FormErrorMessage>
-                      That topping already exists
-                    </FormErrorMessage>
+                  isDuplicate &&
+                  <FormErrorMessage>
+                    That topping already exists
+                  </FormErrorMessage>
                 }
               </VStack>
             </Center>
@@ -197,17 +197,17 @@ export default function Toppings() {
                 Cancel
               </Button>
             </Center>
-            </FormControl>
+          </FormControl>
         </Box>
       )}
       <HStack mt={10} justify="center">
         <Button colorScheme="teal" size="lg" isDisabled={isAddButtonDisabled} onClick={handleAddButtonClick}>
           Add
         </Button>
-        <Button colorScheme="red" size="lg" mr={2} onClick={handleDeleteTopping} isDisabled={selectedTopping.length < 1}>
+        <Button colorScheme="red" size="lg" mr={2} onClick={handleDeleteTopping} isDisabled={!selectedTopping}>
           Delete
         </Button>
-        <Button colorScheme="blue" size="lg" onClick={handleUpdateButtonClick} isDisabled={selectedTopping.length < 1}>
+        <Button colorScheme="blue" size="lg" onClick={handleUpdateButtonClick} isDisabled={!selectedTopping}>
           Update
         </Button>
       </HStack>

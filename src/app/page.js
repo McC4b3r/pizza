@@ -15,9 +15,11 @@ export default function Home() {
             Manage Toppings
           </Button>
         </Link>
-        <Button colorScheme="teal" size="lg">
-          Manage Pizzas
-        </Button>
+        <Link href="/pizzas">
+          <Button colorScheme="teal" size="lg">
+            Manage Pizzas
+          </Button>
+        </Link>
       </HStack>
     </div>
   )
