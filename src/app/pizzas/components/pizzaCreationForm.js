@@ -35,12 +35,12 @@ export const PizzaCreationForm = ({ close, pizzasData, trigger }) => {
     }
   };
 
-  // validation to disable or enable buttons
+  // validation to ensure no empty pizzas are created
   const isPizzaValid = !!(pizzaName && selectedToppings.length > 0)
 
   const handlePizzaName = (e) => setPizzaName(e.target.value);
 
-  // validation to ensure a pizza can't be created there's already a pizza with the same toppings
+  // check if selected toppings match toppings on an existing pizza
   const isToppingsEqual = (existing, selected) => {
     return existing.some((pizza) => {
       if (pizza.toppings.length !== selected.length) {
@@ -66,8 +66,6 @@ export const PizzaCreationForm = ({ close, pizzasData, trigger }) => {
           ? 'A pizza with these toppings already exists'
           : undefined;
   };
-
-  console.log({ dupes: provideDuplicateError(), isAnythingDuplicate })
 
   const handlePizzaSubmit = () => {
     createPizza({
