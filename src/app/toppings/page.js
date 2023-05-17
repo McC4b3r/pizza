@@ -190,7 +190,7 @@ export default function Toppings() {
               </VStack>
             </Center>
             <Center mt={2}>
-              <Button colorScheme="teal" size="sm" ml={2} onClick={handleAddToppingSubmit}>
+              <Button colorScheme="teal" size="sm" ml={2} onClick={handleAddToppingSubmit} isDisabled={isDuplicate}>
                 Ok
               </Button>
               <Button colorScheme="red" size="sm" ml={2} onClick={handleCancelAddTopping}>

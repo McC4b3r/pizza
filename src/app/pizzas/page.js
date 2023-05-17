@@ -85,10 +85,11 @@ export default function Pizzas() {
       </Center>
       {isCreatingPizza &&
         <PizzaCreationForm
+          pizzasData={pizzasData}
           close={handleClosePizzaCreationForm}
           trigger={trigger} />}
       <HStack mt={10} justify="center">
-        <Button colorScheme="teal" size="lg" onClick={handleCreationClick} isDisabled={selectedPizza} >
+        <Button colorScheme="teal" size="lg" onClick={handleCreationClick} isDisabled={selectedPizza || isCreatingPizza} >
           Create
         </Button>
         <Button colorScheme="red" size="lg" mr={2} isDisabled={!selectedPizza}>

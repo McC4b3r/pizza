@@ -9,11 +9,17 @@ import {
   Heading,
   Grid,
   GridItem,
-  Spinner
+  Spinner,
+  FormControl,
+  InputGroup,
+  InputRightElement,
+  FormErrorMessage,
+  VStack
 } from '@chakra-ui/react';
 import { createPizza } from '../queries';
+import { CheckCircleIcon, NotAllowedIcon } from '@chakra-ui/icons';
 
-export const PizzaCreationForm = ({ close, trigger }) => {
+export const PizzaCreationForm = ({ close, pizzasData, trigger }) => {
   const [selectedToppings, setSelectedToppings] = useState([]);
   const [pizzaName, setPizzaName] = useState('');
 
@@ -29,10 +35,40 @@ export const PizzaCreationForm = ({ close, trigger }) => {
     }
   };
 
+  // validation to disable or enable buttons
   const isPizzaValid = !!(pizzaName && selectedToppings.length > 0)
-  console.log({ isPizzaValid })
 
   const handlePizzaName = (e) => setPizzaName(e.target.value);
+
+  // validation to ensure a pizza can't be created there's already a pizza with the same toppings
+  const isToppingsEqual = (existing, selected) => {
+    return existing.some((pizza) => {
+      if (pizza.toppings.length !== selected.length) {
+        return false;
+      }
+      return pizza.toppings.every((topping, i) => {
+        return topping.id === selected[i]?.id;
+      });
+    });
+  };
+
+  // validation to ensure no duplicate pizza names
+  const isDuplicateName = pizzasData.data.some((pizza) => pizza.name.toLowerCase() === pizzaName.toLowerCase());
+  // validation to ensure no dudplicate pizza toppings
+  const isDuplicateToppings = isToppingsEqual(pizzasData.data, selectedToppings)
+  const isAnythingDuplicate = !!(isDuplicateName || isDuplicateToppings)
+  const provideDuplicateError = () => {
+    return isDuplicateName && isDuplicateToppings
+      ? 'This pizza already exists'
+      : isDuplicateName
+        ? 'This name already exists'
+        : isDuplicateToppings
+          ? 'A pizza with these toppings already exists'
+          : undefined;
+  };
+
+  console.log({ dupes: provideDuplicateError(), isAnythingDuplicate })
+
   const handlePizzaSubmit = () => {
     createPizza({
       name: pizzaName,
@@ -66,14 +102,31 @@ export const PizzaCreationForm = ({ close, trigger }) => {
               <Heading size="md" textAlign="center" mb={4} >
                 Give it a name
               </Heading>
-              <Input placeholder="Pizza name" mb={4} onChange={handlePizzaName} />
+              <FormControl isInvalid={isAnythingDuplicate}>
+                <InputGroup>
+                  <VStack>
+                    <Input placeholder="Pizza name" mb={2} onChange={handlePizzaName} />
+                    {isAnythingDuplicate &&
+                      <FormErrorMessage>
+                        {provideDuplicateError()}
+                      </FormErrorMessage>}
+                  </VStack>
+                  {pizzaName
+                    ? <InputRightElement>
+                      {isAnythingDuplicate
+                        ? <NotAllowedIcon color='red.500' />
+                        : <CheckCircleIcon color='green.500' />}
+                    </InputRightElement>
+                    : null}
+                </InputGroup>
+              </FormControl>
             </GridItem>
           </Grid>
 
           <HStack spacing={4} justifyContent="center" >
             <Button
               onClick={handlePizzaSubmit}
-              isDisabled={!isPizzaValid}
+              isDisabled={isAnythingDuplicate || !isPizzaValid}
               colorScheme="teal">
               OK
             </Button>
