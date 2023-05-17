@@ -3,8 +3,6 @@
 import { useState } from 'react';
 import {
   Heading,
-  UnorderedList,
-  ListItem,
   Button,
   HStack,
   Box,
@@ -17,7 +15,12 @@ import {
   VStack,
   Spinner,
   Link,
-  ButtonGroup
+  ButtonGroup,
+  Card,
+  CardBody,
+  Text,
+  Grid,
+  GridItem
 } from '@chakra-ui/react';
 import {
   createTopping,
@@ -25,7 +28,7 @@ import {
   updateTopping,
   deleteTopping,
 } from './queries'
-import { ArrowBackIcon } from '@chakra-ui/icons';
+import { ArrowBackIcon, CheckIcon, CloseIcon } from '@chakra-ui/icons';
 
 export default function Toppings() {
   const [selectedTopping, setSelectedTopping] = useState('');
@@ -132,42 +135,49 @@ export default function Toppings() {
       <Heading as="h1" size="xl" textAlign="center" mt={10}>
         Toppings
       </Heading>
-      <UnorderedList mt={20} spacing={3} mx="auto" maxW="md">
+      <Grid mt={20} templateColumns='repeat(2, 1fr)' gap={4} mx="auto" maxW="xl">
         {toppings.data.map((topping) => (
-          <ListItem
-            key={topping.id}
-            bg={selectedTopping === topping.id ? 'gray.100' : ''}
-            _hover={{ cursor: 'pointer', bg: 'gray.50' }}
-            onClick={() => handleToppingClick(topping.id)}
-          >
-            {selectedTopping === topping.id && isUpdatingTopping ? (
-              <FormControl isInvalid={isDuplicate}>
-                <InputGroup>
-                  <Input
-                    focusBorderColor={isDuplicate ? 'red.500' : 'blue.500'}
-                    placeholder={topping.name}
-                    value={updatedToppingName}
-                    onChange={handleUpdateToppingNameChange}
-                    onKeyDown={handleEnter}
-                  />
-                  <InputRightElement>
-                    <ButtonGroup ml="-100px" spacing='8px'>
-                      <Button colorScheme="teal" h='1.75rem' size='sm' onClick={handleUpdateTopping}>
-                        Ok
-                      </Button>
-                      <Button colorScheme="red" h='1.75rem' size='sm' onClick={handleUpdateCancel}>
-                        Cancel
-                      </Button>
-                    </ButtonGroup>
-                  </InputRightElement>
-                </InputGroup>
-              </FormControl>
-            ) : (
-              topping.name
-            )}
-          </ListItem>
+          <GridItem>
+            <Card
+              bg={selectedTopping === topping.id ? 'blue.100' : 'blue.50'}
+              _hover={{ cursor: 'pointer', bg: 'blue.100' }}
+              onClick={() => handleToppingClick(topping.id)}>
+              <CardBody>
+                <Text
+                  key={topping.id}
+                >
+                  {selectedTopping === topping.id && isUpdatingTopping ? (
+                    <FormControl isInvalid={isDuplicate}>
+                      <InputGroup>
+                        <Input
+                          focusBorderColor={isDuplicate ? 'red.500' : 'blue.500'}
+                          placeholder={topping.name}
+                          value={updatedToppingName}
+                          onChange={handleUpdateToppingNameChange}
+                          onKeyDown={handleEnter}
+                          bg="gray.50"
+                        />
+                        <InputRightElement>
+                          <ButtonGroup ml="-36px" spacing='4px'>
+                            <Button colorScheme="teal" h='1.75rem' size='xs' onClick={handleUpdateTopping}>
+                              <CheckIcon />
+                            </Button>
+                            <Button colorScheme="red" h='1.75rem' size='xs' onClick={handleUpdateCancel}>
+                              <CloseIcon />
+                            </Button>
+                          </ButtonGroup>
+                        </InputRightElement>
+                      </InputGroup>
+                    </FormControl>
+                  ) : (
+                    topping.name
+                  )}
+                </Text>
+              </CardBody>
+            </Card>
+          </GridItem>
         ))}
-      </UnorderedList>
+      </Grid>
       {isAddingTopping && (
         <Box mt={6}>
           <FormControl isInvalid={isDuplicate}>
