@@ -35,3 +35,12 @@ export const updatePizzaName = (id, updatedPizzaName) => {
     .then(res => res.data)
     .catch(e => console.log(e))
 }
+
+export const updatePizzaToppings = (id, updatedPizzaToppings) => {
+  axios.put(ROUTE_NAME, {
+    id,
+    toppings: updatedPizzaToppings,
+  })
+    .then(res => res.data)
+    .catch(e => console.log(e))
+}

@@ -11,8 +11,6 @@ import {
 import {
   CheckIcon,
   CloseIcon,
-  CheckCircleIcon,
-  NotAllowedIcon,
 } from '@chakra-ui/icons'
 import { provideDuplicateError, handleEnter } from '../../helpers'
 
@@ -20,8 +18,8 @@ export const UpdateFormInput = ({
   isDuplicate,
   pizza,
   updatedPizzaName,
-  handleUpdatePizzaNameChange,
-  handleUpdateCancel,
+  handleChange,
+  handleCancel,
   submit,
 }) => {
   const handleEnterKey = (e) => handleEnter(e, false, null, submit)
@@ -35,7 +33,7 @@ export const UpdateFormInput = ({
               focusBorderColor={isDuplicate ? 'red.500' : 'blue.500'}
               placeholder={pizza.name}
               value={updatedPizzaName}
-              onChange={handleUpdatePizzaNameChange}
+              onChange={handleChange}
               onKeyDown={handleEnterKey}
               bg="gray.50"
             />
@@ -53,7 +51,7 @@ export const UpdateFormInput = ({
                 onClick={submit}>
                 <CheckIcon />
               </Button>
-              <Button colorScheme="red" h='1.75rem' size='xs' onClick={handleUpdateCancel}>
+              <Button colorScheme="red" h='1.75rem' size='xs' onClick={handleCancel}>
                 <CloseIcon />
               </Button>
             </ButtonGroup>

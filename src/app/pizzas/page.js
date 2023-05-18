@@ -18,10 +18,12 @@ import {
   Divider,
   Flex,
   Spacer,
+  ButtonGroup,
+  AbsoluteCenter,
 } from '@chakra-ui/react';
-import { ArrowBackIcon } from '@chakra-ui/icons';
+import { ArrowBackIcon, CheckIcon, CloseIcon } from '@chakra-ui/icons';
 import { PizzaCreationForm } from './components/pizzaCreationForm'
-import { getPizzas, updatePizzaName } from './queries';
+import { getPizzas, updatePizzaName, updatePizzaToppings } from './queries';
 import { isDupeName } from '../helpers';
 import { UpdateFormInput } from './components/updateFormInput'
 import { ToppingsEdit } from './components/toppingsEdit'
@@ -33,12 +35,13 @@ export default function Pizzas() {
   const [isUpdatingToppings, setIsUpdatingToppings] = useState(false);
   const [pizzaName, setPizzaName] = useState('');
   const [updatedPizzaName, setUpdatedPizzaName] = useState('');
+  const [updatedPizzaToppings, setUpdatedPizzaToppings] = useState([]);
 
   const handleCreationClick = () => setIsCreatingPizza(true);
   const handleClosePizzaCreationForm = () => setIsCreatingPizza(false);
 
   const handlePizzaClick = (pizzaId) => {
-    if (!isUpdatingName) {
+    if (!(isUpdatingName || isUpdatingToppings)) {
       setSelectedPizza(selectedPizza === pizzaId ? '' : pizzaId);
     }
   };
@@ -56,9 +59,16 @@ export default function Pizzas() {
   };
 
 
-  const handleUpdateCancel = () => {
+  const handleUpdateNameCancel = () => {
     setIsUpdatingName(false);
   }
+
+  const handleUpdateToppingsCancel = () => {
+    setUpdatedPizzaToppings([]);
+    setIsUpdatingToppings(false);
+  }
+
+  const isupdatingEither = isUpdatingName || isUpdatingToppings
 
   const {
     data: pizzasData,
@@ -70,7 +80,6 @@ export default function Pizzas() {
   if (error) return <div>failed to load</div>
   if (isLoading) return <Center><Spinner mt={12} /></Center>
 
-  const isDuplicateName = isDupeName(pizzasData, pizzaName);
   const isDuplicateUpdateName = isDupeName(pizzasData, updatedPizzaName)
 
   const handleNameChangeSubmit = () => {
@@ -80,6 +89,16 @@ export default function Pizzas() {
       setUpdatedPizzaName('');
       setSelectedPizza('');
       setIsUpdatingName(false);
+    }
+  }
+
+  // console.log({ updatedPizzaToppings })
+  const handleToppingsChangeSubmit = (pizzaId) => {
+    if (!!updatedPizzaToppings.length) {
+      updatePizzaToppings(pizzaId, updatedPizzaToppings)
+      trigger()
+      setUpdatedPizzaToppings([]);
+      setIsUpdatingToppings(false);
     }
   }
 
@@ -104,7 +123,7 @@ export default function Pizzas() {
                 <Card
                   textAlign="center"
                   bg={selectedPizza === pizza.id ? 'red.100' : 'red.50'}
-                  _hover={{ cursor: 'pointer', bg: 'red.100' }}
+                  _hover={{ cursor: isupdatingEither ? null : 'pointer', bg: 'red.100' }}
                   onClick={() => handlePizzaClick(pizza.id)}
                   key={index}>
                   <CardHeader >
@@ -114,9 +133,9 @@ export default function Pizzas() {
                         submit={handleNameChangeSubmit}
                         pizza={pizza}
                         updatedPizzaName={updatedPizzaName}
-                        handleUpdatePizzaNameChange={handleUpdatePizzaNameChange}
+                        handleChange={handleUpdatePizzaNameChange}
                         handleEnter={handleEnter}
-                        handleUpdateCancel={handleUpdateCancel}
+                        handleCancel={handleUpdateNameCancel}
                       />
                       :
                       <Box as="span" flex="1" >
@@ -129,7 +148,8 @@ export default function Pizzas() {
                   <Center >
                     <Divider borderColor="gray.300" width="75%" />
                   </Center>
-                  <CardBody pb={4}>
+                  <CardBody
+                    pb={4}>
                     <Flex justifyContent="center">
                       <Box >
                         {selectedPizza === pizza.id && isUpdatingToppings && (
@@ -139,6 +159,7 @@ export default function Pizzas() {
                         )}
                         {pizza.toppings.map((topping, index) => (
                           <Box
+                            my={1}
                             key={index}
                             fontStyle="italic" >
                             {topping.name}
@@ -149,12 +170,29 @@ export default function Pizzas() {
                         <>
                           <Spacer />
                           <Box>
-                            <ToppingsEdit />
+                            <ToppingsEdit
+                              updatedPizzaToppings={updatedPizzaToppings}
+                              setUpdatedPizzaToppings={setUpdatedPizzaToppings} />
                           </Box>
                         </>
                       )}
                     </Flex>
                   </CardBody>
+                  {selectedPizza === pizza.id && isUpdatingToppings && (
+                    <Center>
+                      <ButtonGroup my={4}>
+                        <Button size="sm" colorScheme='teal'>
+                          <CheckIcon onClick={() => handleToppingsChangeSubmit(pizza.id)} />
+                        </Button >
+                        <Button
+                          onClick={handleUpdateToppingsCancel}
+                          size="sm"
+                          colorScheme='red'>
+                          <CloseIcon />
+                        </Button>
+                      </ButtonGroup>
+                    </Center>
+                  )}
                 </Card>
               ))}
             </Grid>

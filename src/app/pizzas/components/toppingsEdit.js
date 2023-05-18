@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { getAllToppings } from '../../toppings/queries';
-// import { isDupeName } from '../../helpers';
+import { updatePizzaToppings } from '../queries';
 import {
   Box,
   Center,
@@ -10,22 +10,22 @@ import {
 } from '@chakra-ui/react'
 
 
-export const ToppingsEdit = () => {
-  const [updatedPizzaToppings, setUpdatedPizzaToppings] = useState([]);
+export const ToppingsEdit = ({
+  updatedPizzaToppings,
+  setUpdatedPizzaToppings,
+}) => {
   const { toppings, isLoading, isError, trigger } = getAllToppings();
 
   if (isError) return <div>failed to load</div>
   if (isLoading) return <Center><Spinner mt={12} /></Center>
 
-  const handleToppingsChangeSubmit = () => {
-    if (updatedPizzaToppings.length > 0 && !isDuplicateName) {
-      updatePizzaName(selectedPizza, updatedPizzaName)
-      trigger()
-      setUpdatedPizzaName('');
-      setSelectedPizza('');
-      setIsUpdatingName(false);
-    }
-  }
+  const updatePizzaToppings = (toppingId) => {
+    setUpdatedPizzaToppings(prevToppings => (
+      prevToppings.includes(toppingId)
+        ? prevToppings.filter(id => id !== toppingId)
+        : [...prevToppings, toppingId]
+    ));
+  };
 
   return (
     <Box>
@@ -34,7 +34,15 @@ export const ToppingsEdit = () => {
       </Heading>
       {toppings.data.map((topping, i) => {
         return (
-          <Text key={i}>{topping.name}</Text>
+          <Text
+            my={1}
+            borderRadius="md"
+            bg={updatedPizzaToppings.includes(topping.id) ? 'blue.100' : null}
+            _hover={{ cursor: 'pointer', bg: 'blue.100' }}
+            onClick={() => updatePizzaToppings(topping.id)}
+            key={i}>
+            {topping.name}
+          </Text>
         )
       })}
     </Box>

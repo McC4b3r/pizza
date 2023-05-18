@@ -50,7 +50,11 @@ export const PUT = async (req) => {
     where: { id },
     data: {
       ...(name && { name }),
-      ...(toppings && { toppings }),
+      ...(toppings && {
+        toppings: {
+          connect: toppings.map(toppingId => ({ id: toppingId })),
+        },
+      }),
     },
   });
 
