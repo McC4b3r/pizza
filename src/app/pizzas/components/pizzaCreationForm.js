@@ -17,13 +17,13 @@ import {
   VStack
 } from '@chakra-ui/react';
 import { createPizza } from '../queries';
+import { isToppingsEqual, isDupeName, provideDuplicateError } from '../../helpers';
 import { CheckCircleIcon, NotAllowedIcon } from '@chakra-ui/icons';
 
 export const PizzaCreationForm = ({
   close,
   pizzasData,
   trigger,
-  isDuplicateName,
   pizzaName,
   setPizzaName,
 }) => {
@@ -42,35 +42,14 @@ export const PizzaCreationForm = ({
     }
   };
 
-  // validation to ensure no empty pizzas are created
   const isPizzaValid = !!(pizzaName && selectedToppings.length > 0)
 
   const handlePizzaName = (e) => setPizzaName(e.target.value);
 
-  // check if selected toppings match toppings on an existing pizza
-  const isToppingsEqual = (existing, selected) => {
-    return existing.some((pizza) => {
-      if (pizza.toppings.length !== selected.length) {
-        return false;
-      }
-      return pizza.toppings.every((topping, i) => {
-        return topping.id === selected[i]?.id;
-      });
-    });
-  };
+  const isDuplicateName = isDupeName(pizzasData, pizzaName);
 
-  // validation to ensure no dudplicate pizza toppings
   const isDuplicateToppings = isToppingsEqual(pizzasData.data, selectedToppings)
   const isAnythingDuplicate = !!(isDuplicateName || isDuplicateToppings)
-  const provideDuplicateError = () => {
-    return isDuplicateName && isDuplicateToppings
-      ? 'This pizza already exists'
-      : isDuplicateName
-        ? 'This name already exists'
-        : isDuplicateToppings
-          ? 'A pizza with these toppings already exists'
-          : undefined;
-  };
 
   const handlePizzaSubmit = () => {
     createPizza({
@@ -111,7 +90,7 @@ export const PizzaCreationForm = ({
                     <Input placeholder="Pizza name" mb={2} onChange={handlePizzaName} />
                     {isAnythingDuplicate &&
                       <FormErrorMessage>
-                        {provideDuplicateError()}
+                        {provideDuplicateError(isDuplicateName, isDuplicateToppings)}
                       </FormErrorMessage>}
                   </VStack>
                   {pizzaName

@@ -15,17 +15,22 @@ import {
   Card,
   CardHeader,
   CardBody,
-  Divider
+  Divider,
+  Flex,
+  Spacer,
 } from '@chakra-ui/react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { PizzaCreationForm } from './components/pizzaCreationForm'
 import { getPizzas, updatePizzaName } from './queries';
+import { isDupeName } from '../helpers';
 import { UpdateFormInput } from './components/updateFormInput'
+import { ToppingsEdit } from './components/toppingsEdit'
 
 export default function Pizzas() {
   const [isCreatingPizza, setIsCreatingPizza] = useState(false);
   const [selectedPizza, setSelectedPizza] = useState('');
-  const [isUpdating, setIsUpdating] = useState(false);
+  const [isUpdatingName, setIsUpdatingName] = useState(false);
+  const [isUpdatingToppings, setIsUpdatingToppings] = useState(false);
   const [updatedPizzaName, setUpdatedPizzaName] = useState('');
   const [pizzaName, setPizzaName] = useState('');
 
@@ -33,31 +38,26 @@ export default function Pizzas() {
   const handleClosePizzaCreationForm = () => setIsCreatingPizza(false);
 
   const handlePizzaClick = (pizzaId) => {
-    if (!isUpdating) {
+    if (!isUpdatingName) {
       setSelectedPizza(selectedPizza === pizzaId ? '' : pizzaId);
     }
   };
 
-  const handleUpdateClick = (e) => {
-    setIsUpdating(true)
+  const handleUpdateNameClick = (e) => {
+    setIsUpdatingName(true)
+  }
+
+  const handleUpdateToppingsClick = () => {
+    setIsUpdatingToppings(true);
   }
 
   const handleUpdatePizzaNameChange = (event) => {
     setUpdatedPizzaName(event.target.value);
   };
 
-  const handleNameChangeSubmit = () => {
-    if (updatedPizzaName.trim() !== '' && !isDuplicateName) {
-      updatePizzaName(selectedPizza, updatedPizzaName)
-      trigger()
-      setUpdatedPizzaName('');
-      setSelectedPizza('');
-      setIsUpdating(false);
-    }
-  }
 
   const handleUpdateCancel = () => {
-    setIsUpdating(false);
+    setIsUpdatingName(false);
   }
 
   const {
@@ -70,7 +70,17 @@ export default function Pizzas() {
   if (error) return <div>failed to load</div>
   if (isLoading) return <Center><Spinner mt={12} /></Center>
 
-  const isDuplicateName = pizzasData.data.some((pizza) => pizza.name.toLowerCase() === pizzaName.toLowerCase());
+  const isDuplicateName = isDupeName(pizzasData, pizzaName);
+
+  const handleNameChangeSubmit = () => {
+    if (updatedPizzaName.trim() !== '' && !isDuplicateName) {
+      updatePizzaName(selectedPizza, updatedPizzaName)
+      trigger()
+      setUpdatedPizzaName('');
+      setSelectedPizza('');
+      setIsUpdatingName(false);
+    }
+  }
 
   return (
     <>
@@ -97,7 +107,7 @@ export default function Pizzas() {
                   onClick={() => handlePizzaClick(pizza.id)}
                   key={index}>
                   <CardHeader >
-                    {selectedPizza === pizza.id && isUpdating ?
+                    {selectedPizza === pizza.id && isUpdatingName ?
                       <UpdateFormInput
                         isDuplicate={isDuplicateName}
                         submit={handleNameChangeSubmit}
@@ -119,13 +129,30 @@ export default function Pizzas() {
                     <Divider borderColor="gray.300" width="75%" />
                   </Center>
                   <CardBody pb={4}>
-                    {pizza.toppings.map((topping, index) => (
-                      <Box
-                        key={index}
-                        fontStyle="italic" >
-                        {topping.name}
+                    <Flex justifyContent="center">
+                      <Box >
+                        {selectedPizza === pizza.id && isUpdatingToppings && (
+                          <Heading mb={2} size="sm">
+                            Existing
+                          </Heading>
+                        )}
+                        {pizza.toppings.map((topping, index) => (
+                          <Box
+                            key={index}
+                            fontStyle="italic" >
+                            {topping.name}
+                          </Box>
+                        ))}
                       </Box>
-                    ))}
+                      {selectedPizza === pizza.id && isUpdatingToppings && (
+                        <>
+                          <Spacer />
+                          <Box>
+                            <ToppingsEdit />
+                          </Box>
+                        </>
+                      )}
+                    </Flex>
                   </CardBody>
                 </Card>
               ))}
@@ -139,7 +166,6 @@ export default function Pizzas() {
           close={handleClosePizzaCreationForm}
           pizzaName={pizzaName}
           setPizzaName={setPizzaName}
-          isDuplicateName={isDuplicateName}
           trigger={trigger} />}
       <HStack mt={10} justify="center">
         <Button
@@ -159,9 +185,16 @@ export default function Pizzas() {
         <Button
           colorScheme="blue"
           size="lg"
-          onClick={handleUpdateClick}
+          onClick={handleUpdateNameClick}
           isDisabled={!selectedPizza}>
-          Update
+          Update Name
+        </Button>
+        <Button
+          colorScheme="blue"
+          size="lg"
+          onClick={handleUpdateToppingsClick}
+          isDisabled={!selectedPizza}>
+          Update Toppings
         </Button>
       </HStack>
     </>
