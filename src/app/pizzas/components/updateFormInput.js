@@ -14,18 +14,17 @@ import {
   CheckCircleIcon,
   NotAllowedIcon,
 } from '@chakra-ui/icons'
-import { provideDuplicateError } from '../../helpers'
+import { provideDuplicateError, handleEnter } from '../../helpers'
 
 export const UpdateFormInput = ({
   isDuplicate,
   pizza,
   updatedPizzaName,
   handleUpdatePizzaNameChange,
-  handleEnter,
   handleUpdateCancel,
   submit,
 }) => {
-  console.log({ UPDATEFORMINPUT: isDuplicate })
+  const handleEnterKey = (e) => handleEnter(e, false, null, submit)
   return (
     <>
       <FormControl isInvalid={isDuplicate}>
@@ -37,7 +36,7 @@ export const UpdateFormInput = ({
               placeholder={pizza.name}
               value={updatedPizzaName}
               onChange={handleUpdatePizzaNameChange}
-              onKeyDown={handleEnter}
+              onKeyDown={handleEnterKey}
               bg="gray.50"
             />
             <FormErrorMessage>

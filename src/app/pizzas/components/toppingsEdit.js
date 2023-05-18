@@ -17,8 +17,6 @@ export const ToppingsEdit = () => {
   if (isError) return <div>failed to load</div>
   if (isLoading) return <Center><Spinner mt={12} /></Center>
 
-  // const isDuplicateName = pizzasData.data.some((pizza) => pizza.name.toLowerCase() === pizzaName.toLowerCase());
-
   const handleToppingsChangeSubmit = () => {
     if (updatedPizzaToppings.length > 0 && !isDuplicateName) {
       updatePizzaName(selectedPizza, updatedPizzaName)
