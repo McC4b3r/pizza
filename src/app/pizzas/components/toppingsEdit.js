@@ -1,3 +1,6 @@
+import { useState } from 'react';
+import { getAllToppings } from '../../toppings/queries';
+// import { isDupeName } from '../../helpers';
 import {
   Box,
   Center,
@@ -5,7 +8,7 @@ import {
   Text,
   Heading,
 } from '@chakra-ui/react'
-import { getAllToppings } from '../../toppings/queries';
+
 
 export const ToppingsEdit = () => {
   const [updatedPizzaToppings, setUpdatedPizzaToppings] = useState([]);
@@ -14,7 +17,7 @@ export const ToppingsEdit = () => {
   if (isError) return <div>failed to load</div>
   if (isLoading) return <Center><Spinner mt={12} /></Center>
 
-  const isDuplicateName = pizzasData.data.some((pizza) => pizza.name.toLowerCase() === pizzaName.toLowerCase());
+  // const isDuplicateName = pizzasData.data.some((pizza) => pizza.name.toLowerCase() === pizzaName.toLowerCase());
 
   const handleToppingsChangeSubmit = () => {
     if (updatedPizzaToppings.length > 0 && !isDuplicateName) {

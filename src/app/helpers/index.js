@@ -17,7 +17,7 @@ export const isToppingsEqual = (existing, selected) => {
 
 export const isDupeName = (pizzas, name) =>
   pizzas.data.some((pizza) =>
-    pizza.name.toLowerCase().replace(/\s|_|-/g, '') === name.toLowerCase().replace(/\s|_|-/g, ''));
+    pizza.name.toLowerCase().replace(/[^A-Za-z0-9]/g, '') === name.toLowerCase().replace(/[^A-Za-z0-9]/g, ''));
 
 export const provideDuplicateError = (nameCheck, toppingsCheck) => {
   return nameCheck && toppingsCheck

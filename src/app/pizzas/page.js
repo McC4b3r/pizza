@@ -31,8 +31,8 @@ export default function Pizzas() {
   const [selectedPizza, setSelectedPizza] = useState('');
   const [isUpdatingName, setIsUpdatingName] = useState(false);
   const [isUpdatingToppings, setIsUpdatingToppings] = useState(false);
-  const [updatedPizzaName, setUpdatedPizzaName] = useState('');
   const [pizzaName, setPizzaName] = useState('');
+  const [updatedPizzaName, setUpdatedPizzaName] = useState('');
 
   const handleCreationClick = () => setIsCreatingPizza(true);
   const handleClosePizzaCreationForm = () => setIsCreatingPizza(false);
@@ -71,9 +71,10 @@ export default function Pizzas() {
   if (isLoading) return <Center><Spinner mt={12} /></Center>
 
   const isDuplicateName = isDupeName(pizzasData, pizzaName);
+  const isDuplicateUpdateName = isDupeName(pizzasData, updatedPizzaName)
 
   const handleNameChangeSubmit = () => {
-    if (updatedPizzaName.trim() !== '' && !isDuplicateName) {
+    if (updatedPizzaName.trim() !== '' && !isDuplicateUpdateName) {
       updatePizzaName(selectedPizza, updatedPizzaName)
       trigger()
       setUpdatedPizzaName('');
@@ -98,7 +99,7 @@ export default function Pizzas() {
             Signature Pies
           </Heading>
           <Box borderRadius="lg" bg="blue.50" overflowY="scroll" height="512px" width="768px" p="8">
-            <Grid templateColumns='repeat(2, 1fr)' gap={4} mx="auto" maxW="xl" >
+            <Grid templateColumns='repeat(2, 1fr)' gap={4} >
               {pizzasData.data.map((pizza, index) => (
                 <Card
                   textAlign="center"
@@ -109,7 +110,7 @@ export default function Pizzas() {
                   <CardHeader >
                     {selectedPizza === pizza.id && isUpdatingName ?
                       <UpdateFormInput
-                        isDuplicate={isDuplicateName}
+                        isDuplicate={isDuplicateUpdateName}
                         submit={handleNameChangeSubmit}
                         pizza={pizza}
                         updatedPizzaName={updatedPizzaName}
