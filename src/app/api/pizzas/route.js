@@ -42,3 +42,17 @@ export const POST = async (req) => {
     return NextResponse.json({ data })
   }
 }
+
+export const PUT = async (req) => {
+  const { id, name, toppings } = await req.json();
+
+  const data = await prisma.pizzas.update({
+    where: { id },
+    data: {
+      ...(name && { name }),
+      ...(toppings && { toppings }),
+    },
+  });
+
+  return NextResponse.json({ data })
+}

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react';
+import { handleEnter } from '../helpers';
 import {
   Heading,
   Button,
@@ -41,7 +42,7 @@ export default function Toppings() {
   const { toppings, isLoading, isError, trigger } = getAllToppings();
 
   if (isError) return <div>failed to load</div>
-  if (isLoading) return <Center><Spinner /></Center>
+  if (isLoading) return <Center><Spinner mt={12} /></Center>
 
   // select topping within list
   const handleToppingClick = (toppingId) => {
@@ -113,11 +114,7 @@ export default function Toppings() {
     setIsUpdatingTopping(false);
   }
 
-  const handleEnter = (event) => {
-    if (event.key === 'Enter') {
-      isAddingTopping ? handleAddToppingSubmit() : handleUpdateTopping();
-    }
-  }
+  const enter = handleEnter(event, isAddingTopping, handleAddToppingSubmit, handleUpdateTopping)
 
   // check for duplicate toppings
   const isDuplicate = toppings.data.some((topping) => (
@@ -154,12 +151,17 @@ export default function Toppings() {
                           placeholder={topping.name}
                           value={updatedToppingName}
                           onChange={handleUpdateToppingNameChange}
-                          onKeyDown={handleEnter}
+                          onKeyDown={enter}
                           bg="gray.50"
                         />
                         <InputRightElement>
                           <ButtonGroup ml="-36px" spacing='4px'>
-                            <Button colorScheme="teal" h='1.75rem' size='xs' onClick={handleUpdateTopping}>
+                            <Button
+                              colorScheme="teal"
+                              h='1.75rem'
+                              size='xs'
+                              isDisabled={!updatedToppingName}
+                              onClick={handleUpdateTopping}>
                               <CheckIcon />
                             </Button>
                             <Button colorScheme="red" h='1.75rem' size='xs' onClick={handleUpdateCancel}>
@@ -189,7 +191,7 @@ export default function Toppings() {
                   placeholder="Enter new topping name"
                   value={addToppingName}
                   onChange={handleToppingNameChange}
-                  onKeyDown={handleEnter}
+                  onKeyDown={enter}
                 />
                 {
                   isDuplicate &&

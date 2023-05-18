@@ -19,9 +19,16 @@ import {
 import { createPizza } from '../queries';
 import { CheckCircleIcon, NotAllowedIcon } from '@chakra-ui/icons';
 
-export const PizzaCreationForm = ({ close, pizzasData, trigger }) => {
+export const PizzaCreationForm = ({
+  close,
+  pizzasData,
+  trigger,
+  isDuplicateName,
+  pizzaName,
+  setPizzaName,
+}) => {
+
   const [selectedToppings, setSelectedToppings] = useState([]);
-  const [pizzaName, setPizzaName] = useState('');
 
   const { toppings, isLoading, isError } = getAllToppings();
   if (isError) return <div>failed to load</div>
@@ -52,8 +59,6 @@ export const PizzaCreationForm = ({ close, pizzasData, trigger }) => {
     });
   };
 
-  // validation to ensure no duplicate pizza names
-  const isDuplicateName = pizzasData.data.some((pizza) => pizza.name.toLowerCase() === pizzaName.toLowerCase());
   // validation to ensure no dudplicate pizza toppings
   const isDuplicateToppings = isToppingsEqual(pizzasData.data, selectedToppings)
   const isAnythingDuplicate = !!(isDuplicateName || isDuplicateToppings)

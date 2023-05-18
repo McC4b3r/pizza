@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 
 const prisma = new PrismaClient()
 
-export const GET = async() => {
+export const GET = async () => {
   const data = await prisma.toppings.findMany()
   return NextResponse.json({ data })
 };
@@ -25,12 +25,12 @@ export const POST = async (req) => {
     return NextResponse.json({ data })
   } else {
     const body = await req.json();
-    const data = await prisma.toppings.create({data: body})
+    const data = await prisma.toppings.create({ data: body })
     return NextResponse.json({ data })
   }
 }
 
-export const PUT = async (req, { params }) => {
+export const PUT = async (req) => {
   const { id, name } = await req.json();
   const data = await prisma.toppings.update({
     where: { id },
