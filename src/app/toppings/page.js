@@ -71,10 +71,11 @@ export default function Toppings() {
     setAddToppingName(event.target.value);
   };
 
-  const isDuplicateToppingName = isDupeName(toppings, addToppingName);
+  const isDuplicateAddToppingName = isDupeName(toppings, addToppingName);
+  const isDuplicateUpdateToppingName = isDupeName(toppings, updatedToppingName);
   // submit new topping
   const handleAddToppingSubmit = () => {
-    if (addToppingName.trim() !== '' && !isDuplicateToppingName) {
+    if (addToppingName.trim() !== '' && !isDuplicateAddToppingName) {
       createTopping(addToppingName);
       // trigger re-validates the swr cache
       trigger();
@@ -102,7 +103,7 @@ export default function Toppings() {
 
   // submit updated topping
   const handleUpdateTopping = () => {
-    if (updatedToppingName.trim() !== '' && !isDuplicateToppingName) {
+    if (updatedToppingName.trim() !== '' && !isDuplicateUpdateToppingName) {
       updateTopping(selectedTopping, updatedToppingName);
       trigger();
       setUpdatedToppingName('');
@@ -112,6 +113,7 @@ export default function Toppings() {
   };
 
   const handleUpdateCancel = () => {
+    setUpdatedToppingName('');
     setIsUpdatingTopping(false);
   };
 
@@ -141,23 +143,30 @@ export default function Toppings() {
             >
               <CardBody>
                 {selectedTopping === topping.id && isUpdatingTopping ? (
-                  <FormControl isInvalid={isDuplicateToppingName}>
+                  <FormControl isInvalid={isDuplicateUpdateToppingName}>
                     <InputGroup>
-                      <Input
-                        focusBorderColor={isDuplicateToppingName ? 'red.500' : 'blue.500'}
-                        placeholder={topping.name}
-                        value={updatedToppingName}
-                        onChange={handleUpdateToppingNameChange}
-                        onKeyDown={handleEnterKey}
-                        bg="gray.50"
-                      />
+                      <VStack flex={1}>
+                        <Input
+                          focusBorderColor={isDuplicateUpdateToppingName ? 'red.500' : 'blue.500'}
+                          placeholder={topping.name}
+                          value={updatedToppingName}
+                          onChange={handleUpdateToppingNameChange}
+                          onKeyDown={handleEnterKey}
+                          bg="gray.50"
+                        />
+                        {isDuplicateUpdateToppingName && (
+                          <FormErrorMessage>
+                            That topping already exists.
+                          </FormErrorMessage>
+                        )}
+                      </VStack>
                       <InputRightElement>
                         <ButtonGroup ml="-36px" spacing="4px">
                           <Button
                             colorScheme="teal"
                             h="1.75rem"
                             size="xs"
-                            isDisabled={!updatedToppingName}
+                            isDisabled={!updatedToppingName || isDuplicateUpdateToppingName}
                             onClick={handleUpdateTopping}
                           >
                             <CheckIcon />
@@ -179,7 +188,7 @@ export default function Toppings() {
       </Box>
       {isAddingTopping && (
         <Box mt={6}>
-          <FormControl isInvalid={isDuplicateToppingName}>
+          <FormControl isInvalid={isDuplicateAddToppingName}>
             <Center>
               <VStack>
                 <Input
@@ -191,7 +200,7 @@ export default function Toppings() {
                   onKeyDown={handleEnterKey}
                 />
                 {
-                  isDuplicateToppingName
+                  isDuplicateAddToppingName
                   && (
                     <FormErrorMessage>
                       That topping already exists
@@ -201,7 +210,7 @@ export default function Toppings() {
               </VStack>
             </Center>
             <Center mt={2}>
-              <Button colorScheme="teal" size="sm" ml={2} onClick={handleAddToppingSubmit} isDisabled={isDuplicateToppingName}>
+              <Button colorScheme="teal" size="sm" ml={2} onClick={handleAddToppingSubmit} isDisabled={isDuplicateAddToppingName}>
                 Ok
               </Button>
               <Button colorScheme="red" size="sm" ml={2} onClick={handleCancelAddTopping}>
