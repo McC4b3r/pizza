@@ -46,7 +46,6 @@ export const PizzaCreationForm = ({
   const handlePizzaName = (e) => setPizzaName(e.target.value);
 
   const isDuplicateName = isDupeName(pizzasData, pizzaName);
-  console.log({ isDuplicateName })
 
   const isDuplicateToppings = isToppingsEqual(pizzasData.data, selectedToppings)
   const isAnythingDuplicate = !!(isDuplicateName || isDuplicateToppings)
@@ -61,7 +60,6 @@ export const PizzaCreationForm = ({
     close();
   }
   const handleEnterKey = (event) => handleEnter(event, isCreating, handlePizzaSubmit)
-  console.log({ pizzaName })
 
   return (
     <>
