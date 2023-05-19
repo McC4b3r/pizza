@@ -3,6 +3,9 @@ import { NextResponse } from 'next/server';
 
 export const GET = async () => {
   const data = await prisma.pizzas.findMany({
+    orderBy: {
+      id: 'asc'
+    },
     include: {
       toppings: true,
     }

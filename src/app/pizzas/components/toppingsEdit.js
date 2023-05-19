@@ -41,12 +41,13 @@ export const ToppingsEdit = ({
             borderRadius="md"
             bg={checkTopping(topping.id) ? 'blue.100' : null}
             _hover={{ cursor: 'pointer', bg: 'blue.100' }}
+            _active={{ bg: 'blue.200' }}
             onClick={() => updatePizzaToppings(topping)}
             key={i}>
             {topping.name}
           </Text>
         )
       })}
-    </Box>
+    </Box >
   )
 }

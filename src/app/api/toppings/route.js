@@ -2,7 +2,11 @@ import { prisma } from '../prismaClient'
 import { NextResponse } from 'next/server';
 
 export const GET = async () => {
-  const data = await prisma.toppings.findMany()
+  const data = await prisma.toppings.findMany({
+    orderBy: {
+      id: 'asc'
+    }
+  })
   await prisma.$disconnect();
   return NextResponse.json({ data })
 };

@@ -21,6 +21,10 @@ import {
   ButtonGroup,
   Text,
   CardFooter,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
 } from '@chakra-ui/react';
 import { ArrowBackIcon, CheckIcon, CloseIcon } from '@chakra-ui/icons';
 import { PizzaCreationForm } from './components/pizzaCreationForm'
@@ -87,6 +91,7 @@ export default function Pizzas() {
   const handleNameChangeSubmit = () => {
     if (updatedPizzaName.trim() !== '' && !isDuplicateUpdateName) {
       updatePizzaName(selectedPizza, updatedPizzaName)
+      setIsUpdatingToppings(false);
       trigger()
       setUpdatedPizzaName('');
       setSelectedPizza('');
@@ -100,6 +105,7 @@ export default function Pizzas() {
     if (!!updatedPizzaToppings.length) {
       updatePizzaToppings(pizzaId, updatedPizzaToppings)
       trigger()
+      setUpdatedPizzaName('');
       setUpdatedPizzaToppings([]);
       setIsUpdatingToppings(false);
     }
@@ -128,7 +134,7 @@ export default function Pizzas() {
           </Heading>
           <Box borderRadius="lg" bg="blue.50" overflowY="scroll" height="570px" width="768px" p="8">
             {!pizzasData.data.length && <DualAlert isPizza />}
-            <Grid templateColumns='repeat(2, 1fr)' gap={4} >
+            <Grid order="initial" templateColumns='repeat(2, 1fr)' gap={4} >
               {pizzasData.data.map((pizza) => (
                 <Card
                   textAlign="center"
@@ -144,7 +150,6 @@ export default function Pizzas() {
                         pizza={pizza}
                         updatedPizzaName={updatedPizzaName}
                         handleChange={handleUpdatePizzaNameChange}
-                        handleEnter={handleEnter}
                         handleCancel={handleUpdateNameCancel}
                       />
                       :
@@ -159,7 +164,7 @@ export default function Pizzas() {
                     <Divider borderColor="gray.300" width="75%" />
                   </Center>
                   <CardBody
-                    pb={4}>
+                    pb={2}>
                     <Flex justifyContent="center">
                       <Box >
                         {selectedPizza === pizza.id && isUpdatingToppings && (
@@ -208,10 +213,14 @@ export default function Pizzas() {
                     </Center>
                   )}
                   <CardFooter>
-                    {isDuplicateToppings && (
-                      <Text>
-                        A pizza with these toppings already exists
-                      </Text>
+                    {(isDuplicateToppings && selectedPizza === pizza.id) && (
+                      <Alert
+                        size="sm"
+                        variant="top-accent"
+                        status='error'>
+                        <AlertIcon />
+                        <AlertTitle>A pizza with those toppings already exists</AlertTitle>
+                      </Alert>
                     )}
                   </CardFooter>
                 </Card>
