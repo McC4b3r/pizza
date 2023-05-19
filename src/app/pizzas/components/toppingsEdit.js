@@ -19,13 +19,15 @@ export const ToppingsEdit = ({
   if (isError) return <div>failed to load</div>
   if (isLoading) return <Center><Spinner mt={12} /></Center>
 
-  const updatePizzaToppings = (toppingId) => {
+  const updatePizzaToppings = (topping) => {
     setUpdatedPizzaToppings(prevToppings => (
-      prevToppings.includes(toppingId)
-        ? prevToppings.filter(id => id !== toppingId)
-        : [...prevToppings, toppingId]
+      prevToppings.some(prevTop => prevTop.id === topping.id)
+        ? prevToppings.filter(prev => prev.id !== topping.id)
+        : [...prevToppings, { id: topping.id }]
     ));
   };
+
+  const checkTopping = (toppingId) => updatedPizzaToppings.some((topping) => topping.id === toppingId)
 
   return (
     <Box>
@@ -37,9 +39,9 @@ export const ToppingsEdit = ({
           <Text
             my={1}
             borderRadius="md"
-            bg={updatedPizzaToppings.includes(topping.id) ? 'blue.100' : null}
+            bg={checkTopping(topping.id) ? 'blue.100' : null}
             _hover={{ cursor: 'pointer', bg: 'blue.100' }}
-            onClick={() => updatePizzaToppings(topping.id)}
+            onClick={() => updatePizzaToppings(topping)}
             key={i}>
             {topping.name}
           </Text>

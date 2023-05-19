@@ -22,7 +22,9 @@ export const UpdateFormInput = ({
   handleCancel,
   submit,
 }) => {
+
   const handleEnterKey = (e) => handleEnter(e, false, null, submit)
+
   return (
     <>
       <FormControl isInvalid={isDuplicate}>

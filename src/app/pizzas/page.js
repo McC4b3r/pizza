@@ -24,7 +24,7 @@ import {
 import { ArrowBackIcon, CheckIcon, CloseIcon } from '@chakra-ui/icons';
 import { PizzaCreationForm } from './components/pizzaCreationForm'
 import { getPizzas, updatePizzaName, updatePizzaToppings, deletePizza } from './queries';
-import { isDupeName } from '../helpers';
+import { isDupeName, isToppingsEqual } from '../helpers';
 import { UpdateFormInput } from './components/updateFormInput'
 import { ToppingsEdit } from './components/toppingsEdit'
 
@@ -91,6 +91,8 @@ export default function Pizzas() {
       setIsUpdatingName(false);
     }
   }
+
+  const isDuplicateToppings = isToppingsEqual(pizzasData.data, updatedPizzaToppings)
 
   const handleToppingsChangeSubmit = (pizzaId) => {
     if (!!updatedPizzaToppings.length) {
@@ -186,8 +188,12 @@ export default function Pizzas() {
                   {selectedPizza === pizza.id && isUpdatingToppings && (
                     <Center>
                       <ButtonGroup my={4}>
-                        <Button size="sm" colorScheme='teal'>
-                          <CheckIcon onClick={() => handleToppingsChangeSubmit(pizza.id)} />
+                        <Button
+                          isDisabled={isDuplicateToppings}
+                          size="sm"
+                          colorScheme='teal'
+                          onClick={() => handleToppingsChangeSubmit(pizza.id)}>
+                          <CheckIcon />
                         </Button >
                         <Button
                           onClick={handleUpdateToppingsCancel}

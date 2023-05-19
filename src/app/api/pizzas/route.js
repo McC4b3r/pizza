@@ -25,7 +25,6 @@ export const POST = async (req) => {
     return NextResponse.json({ data });
   } else {
     const body = await req.json();
-    console.log({ body });
     const data = await prisma.pizzas.create({
       data: {
         name: body.data.name,
@@ -41,7 +40,6 @@ export const POST = async (req) => {
 
 export const PUT = async (req) => {
   const { id, name, toppings } = await req.json();
-  console.log({ toppings })
 
   const data = await prisma.pizzas.update({
     where: { id },
@@ -49,7 +47,7 @@ export const PUT = async (req) => {
       ...(name && { name }),
       ...(toppings && {
         toppings: {
-          set: toppings.map(toppingId => ({ id: toppingId })),
+          set: toppings,
         },
       }),
     },

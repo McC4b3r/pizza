@@ -122,8 +122,6 @@ export default function Toppings() {
   )
   );
 
-  console.log({ TOPPINGSDATA: toppings.data })
-
   return (
     <>
       <Link href='/'>
