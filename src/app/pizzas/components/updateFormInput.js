@@ -24,6 +24,7 @@ export function UpdateFormInput({
   handleChange,
   handleCancel,
   submit,
+  updateRef,
 }) {
   const handleEnterKey = (e) => handleEnter(e, false, null, submit);
 
@@ -39,6 +40,7 @@ export function UpdateFormInput({
             onChange={handleChange}
             onKeyDown={handleEnterKey}
             bg="gray.50"
+            ref={updateRef}
           />
           <FormErrorMessage>
             {provideDuplicateError(isDuplicate)}

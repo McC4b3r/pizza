@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Heading,
   Button,
@@ -41,6 +41,14 @@ export default function Pizzas() {
   const [pizzaName, setPizzaName] = useState('');
   const [updatedPizzaName, setUpdatedPizzaName] = useState('');
   const [updatedPizzaToppings, setUpdatedPizzaToppings] = useState([]);
+  const updateRef = useRef(null);
+  const addRef = useRef(null);
+
+  useEffect(() => {
+    if (isUpdatingName && updateRef.current) {
+      updateRef.current.focus();
+    }
+  }, [isUpdatingName]);
 
   const handleCreationClick = () => setIsCreatingPizza(true);
   const handleClosePizzaCreationForm = () => setIsCreatingPizza(false);
@@ -151,6 +159,7 @@ export default function Pizzas() {
                           updatedPizzaName={updatedPizzaName}
                           handleChange={handleUpdatePizzaNameChange}
                           handleCancel={handleUpdateNameCancel}
+                          updateRef={updateRef}
                         />
                       )
                       : (
@@ -245,6 +254,7 @@ export default function Pizzas() {
             pizzaName={pizzaName}
             setPizzaName={setPizzaName}
             trigger={trigger}
+            addRef={addRef}
           />
         )}
       <HStack mt={10} justify="center">

@@ -1,5 +1,5 @@
 /* eslint-disable import/prefer-default-export */
-import React, { useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   Box,
   Center,
@@ -32,8 +32,16 @@ export function PizzaCreationForm({
   setPizzaName,
 }) {
   const [selectedToppings, setSelectedToppings] = useState([]);
+  const addRef = useRef(null);
 
   const { toppings, isLoading, isError } = useGetAllToppings();
+
+  useEffect(() => {
+    if (!isLoading && addRef.current) {
+      addRef.current.focus();
+    }
+  }, [isLoading]);
+
   if (isError) return <div>failed to load</div>;
   if (isLoading) return <Center><Spinner /></Center>;
 
@@ -96,6 +104,7 @@ export function PizzaCreationForm({
                     mb={2}
                     onKeyDown={handleEnterKey}
                     onChange={handlePizzaName}
+                    ref={addRef}
                   />
                   {isAnythingDuplicate
                     && (
