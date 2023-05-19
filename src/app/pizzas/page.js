@@ -92,7 +92,7 @@ export default function Pizzas() {
     }
   }
 
-  // console.log({ updatedPizzaToppings })
+  console.log({ updatedPizzaToppings })
   const handleToppingsChangeSubmit = (pizzaId) => {
     if (!!updatedPizzaToppings.length) {
       updatePizzaToppings(pizzaId, updatedPizzaToppings)
@@ -112,20 +112,20 @@ export default function Pizzas() {
       <Heading as="h1" size="xl" textAlign="center" mt={10}>
         Pizzas
       </Heading>
-      <Center mt={20} mb={10}>
+      <Center mt={10} >
         <VStack>
           <Heading size="md" textAlign="center" mb={4}>
             Signature Pies
           </Heading>
-          <Box borderRadius="lg" bg="blue.50" overflowY="scroll" height="512px" width="768px" p="8">
+          <Box borderRadius="lg" bg="blue.50" overflowY="scroll" height="570px" width="768px" p="8">
             <Grid templateColumns='repeat(2, 1fr)' gap={4} >
-              {pizzasData.data.map((pizza, index) => (
+              {pizzasData.data.map((pizza) => (
                 <Card
                   textAlign="center"
                   bg={selectedPizza === pizza.id ? 'red.100' : 'red.50'}
                   _hover={{ cursor: isupdatingEither ? null : 'pointer', bg: 'red.100' }}
                   onClick={() => handlePizzaClick(pizza.id)}
-                  key={index}>
+                  key={pizza.id}>
                   <CardHeader >
                     {selectedPizza === pizza.id && isUpdatingName ?
                       <UpdateFormInput

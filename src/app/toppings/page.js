@@ -122,6 +122,8 @@ export default function Toppings() {
   )
   );
 
+  console.log({ TOPPINGSDATA: toppings.data })
+
   return (
     <>
       <Link href='/'>
@@ -134,50 +136,46 @@ export default function Toppings() {
       </Heading>
       <Grid mt={20} templateColumns='repeat(2, 1fr)' gap={4} mx="auto" maxW="xl">
         {toppings.data.map((topping) => (
-          <GridItem>
-            <Card
-              bg={selectedTopping === topping.id ? 'blue.100' : 'blue.50'}
-              _hover={{ cursor: 'pointer', bg: 'blue.100' }}
-              onClick={() => handleToppingClick(topping.id)}>
-              <CardBody>
-                <Text
-                  key={topping.id}
-                >
-                  {selectedTopping === topping.id && isUpdatingTopping ? (
-                    <FormControl isInvalid={isDuplicate}>
-                      <InputGroup>
-                        <Input
-                          focusBorderColor={isDuplicate ? 'red.500' : 'blue.500'}
-                          placeholder={topping.name}
-                          value={updatedToppingName}
-                          onChange={handleUpdateToppingNameChange}
-                          onKeyDown={enter}
-                          bg="gray.50"
-                        />
-                        <InputRightElement>
-                          <ButtonGroup ml="-36px" spacing='4px'>
-                            <Button
-                              colorScheme="teal"
-                              h='1.75rem'
-                              size='xs'
-                              isDisabled={!updatedToppingName}
-                              onClick={handleUpdateTopping}>
-                              <CheckIcon />
-                            </Button>
-                            <Button colorScheme="red" h='1.75rem' size='xs' onClick={handleUpdateCancel}>
-                              <CloseIcon />
-                            </Button>
-                          </ButtonGroup>
-                        </InputRightElement>
-                      </InputGroup>
-                    </FormControl>
-                  ) : (
-                    topping.name
-                  )}
-                </Text>
-              </CardBody>
-            </Card>
-          </GridItem>
+          <Card
+            bg={selectedTopping === topping.id ? 'blue.100' : 'blue.50'}
+            _hover={{ cursor: 'pointer', bg: 'blue.100' }}
+            onClick={() => handleToppingClick(topping.id)}
+            key={topping.id}
+          >
+            <CardBody>
+              {selectedTopping === topping.id && isUpdatingTopping ? (
+                <FormControl isInvalid={isDuplicate}>
+                  <InputGroup>
+                    <Input
+                      focusBorderColor={isDuplicate ? 'red.500' : 'blue.500'}
+                      placeholder={topping.name}
+                      value={updatedToppingName}
+                      onChange={handleUpdateToppingNameChange}
+                      onKeyDown={enter}
+                      bg="gray.50"
+                    />
+                    <InputRightElement>
+                      <ButtonGroup ml="-36px" spacing='4px'>
+                        <Button
+                          colorScheme="teal"
+                          h='1.75rem'
+                          size='xs'
+                          isDisabled={!updatedToppingName}
+                          onClick={handleUpdateTopping}>
+                          <CheckIcon />
+                        </Button>
+                        <Button colorScheme="red" h='1.75rem' size='xs' onClick={handleUpdateCancel}>
+                          <CloseIcon />
+                        </Button>
+                      </ButtonGroup>
+                    </InputRightElement>
+                  </InputGroup>
+                </FormControl>
+              ) : (
+                topping.name
+              )}
+            </CardBody>
+          </Card>
         ))}
       </Grid>
       {isAddingTopping && (

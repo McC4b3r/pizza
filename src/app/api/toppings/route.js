@@ -1,10 +1,9 @@
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '../prismaClient'
 import { NextResponse } from 'next/server';
-
-const prisma = new PrismaClient()
 
 export const GET = async () => {
   const data = await prisma.toppings.findMany()
+  await prisma.$disconnect();
   return NextResponse.json({ data })
 };
 
@@ -22,10 +21,12 @@ export const POST = async (req) => {
         }
       }
     })
+    await prisma.$disconnect();
     return NextResponse.json({ data })
   } else {
     const body = await req.json();
     const data = await prisma.toppings.create({ data: body })
+    await prisma.$disconnect();
     return NextResponse.json({ data })
   }
 }
@@ -36,5 +37,6 @@ export const PUT = async (req) => {
     where: { id },
     data: { name },
   })
+  await prisma.$disconnect();
   return NextResponse.json({ data })
 }
