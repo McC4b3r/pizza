@@ -17,10 +17,11 @@ import {
   VStack
 } from '@chakra-ui/react';
 import { createPizza } from '../queries';
-import { isToppingsEqual, isDupeName, provideDuplicateError } from '../../helpers';
+import { isToppingsEqual, isDupeName, provideDuplicateError, handleEnter } from '../../helpers';
 import { CheckCircleIcon, NotAllowedIcon } from '@chakra-ui/icons';
 
 export const PizzaCreationForm = ({
+  isCreating,
   close,
   pizzasData,
   trigger,
@@ -56,18 +57,21 @@ export const PizzaCreationForm = ({
       toppings: selectedToppings
     });
     trigger();
+    setPizzaName('');
     close();
   }
+  const handleEnterKey = (event) => handleEnter(event, isCreating, handlePizzaSubmit)
+  console.log({ pizzaName })
 
   return (
     <>
       <Center>
-        <Box w="lg" borderWidth="1px" borderRadius="lg" padding={4}>
+        <Box mt={8} w="lg" borderWidth="1px" borderRadius="lg" padding={4}>
           <Grid templateColumns='repeat(2, 1fr)' gap={24}>
             <GridItem>
               <Box textAlign="center" mb={4}>
                 <Heading size="md" mb={4} >
-                  Select Toppings
+                  Available Toppings
                 </Heading>
                 {toppings.data.map((topping) => (
                   <Box onClick={() => handleToppingClick(topping.id)}
@@ -86,9 +90,13 @@ export const PizzaCreationForm = ({
               <FormControl isInvalid={isAnythingDuplicate}>
                 <InputGroup>
                   <VStack>
-                    <Input placeholder="Pizza name" mb={2} onChange={handlePizzaName} />
+                    <Input
+                      placeholder="Pizza name"
+                      mb={2}
+                      onKeyDown={handleEnterKey}
+                      onChange={handlePizzaName} />
                     {isAnythingDuplicate &&
-                      <FormErrorMessage>
+                      <FormErrorMessage textAlign="center">
                         {provideDuplicateError(isDuplicateName, isDuplicateToppings)}
                       </FormErrorMessage>}
                   </VStack>
@@ -103,11 +111,10 @@ export const PizzaCreationForm = ({
               </FormControl>
             </GridItem>
           </Grid>
-
           <HStack spacing={4} justifyContent="center" >
             <Button
               onClick={handlePizzaSubmit}
-              isDisabled={isDuplicateName}
+              isDisabled={isDuplicateName || !selectedToppings.length || isDuplicateToppings}
               colorScheme="teal">
               OK
             </Button>

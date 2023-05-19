@@ -9,7 +9,7 @@ const getAll = route => axios.get(route).then(res => res.data)
 export const getAllToppings = () => {
   const { data, error, isLoading } = useSWR(ROUTE_NAME, getAll)
   const { trigger } = useSWRMutation(ROUTE_NAME, getAll);
-  
+
   return {
     toppings: data,
     isLoading,
@@ -19,8 +19,9 @@ export const getAllToppings = () => {
 };
 
 export const createTopping = (name) => (
-  axios.post(ROUTE_NAME, {name})
-  .then(res => res.data));
+  axios.post(ROUTE_NAME, { name })
+    .then(res => res.data))
+  .catch(e => console.error(e));
 
 export const deleteTopping = async (ids) => {
   axios({
@@ -41,6 +42,6 @@ export const updateTopping = (id, updatedName) => {
     id,
     name: updatedName
   })
-  .then(res => res.data)
-  .catch(e => console.log(e))
+    .then(res => res.data)
+    .catch(e => console.log(e))
 }

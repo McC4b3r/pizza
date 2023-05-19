@@ -19,7 +19,6 @@ import {
   Flex,
   Spacer,
   ButtonGroup,
-  AbsoluteCenter,
   Text,
   CardFooter,
 } from '@chakra-ui/react';
@@ -29,6 +28,7 @@ import { getPizzas, updatePizzaName, updatePizzaToppings, deletePizza } from './
 import { isDupeName, isToppingsEqual } from '../helpers';
 import { UpdateFormInput } from './components/updateFormInput'
 import { ToppingsEdit } from './components/toppingsEdit'
+import { DualAlert } from '../common/index'
 
 export default function Pizzas() {
   const [isCreatingPizza, setIsCreatingPizza] = useState(false);
@@ -110,7 +110,7 @@ export default function Pizzas() {
     setSelectedPizza('');
     trigger();
   }
-
+  console.log({ BRUH: pizzasData })
   return (
     <>
       <Link href='/'>
@@ -127,6 +127,7 @@ export default function Pizzas() {
             Signature Pies
           </Heading>
           <Box borderRadius="lg" bg="blue.50" overflowY="scroll" height="570px" width="768px" p="8">
+            {!pizzasData.data.length && <DualAlert isPizza />}
             <Grid templateColumns='repeat(2, 1fr)' gap={4} >
               {pizzasData.data.map((pizza) => (
                 <Card
@@ -221,6 +222,7 @@ export default function Pizzas() {
       </Center>
       {isCreatingPizza &&
         <PizzaCreationForm
+          isCreating={isCreatingPizza}
           pizzasData={pizzasData}
           close={handleClosePizzaCreationForm}
           pizzaName={pizzaName}
