@@ -1,7 +1,7 @@
-'use client'
+'use client';
 
 import { Heading, HStack, Button } from '@chakra-ui/react';
-import { Link } from '@chakra-ui/next-js'
+import { Link } from '@chakra-ui/next-js';
 
 export default function Home() {
   return (
@@ -22,5 +22,5 @@ export default function Home() {
         </Link>
       </HStack>
     </div>
-  )
+  );
 }

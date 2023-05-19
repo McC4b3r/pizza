@@ -4,10 +4,10 @@ import axios from 'axios';
 
 const ROUTE_NAME = '/api/toppings';
 
-const getAll = route => axios.get(route).then(res => res.data)
+const getAll = (route) => axios.get(route).then((res) => res.data);
 
 export const getAllToppings = () => {
-  const { data, error, isLoading } = useSWR(ROUTE_NAME, getAll)
+  const { data, error, isLoading } = useSWR(ROUTE_NAME, getAll);
   const { trigger } = useSWRMutation(ROUTE_NAME, getAll);
 
   return {
@@ -15,13 +15,13 @@ export const getAllToppings = () => {
     isLoading,
     isError: error,
     trigger,
-  }
+  };
 };
 
 export const createTopping = (name) => (
   axios.post(ROUTE_NAME, { name })
-    .then(res => res.data))
-  .catch(e => console.error(e));
+    .then((res) => res.data))
+  .catch((e) => console.error(e));
 
 export const deleteTopping = async (ids) => {
   axios({
@@ -29,19 +29,19 @@ export const deleteTopping = async (ids) => {
     url: ROUTE_NAME,
     headers: {
       'x-http-method-override': 'DELETE',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     },
-    data: { ids }
+    data: { ids },
   })
-    .then(res => console.log('Topping Deleted'))
-    .catch(e => console.log(e))
-}
+    .then((res) => console.log('Topping Deleted'))
+    .catch((e) => console.log(e));
+};
 
 export const updateTopping = (id, updatedName) => {
   axios.put(ROUTE_NAME, {
     id,
-    name: updatedName
+    name: updatedName,
   })
-    .then(res => res.data)
-    .catch(e => console.log(e))
-}
+    .then((res) => res.data)
+    .catch((e) => console.log(e));
+};

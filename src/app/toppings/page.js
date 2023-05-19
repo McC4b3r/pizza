@@ -1,7 +1,6 @@
-'use client'
+'use client';
 
 import { useState } from 'react';
-import { handleEnter, isDupeName } from '../helpers';
 import {
   Heading,
   Button,
@@ -21,13 +20,14 @@ import {
   CardBody,
   Grid,
 } from '@chakra-ui/react';
+import { ArrowBackIcon, CheckIcon, CloseIcon } from '@chakra-ui/icons';
+import { handleEnter, isDupeName } from '../helpers';
 import {
   createTopping,
   getAllToppings,
   updateTopping,
   deleteTopping,
-} from './queries'
-import { ArrowBackIcon, CheckIcon, CloseIcon } from '@chakra-ui/icons';
+} from './queries';
 import { DualAlert } from '../common';
 
 export default function Toppings() {
@@ -38,23 +38,25 @@ export default function Toppings() {
   const [updatedToppingName, setUpdatedToppingName] = useState('');
 
   // query
-  const { toppings, isLoading, isError, trigger } = getAllToppings();
+  const {
+    toppings, isLoading, isError, trigger,
+  } = getAllToppings();
 
-  if (isError) return <div>failed to load</div>
-  if (isLoading) return <Center><Spinner mt={12} /></Center>
+  if (isError) return <div>failed to load</div>;
+  if (isLoading) return <Center><Spinner mt={12} /></Center>;
 
   // select topping within list
   const handleToppingClick = (toppingId) => {
     if (!isUpdatingTopping) {
       if (selectedTopping === toppingId) {
-        setSelectedTopping('')
+        setSelectedTopping('');
       } else {
         setSelectedTopping(toppingId);
       }
     }
   };
 
-  const isAddButtonDisabled = !!selectedTopping
+  const isAddButtonDisabled = !!selectedTopping;
 
   const handleAddButtonClick = (event) => {
     setIsAddingTopping(true);
@@ -62,13 +64,12 @@ export default function Toppings() {
 
   const handleCancelAddTopping = () => {
     setIsAddingTopping(false);
-  }
+  };
 
   // gather name of new topping
   const handleToppingNameChange = (event) => {
     setAddToppingName(event.target.value);
   };
-
 
   // submit new topping
   const handleAddToppingSubmit = () => {
@@ -96,13 +97,13 @@ export default function Toppings() {
     deleteTopping(selectedTopping);
     trigger();
     setSelectedTopping('');
-  }
+  };
 
   // submit updated topping
   const handleUpdateTopping = () => {
     if (updatedToppingName.trim() !== '' && !isDuplicateToppingName) {
-      updateTopping(selectedTopping, updatedToppingName)
-      trigger()
+      updateTopping(selectedTopping, updatedToppingName);
+      trigger();
       setUpdatedToppingName('');
       setSelectedTopping('');
       setIsUpdatingTopping(false);
@@ -111,17 +112,17 @@ export default function Toppings() {
 
   const handleUpdateCancel = () => {
     setIsUpdatingTopping(false);
-  }
+  };
 
-  const handleEnterKey = (event) => handleEnter(event, isAddingTopping, handleAddToppingSubmit, handleUpdateTopping)
+  const handleEnterKey = (event) => handleEnter(event, isAddingTopping, handleAddToppingSubmit, handleUpdateTopping);
 
   // check for duplicate toppings
   const isDuplicateToppingName = isDupeName(toppings, addToppingName);
 
   return (
     <>
-      <Link href='/'>
-        <Button colorScheme='teal' leftIcon={<ArrowBackIcon />} mt={2} ml={2} size="sm" variant="ghost" >
+      <Link href="/">
+        <Button colorScheme="teal" leftIcon={<ArrowBackIcon />} mt={2} ml={2} size="sm" variant="ghost">
           Home
         </Button>
       </Link>
@@ -130,7 +131,7 @@ export default function Toppings() {
       </Heading>
       <Box>
         {!toppings.data.length && <DualAlert isTopping />}
-        <Grid mt={20} templateColumns='repeat(2, 1fr)' gap={4} mx="auto" maxW="xl">
+        <Grid mt={20} templateColumns="repeat(2, 1fr)" gap={4} mx="auto" maxW="xl">
           {toppings.data.map((topping) => (
             <Card
               bg={selectedTopping === topping.id ? 'blue.100' : 'blue.50'}
@@ -151,16 +152,17 @@ export default function Toppings() {
                         bg="gray.50"
                       />
                       <InputRightElement>
-                        <ButtonGroup ml="-36px" spacing='4px'>
+                        <ButtonGroup ml="-36px" spacing="4px">
                           <Button
                             colorScheme="teal"
-                            h='1.75rem'
-                            size='xs'
+                            h="1.75rem"
+                            size="xs"
                             isDisabled={!updatedToppingName}
-                            onClick={handleUpdateTopping}>
+                            onClick={handleUpdateTopping}
+                          >
                             <CheckIcon />
                           </Button>
-                          <Button colorScheme="red" h='1.75rem' size='xs' onClick={handleUpdateCancel}>
+                          <Button colorScheme="red" h="1.75rem" size="xs" onClick={handleUpdateCancel}>
                             <CloseIcon />
                           </Button>
                         </ButtonGroup>
@@ -189,10 +191,12 @@ export default function Toppings() {
                   onKeyDown={handleEnterKey}
                 />
                 {
-                  isDuplicateToppingName &&
+                  isDuplicateToppingName
+                  && (
                   <FormErrorMessage>
                     That topping already exists
                   </FormErrorMessage>
+                  )
                 }
               </VStack>
             </Center>
