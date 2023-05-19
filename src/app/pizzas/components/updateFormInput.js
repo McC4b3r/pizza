@@ -47,7 +47,7 @@ export const UpdateFormInput = ({
                 colorScheme="teal"
                 h='1.75rem'
                 size='xs'
-                isDisabled={!updatedPizzaName}
+                isDisabled={!updatedPizzaName || isDuplicate}
                 onClick={submit}>
                 <CheckIcon />
               </Button>
