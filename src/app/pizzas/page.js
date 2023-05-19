@@ -23,7 +23,7 @@ import {
 } from '@chakra-ui/react';
 import { ArrowBackIcon, CheckIcon, CloseIcon } from '@chakra-ui/icons';
 import { PizzaCreationForm } from './components/pizzaCreationForm'
-import { getPizzas, updatePizzaName, updatePizzaToppings } from './queries';
+import { getPizzas, updatePizzaName, updatePizzaToppings, deletePizza } from './queries';
 import { isDupeName } from '../helpers';
 import { UpdateFormInput } from './components/updateFormInput'
 import { ToppingsEdit } from './components/toppingsEdit'
@@ -92,7 +92,6 @@ export default function Pizzas() {
     }
   }
 
-  console.log({ updatedPizzaToppings })
   const handleToppingsChangeSubmit = (pizzaId) => {
     if (!!updatedPizzaToppings.length) {
       updatePizzaToppings(pizzaId, updatedPizzaToppings)
@@ -100,6 +99,12 @@ export default function Pizzas() {
       setUpdatedPizzaToppings([]);
       setIsUpdatingToppings(false);
     }
+  }
+
+  const handleDeletePizza = (pizzaId) => {
+    deletePizza(pizzaId);
+    setSelectedPizza('');
+    trigger();
   }
 
   return (
@@ -218,7 +223,8 @@ export default function Pizzas() {
           colorScheme="red"
           size="lg"
           mr={2}
-          isDisabled={!selectedPizza}>
+          isDisabled={!selectedPizza}
+          onClick={() => handleDeletePizza(selectedPizza)}>
           Delete
         </Button>
         <Button

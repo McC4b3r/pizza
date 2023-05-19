@@ -12,8 +12,16 @@ export const GET = async () => {
 };
 
 export const POST = async (req) => {
+  // see src/app/api/toppings/route.js:11
   const isDelete = req.headers.get('x-http-method-override') === 'DELETE';
   if (isDelete) {
+    const { id } = await req.json()
+    const data = await prisma.pizzas.delete({
+      where: {
+        id
+      }
+    })
+    await prisma.$disconnect();
     return NextResponse.json({ data });
   } else {
     const body = await req.json();

@@ -44,3 +44,17 @@ export const updatePizzaToppings = (id, updatedPizzaToppings) => {
     .then(res => res.data)
     .catch(e => console.log(e))
 }
+
+export const deletePizza = (id) => {
+  axios({
+    method: 'post',
+    url: ROUTE_NAME,
+    headers: {
+      'x-http-method-override': 'DELETE',
+      'Content-Type': 'application/json'
+    },
+    data: { id }
+  })
+    .then(res => res.data)
+    .catch(e => console.log(e))
+}
