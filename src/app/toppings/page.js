@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Heading,
   Button,
@@ -36,6 +36,17 @@ export default function Toppings() {
   const [isUpdatingTopping, setIsUpdatingTopping] = useState(false);
   const [addToppingName, setAddToppingName] = useState('');
   const [updatedToppingName, setUpdatedToppingName] = useState('');
+  const updateRef = useRef(null);
+  const addRef = useRef(null);
+
+  useEffect(() => {
+    if (isUpdatingTopping && updateRef.current) {
+      updateRef.current.focus();
+    }
+    if (isAddingTopping && addRef.current) {
+      addRef.current.focus();
+    }
+  }, [isUpdatingTopping, isAddingTopping]);
 
   // query
   const {
@@ -152,6 +163,7 @@ export default function Toppings() {
                           value={updatedToppingName}
                           onChange={handleUpdateToppingNameChange}
                           onKeyDown={handleEnterKey}
+                          ref={updateRef}
                           bg="gray.50"
                         />
                         {isDuplicateUpdateToppingName && (
@@ -198,6 +210,7 @@ export default function Toppings() {
                   value={addToppingName}
                   onChange={handleToppingNameChange}
                   onKeyDown={handleEnterKey}
+                  ref={addRef}
                 />
                 {
                   isDuplicateAddToppingName
