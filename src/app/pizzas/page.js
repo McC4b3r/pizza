@@ -110,7 +110,7 @@ export default function Pizzas() {
     setSelectedPizza('');
     trigger();
   }
-  console.log({ BRUH: pizzasData })
+
   return (
     <>
       <Link href='/'>
