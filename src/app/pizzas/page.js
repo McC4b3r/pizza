@@ -227,15 +227,16 @@ export default function Pizzas() {
                       </ButtonGroup>
                     </Center>
                   )}
-                  <CardFooter>
+                  <CardFooter padding={0}>
                     {(isDuplicateToppings && selectedPizza === pizza.id) && (
                       <Alert
+                        borderRadius="md"
                         size="sm"
-                        variant="top-accent"
+                        variant="solid"
                         status="error"
                       >
-                        <AlertIcon />
-                        <AlertTitle>A pizza with those toppings already exists</AlertTitle>
+                        <AlertIcon size="sm" />
+                        <AlertTitle fontSize="xs">A pizza with those toppings already exists</AlertTitle>
                       </Alert>
                     )}
                   </CardFooter>
