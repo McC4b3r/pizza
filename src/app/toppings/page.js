@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import {
   Heading,
   Button,
@@ -24,7 +24,7 @@ import { ArrowBackIcon, CheckIcon, CloseIcon } from '@chakra-ui/icons';
 import { handleEnter, isDupeName } from '../helpers';
 import {
   createTopping,
-  getAllToppings,
+  useGetAllToppings,
   updateTopping,
   deleteTopping,
 } from './queries';
@@ -40,7 +40,7 @@ export default function Toppings() {
   // query
   const {
     toppings, isLoading, isError, trigger,
-  } = getAllToppings();
+  } = useGetAllToppings();
 
   if (isError) return <div>failed to load</div>;
   if (isLoading) return <Center><Spinner mt={12} /></Center>;
@@ -58,7 +58,7 @@ export default function Toppings() {
 
   const isAddButtonDisabled = !!selectedTopping;
 
-  const handleAddButtonClick = (event) => {
+  const handleAddButtonClick = () => {
     setIsAddingTopping(true);
   };
 
@@ -71,6 +71,7 @@ export default function Toppings() {
     setAddToppingName(event.target.value);
   };
 
+  const isDuplicateToppingName = isDupeName(toppings, addToppingName);
   // submit new topping
   const handleAddToppingSubmit = () => {
     if (addToppingName.trim() !== '' && !isDuplicateToppingName) {
@@ -114,10 +115,9 @@ export default function Toppings() {
     setIsUpdatingTopping(false);
   };
 
-  const handleEnterKey = (event) => handleEnter(event, isAddingTopping, handleAddToppingSubmit, handleUpdateTopping);
-
-  // check for duplicate toppings
-  const isDuplicateToppingName = isDupeName(toppings, addToppingName);
+  const handleEnterKey = (event) => (
+    handleEnter(event, isAddingTopping, handleAddToppingSubmit, handleUpdateTopping)
+  );
 
   return (
     <>
@@ -193,9 +193,9 @@ export default function Toppings() {
                 {
                   isDuplicateToppingName
                   && (
-                  <FormErrorMessage>
-                    That topping already exists
-                  </FormErrorMessage>
+                    <FormErrorMessage>
+                      That topping already exists
+                    </FormErrorMessage>
                   )
                 }
               </VStack>

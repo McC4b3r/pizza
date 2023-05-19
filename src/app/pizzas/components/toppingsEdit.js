@@ -1,4 +1,5 @@
-import { useState } from 'react';
+/* eslint-disable import/prefer-default-export */
+import React from 'react';
 import {
   Box,
   Center,
@@ -6,16 +7,15 @@ import {
   Text,
   Heading,
 } from '@chakra-ui/react';
-import { getAllToppings } from '../../toppings/queries';
-import { updatePizzaToppings } from '../queries';
+import { useGetAllToppings } from '../../toppings/queries';
 
 export function ToppingsEdit({
   updatedPizzaToppings,
   setUpdatedPizzaToppings,
 }) {
   const {
-    toppings, isLoading, isError, trigger,
-  } = getAllToppings();
+    toppings, isLoading, isError,
+  } = useGetAllToppings();
 
   if (isError) return <div>failed to load</div>;
   if (isLoading) return <Center><Spinner mt={12} /></Center>;
@@ -28,7 +28,8 @@ export function ToppingsEdit({
     ));
   };
 
-  const checkTopping = (toppingId) => updatedPizzaToppings.some((topping) => topping.id === toppingId);
+  const checkTopping = (toppingId) => (
+    updatedPizzaToppings.some((topping) => topping.id === toppingId));
 
   return (
     <Box>

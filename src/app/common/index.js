@@ -1,10 +1,11 @@
+/* eslint-disable import/prefer-default-export */
+import React from 'react';
 import {
   Alert,
   AlertTitle,
   AlertDescription,
   Text,
   AlertIcon,
-  AbsoluteCenter,
 } from '@chakra-ui/react';
 
 export function DualAlert({
@@ -25,12 +26,12 @@ export function DualAlert({
     >
       <AlertIcon boxSize="40px" mr={0} />
       <AlertTitle mt={4} mb={1} fontSize="lg">
-        {isTopping && <Text>No Toppings Yet!</Text>
-        || isPizza && <Text>No Pizzas Yet!</Text>}
+        {(isTopping && <Text>No Toppings Yet!</Text>)
+          || (isPizza && <Text>No Pizzas Yet!</Text>)}
       </AlertTitle>
       <AlertDescription maxWidth="sm">
-        {isTopping && (<Text>Click the Add button to add some Toppings</Text>)
-        || isPizza && (<Text>Click the Create button to make a master piece</Text>)}
+        {(isTopping && <Text>Click the Add button to add some Toppings</Text>)
+          || (isPizza && <Text>Click the Create button to make a master piece</Text>)}
       </AlertDescription>
     </Alert>
   );

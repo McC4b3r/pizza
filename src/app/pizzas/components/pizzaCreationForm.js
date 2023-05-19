@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 import React, { useState } from 'react';
 import {
   Box,
@@ -16,7 +17,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { CheckCircleIcon, NotAllowedIcon } from '@chakra-ui/icons';
-import { getAllToppings } from '../../toppings/queries';
+import { useGetAllToppings } from '../../toppings/queries';
 import { createPizza } from '../queries';
 import {
   isToppingsEqual, isDupeName, provideDuplicateError, handleEnter,
@@ -32,7 +33,7 @@ export function PizzaCreationForm({
 }) {
   const [selectedToppings, setSelectedToppings] = useState([]);
 
-  const { toppings, isLoading, isError } = getAllToppings();
+  const { toppings, isLoading, isError } = useGetAllToppings();
   if (isError) return <div>failed to load</div>;
   if (isLoading) return <Center><Spinner /></Center>;
 
@@ -97,19 +98,19 @@ export function PizzaCreationForm({
                     onChange={handlePizzaName}
                   />
                   {isAnythingDuplicate
-                      && (
+                    && (
                       <FormErrorMessage textAlign="center">
                         {provideDuplicateError(isDuplicateName, isDuplicateToppings)}
                       </FormErrorMessage>
-                      )}
+                    )}
                 </VStack>
                 {pizzaName
                   ? (
                     <InputRightElement>
-                        {isAnythingDuplicate
-                          ? <NotAllowedIcon color="red.500" />
-                          : <CheckCircleIcon color="green.500" />}
-                      </InputRightElement>
+                      {isAnythingDuplicate
+                        ? <NotAllowedIcon color="red.500" />
+                        : <CheckCircleIcon color="green.500" />}
+                    </InputRightElement>
                   )
                   : null}
               </InputGroup>

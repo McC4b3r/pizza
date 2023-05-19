@@ -6,7 +6,7 @@ const ROUTE_NAME = '/api/pizzas';
 
 const getAll = (route) => axios.get(route).then((res) => res.data);
 
-export const getPizzas = () => {
+export const useGetPizzas = () => {
   const {
     data,
     error,

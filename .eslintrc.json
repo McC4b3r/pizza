@@ -3,5 +3,16 @@
     "next/core-web-vitals",
     "airbnb",
     "airbnb/hooks"
-  ]
+  ],
+  "rules": {
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [
+          ".js",
+          ".jsx"
+        ]
+      }
+    ]
+  }
 }

@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { Heading, HStack, Button } from '@chakra-ui/react';
 import { Link } from '@chakra-ui/next-js';
 

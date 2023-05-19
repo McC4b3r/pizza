@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import {
   Heading,
   Button,
@@ -18,18 +18,16 @@ import {
   Flex,
   Spacer,
   ButtonGroup,
-  Text,
   CardFooter,
   Alert,
   AlertIcon,
   AlertTitle,
-  AlertDescription,
 } from '@chakra-ui/react';
 import { ArrowBackIcon, CheckIcon, CloseIcon } from '@chakra-ui/icons';
-import { handleEnter, isDupeName, isToppingsEqual } from '../helpers';
+import { isDupeName, isToppingsEqual } from '../helpers';
 import { PizzaCreationForm } from './components/pizzaCreationForm';
 import {
-  getPizzas, updatePizzaName, updatePizzaToppings, deletePizza,
+  useGetPizzas, updatePizzaName, updatePizzaToppings, deletePizza,
 } from './queries';
 import { UpdateFormInput } from './components/updateFormInput';
 import { ToppingsEdit } from './components/toppingsEdit';
@@ -81,7 +79,7 @@ export default function Pizzas() {
     isLoading,
     error,
     trigger,
-  } = getPizzas();
+  } = useGetPizzas();
 
   if (error) return <div>failed to load</div>;
   if (isLoading) return <Center><Spinner mt={12} /></Center>;
@@ -240,14 +238,14 @@ export default function Pizzas() {
       </Center>
       {isCreatingPizza
         && (
-        <PizzaCreationForm
-          isCreating={isCreatingPizza}
-          pizzasData={pizzasData}
-          close={handleClosePizzaCreationForm}
-          pizzaName={pizzaName}
-          setPizzaName={setPizzaName}
-          trigger={trigger}
-        />
+          <PizzaCreationForm
+            isCreating={isCreatingPizza}
+            pizzasData={pizzasData}
+            close={handleClosePizzaCreationForm}
+            pizzaName={pizzaName}
+            setPizzaName={setPizzaName}
+            trigger={trigger}
+          />
         )}
       <HStack mt={10} justify="center">
         <Button

@@ -6,7 +6,7 @@ const ROUTE_NAME = '/api/toppings';
 
 const getAll = (route) => axios.get(route).then((res) => res.data);
 
-export const getAllToppings = () => {
+export const useGetAllToppings = () => {
   const { data, error, isLoading } = useSWR(ROUTE_NAME, getAll);
   const { trigger } = useSWRMutation(ROUTE_NAME, getAll);
 
@@ -33,7 +33,7 @@ export const deleteTopping = async (ids) => {
     },
     data: { ids },
   })
-    .then((res) => console.log('Topping Deleted'))
+    .then((res) => res.data)
     .catch((e) => console.log(e));
 };
 
