@@ -4,20 +4,21 @@ export const handleEnter = (event, isAdding, add, update) => {
   }
 }
 
-export const isToppingsEqual = (existing, selected) => {
-  return existing.some((pizza) => {
-    if (pizza.toppings.length !== selected.length) {
-      return false;
-    }
-    return pizza.toppings.every((topping, i) => {
-      return topping.id === selected[i]?.id;
-    });
-  });
+export const isToppingsEqual = (existing, current) => {
+  const currentIds = current.map(({ id }) => id);
+
+  return existing.some(({ toppings }) =>
+    toppings.some(({ id }) => currentIds.includes(id))
+  );
 };
 
-export const isDupeName = (pizzas, name) =>
-  pizzas.data.some((pizza) =>
-    pizza.name.toLowerCase().replace(/[^A-Za-z0-9]/g, '') === name.toLowerCase().replace(/[^A-Za-z0-9]/g, ''));
+
+export const isDupeName = (pizzas, name) => {
+  console.log({ pizzas, name })
+  return (
+    pizzas.data.some((pizza) =>
+      pizza.name.toLowerCase().replace(/[^A-Za-z0-9]/g, '') === name.toLowerCase().replace(/[^A-Za-z0-9]/g, '')));
+}
 
 export const provideDuplicateError = (nameCheck, toppingsCheck) => {
   return nameCheck && toppingsCheck

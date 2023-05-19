@@ -20,6 +20,8 @@ import {
   Spacer,
   ButtonGroup,
   AbsoluteCenter,
+  Text,
+  CardFooter,
 } from '@chakra-ui/react';
 import { ArrowBackIcon, CheckIcon, CloseIcon } from '@chakra-ui/icons';
 import { PizzaCreationForm } from './components/pizzaCreationForm'
@@ -204,6 +206,13 @@ export default function Pizzas() {
                       </ButtonGroup>
                     </Center>
                   )}
+                  <CardFooter>
+                    {isDuplicateToppings && (
+                      <Text>
+                        A pizza with these toppings already exists
+                      </Text>
+                    )}
+                  </CardFooter>
                 </Card>
               ))}
             </Grid>

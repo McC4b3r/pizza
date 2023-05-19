@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react';
-import { handleEnter } from '../helpers';
+import { handleEnter, isDupeName } from '../helpers';
 import {
   Heading,
   Button,
@@ -19,9 +19,7 @@ import {
   ButtonGroup,
   Card,
   CardBody,
-  Text,
   Grid,
-  GridItem
 } from '@chakra-ui/react';
 import {
   createTopping,
@@ -73,7 +71,7 @@ export default function Toppings() {
 
   // submit new topping
   const handleAddToppingSubmit = () => {
-    if (addToppingName.trim() !== '' && !isDuplicate) {
+    if (addToppingName.trim() !== '' && !isDuplicateToppingName) {
       createTopping(addToppingName);
       // trigger re-validates the swr cache
       trigger();
@@ -101,7 +99,7 @@ export default function Toppings() {
 
   // submit updated topping
   const handleUpdateTopping = () => {
-    if (updatedToppingName.trim() !== '' && !isDuplicate) {
+    if (updatedToppingName.trim() !== '' && !isDuplicateToppingName) {
       updateTopping(selectedTopping, updatedToppingName)
       trigger()
       setUpdatedToppingName('');
@@ -114,13 +112,10 @@ export default function Toppings() {
     setIsUpdatingTopping(false);
   }
 
-  const enter = handleEnter(event, isAddingTopping, handleAddToppingSubmit, handleUpdateTopping)
+  const handleEnterKey = (event) => handleEnter(event, isAddingTopping, handleAddToppingSubmit, handleUpdateTopping)
 
   // check for duplicate toppings
-  const isDuplicate = toppings.data.some((topping) => (
-    topping.name.toLowerCase() === addToppingName.toLowerCase() || topping.name.toLowerCase() === updatedToppingName.toLowerCase()
-  )
-  );
+  const isDuplicateToppingName = isDupeName(toppings, addToppingName);
 
   return (
     <>
@@ -142,14 +137,14 @@ export default function Toppings() {
           >
             <CardBody>
               {selectedTopping === topping.id && isUpdatingTopping ? (
-                <FormControl isInvalid={isDuplicate}>
+                <FormControl isInvalid={isDuplicateToppingName}>
                   <InputGroup>
                     <Input
-                      focusBorderColor={isDuplicate ? 'red.500' : 'blue.500'}
+                      focusBorderColor={isDuplicateToppingName ? 'red.500' : 'blue.500'}
                       placeholder={topping.name}
                       value={updatedToppingName}
                       onChange={handleUpdateToppingNameChange}
-                      onKeyDown={enter}
+                      onKeyDown={handleEnterKey}
                       bg="gray.50"
                     />
                     <InputRightElement>
@@ -178,7 +173,7 @@ export default function Toppings() {
       </Grid>
       {isAddingTopping && (
         <Box mt={6}>
-          <FormControl isInvalid={isDuplicate}>
+          <FormControl isInvalid={isDuplicateToppingName}>
             <Center>
               <VStack>
                 <Input
@@ -187,10 +182,10 @@ export default function Toppings() {
                   placeholder="Enter new topping name"
                   value={addToppingName}
                   onChange={handleToppingNameChange}
-                  onKeyDown={enter}
+                  onKeyDown={handleEnterKey}
                 />
                 {
-                  isDuplicate &&
+                  isDuplicateToppingName &&
                   <FormErrorMessage>
                     That topping already exists
                   </FormErrorMessage>
@@ -198,7 +193,7 @@ export default function Toppings() {
               </VStack>
             </Center>
             <Center mt={2}>
-              <Button colorScheme="teal" size="sm" ml={2} onClick={handleAddToppingSubmit} isDisabled={isDuplicate}>
+              <Button colorScheme="teal" size="sm" ml={2} onClick={handleAddToppingSubmit} isDisabled={isDuplicateToppingName}>
                 Ok
               </Button>
               <Button colorScheme="red" size="sm" ml={2} onClick={handleCancelAddTopping}>

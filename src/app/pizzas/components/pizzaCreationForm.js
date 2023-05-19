@@ -42,11 +42,10 @@ export const PizzaCreationForm = ({
     }
   };
 
-  const isPizzaValid = !!(pizzaName && selectedToppings.length > 0)
-
   const handlePizzaName = (e) => setPizzaName(e.target.value);
 
   const isDuplicateName = isDupeName(pizzasData, pizzaName);
+  console.log({ isDuplicateName })
 
   const isDuplicateToppings = isToppingsEqual(pizzasData.data, selectedToppings)
   const isAnythingDuplicate = !!(isDuplicateName || isDuplicateToppings)
@@ -108,7 +107,7 @@ export const PizzaCreationForm = ({
           <HStack spacing={4} justifyContent="center" >
             <Button
               onClick={handlePizzaSubmit}
-              isDisabled={isAnythingDuplicate || !isPizzaValid}
+              isDisabled={isDuplicateName}
               colorScheme="teal">
               OK
             </Button>
