@@ -251,7 +251,13 @@ export default function Toppings() {
         >
           Add
         </Button>
-        <Button colorScheme="red" size="lg" mr={2} onClick={handleDeleteTopping} isDisabled={!selectedTopping}>
+        <Button
+          data-testid="delete-topping-button"
+          colorScheme="red"
+          size="lg"
+          mr={2}
+          onClick={handleDeleteTopping}
+          isDisabled={!selectedTopping}>
           Delete
         </Button>
         <Button colorScheme="blue" size="lg" onClick={handleUpdateButtonClick} isDisabled={!selectedTopping}>
