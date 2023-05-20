@@ -18,10 +18,13 @@ export const useGetAllToppings = () => {
   };
 };
 
-export const createTopping = (name) => (
-  axios.post(ROUTE_NAME, { name })
-    .then((res) => res.data))
-  .catch((e) => console.error(e));
+export const createTopping = (name) => {
+  console.log("FUCK THIS")
+  return (
+    axios.post(ROUTE_NAME, { name })
+      .then((res) => res.data))
+    .catch((e) => console.error(e));
+};
 
 export const deleteTopping = async (ids) => {
   axios({

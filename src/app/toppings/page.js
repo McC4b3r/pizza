@@ -39,6 +39,8 @@ export default function Toppings() {
   const updateRef = useRef(null);
   const addRef = useRef(null);
 
+  // console.log({ addToppingName });
+
   useEffect(() => {
     if (isUpdatingTopping && updateRef.current) {
       updateRef.current.focus();
@@ -142,7 +144,7 @@ export default function Toppings() {
       <Heading as="h1" size="xl" textAlign="center" mt={10}>
         Toppings
       </Heading>
-      <Box>
+      <Box data-testid="toppingContainer">
         {!toppings.data.length && <DualAlert isTopping />}
         <Grid mt={20} templateColumns="repeat(2, 1fr)" gap={4} mx="auto" maxW="xl">
           {toppings.data.map((topping) => (
@@ -152,7 +154,7 @@ export default function Toppings() {
               onClick={() => handleToppingClick(topping.id)}
               key={topping.id}
             >
-              <CardBody>
+              <CardBody data-testid="topping-name">
                 {selectedTopping === topping.id && isUpdatingTopping ? (
                   <FormControl isInvalid={isDuplicateUpdateToppingName}>
                     <InputGroup>
@@ -240,7 +242,13 @@ export default function Toppings() {
         </Box>
       )}
       <HStack mt={10} justify="center">
-        <Button colorScheme="teal" size="lg" isDisabled={isAddButtonDisabled} onClick={handleAddButtonClick}>
+        <Button
+          data-testid="add-topping-button"
+          colorScheme="teal"
+          size="lg"
+          isDisabled={isAddButtonDisabled}
+          onClick={handleAddButtonClick}
+        >
           Add
         </Button>
         <Button colorScheme="red" size="lg" mr={2} onClick={handleDeleteTopping} isDisabled={!selectedTopping}>

@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { prisma } from '../prismaClient';
 
 export const GET = async () => {
+  console.log({ HITSTHEGET: 'GET hit by tests' });
   const data = await prisma.toppings.findMany({
     orderBy: {
       id: 'asc',
@@ -29,6 +30,7 @@ export const POST = async (req) => {
     return NextResponse.json({ data });
   }
   const body = await req.json();
+  console.log({ FINALLY: body });
   const data = await prisma.toppings.create({ data: body });
   await prisma.$disconnect();
   return NextResponse.json({ data });
