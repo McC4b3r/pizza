@@ -259,10 +259,16 @@ export default function Toppings() {
           size="lg"
           mr={2}
           onClick={handleDeleteTopping}
-          isDisabled={!selectedTopping}>
+          isDisabled={!selectedTopping || isUpdatingTopping}
+        >
           Delete
         </Button>
-        <Button colorScheme="blue" size="lg" onClick={handleUpdateButtonClick} isDisabled={!selectedTopping}>
+        <Button
+          colorScheme="blue"
+          size="lg"
+          onClick={handleUpdateButtonClick}
+          isDisabled={!selectedTopping || isUpdatingTopping}
+        >
           Update
         </Button>
       </HStack>
