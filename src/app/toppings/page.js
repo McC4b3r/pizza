@@ -160,6 +160,7 @@ export default function Toppings() {
                     <InputGroup>
                       <VStack flex={1}>
                         <Input
+                          data-testid="topping-update-input"
                           focusBorderColor={isDuplicateUpdateToppingName ? 'red.500' : 'blue.500'}
                           placeholder={topping.name}
                           value={updatedToppingName}
@@ -177,6 +178,7 @@ export default function Toppings() {
                       <InputRightElement>
                         <ButtonGroup ml="-36px" spacing="4px">
                           <Button
+                            data-testid="update-topping-submit"
                             colorScheme="teal"
                             h="1.75rem"
                             size="xs"

@@ -10,7 +10,12 @@ import {
   waitFor,
 } from '@testing-library/react';
 import Toppings from '../../../../src/app/toppings/page';
-import { createTopping, useGetAllToppings, deleteTopping } from '../../../../src/app/toppings/queries';
+import {
+  createTopping,
+  useGetAllToppings,
+  deleteTopping,
+  updateTopping,
+} from '../../../../src/app/toppings/queries';
 
 jest.mock('../../../../src/app/toppings/queries', () => ({
   useGetAllToppings: jest.fn(),
@@ -135,5 +140,54 @@ describe('Toppings Page', () => {
     const toppingElements = await screen.findAllByTestId('topping-name');
     expect(toppingElements).toHaveLength(1);
     expect(toppingElements[0]).toHaveTextContent('Pepperoni');
+  });
+
+  it('should allow me to update an existing topping', async () => {
+    const mockUseGetAllToppings = jest.fn().mockReturnValue({
+      toppings: {
+        data: [
+          { id: 1, name: 'Cheese' },
+          { id: 2, name: 'Pepperoni' },
+        ],
+      },
+      isLoading: false,
+      isError: false,
+      trigger: jest.fn(),
+    });
+
+    useGetAllToppings.mockImplementation(mockUseGetAllToppings);
+    updateTopping.mockResolvedValueOnce({ id: 1, name: 'Bacon' });
+
+    const { getByText, rerender } = render(<Toppings />);
+    const toppingElement = getByText('Cheese');
+    fireEvent.click(toppingElement);
+
+    const updateButton = getByText('Update');
+    fireEvent.click(updateButton);
+
+    const updateInput = await screen.findByTestId('topping-update-input');
+    fireEvent.change(updateInput, { target: { value: 'Bacon' } });
+
+    const okButton = await screen.findByTestId('update-topping-submit');
+    fireEvent.click(okButton);
+
+    await waitFor(() => expect(updateTopping).toHaveBeenCalledWith(1, 'Bacon'));
+
+    mockUseGetAllToppings.mockReturnValueOnce({
+      toppings: {
+        data: [
+          { id: 1, name: 'Bacon' },
+          { id: 2, name: 'Pepperoni' },
+        ],
+      },
+      isLoading: false,
+      isError: false,
+      trigger: jest.fn(),
+    });
+
+    rerender(<Toppings />);
+
+    const updatedToppingElement = getByText('Bacon');
+    expect(updatedToppingElement).toBeInTheDocument();
   });
 });
