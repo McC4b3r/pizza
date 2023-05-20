@@ -69,7 +69,7 @@ export default function Toppings() {
     }
   };
 
-  const isAddButtonDisabled = !!selectedTopping;
+  const isAddButtonDisabled = !!selectedTopping || isAddingTopping;
 
   const handleAddButtonClick = () => {
     setIsAddingTopping(true);
