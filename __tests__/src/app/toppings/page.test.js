@@ -190,4 +190,37 @@ describe('Toppings Page', () => {
     const updatedToppingElement = getByText('Bacon');
     expect(updatedToppingElement).toBeInTheDocument();
   });
+
+  it('should not allow me to enter duplicate toppings', async () => {
+    const mockUseGetAllToppings = jest.fn().mockReturnValue({
+      toppings: {
+        data: [
+          { id: 1, name: 'Cheese' },
+          { id: 2, name: 'Pepperoni' },
+        ],
+      },
+      isLoading: false,
+      isError: false,
+      trigger: jest.fn(),
+    });
+
+    useGetAllToppings.mockImplementation(mockUseGetAllToppings);
+
+    const { getByText, getByPlaceholderText } = render(<Toppings />);
+
+    const addToppingInput = getByPlaceholderText('Enter new topping name');
+
+    fireEvent.change(addToppingInput, { target: { value: 'Cheese' } });
+
+    const okButton = getByText('Ok');
+
+    expect(okButton).toBeDisabled();
+
+    fireEvent.click(okButton);
+
+    expect(createTopping).not.toHaveBeenCalled();
+
+    const errorMessage = await screen.findByText('That topping already exists');
+    expect(errorMessage).toBeInTheDocument();
+  });
 });

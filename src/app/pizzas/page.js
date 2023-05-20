@@ -210,7 +210,7 @@ export default function Pizzas() {
                     <Center>
                       <ButtonGroup my={4}>
                         <Button
-                          isDisabled={isDuplicateToppings}
+                          isDisabled={isDuplicateToppings || !updatedPizzaToppings.length}
                           size="sm"
                           colorScheme="teal"
                           onClick={() => handleToppingsChangeSubmit(pizza.id)}
@@ -271,7 +271,7 @@ export default function Pizzas() {
           colorScheme="red"
           size="lg"
           mr={2}
-          isDisabled={!selectedPizza}
+          isDisabled={!selectedPizza || isupdatingEither}
           onClick={() => handleDeletePizza(selectedPizza)}
         >
           Delete
@@ -280,7 +280,7 @@ export default function Pizzas() {
           colorScheme="blue"
           size="lg"
           onClick={handleUpdateNameClick}
-          isDisabled={!selectedPizza}
+          isDisabled={!selectedPizza || isupdatingEither}
         >
           Update Name
         </Button>
@@ -288,7 +288,7 @@ export default function Pizzas() {
           colorScheme="blue"
           size="lg"
           onClick={handleUpdateToppingsClick}
-          isDisabled={!selectedPizza}
+          isDisabled={!selectedPizza || isupdatingEither}
         >
           Update Toppings
         </Button>
