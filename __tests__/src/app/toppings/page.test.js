@@ -30,6 +30,8 @@ describe('Toppings Page', () => {
     });
     useGetAllToppings.mockImplementationOnce(mockUseGetAllToppings);
 
+    // console.log({ Nonsense: mockUseGetAllToppings.mockReturnValueOnce() });
+
     render(<Toppings />);
     const toppingElements = await screen.findAllByTestId('topping-name');
     expect(toppingElements).toHaveLength(2);
@@ -38,56 +40,51 @@ describe('Toppings Page', () => {
   });
 
   it('should allow me to add a new topping', async () => {
-    // const initialLoadToppings = jest.fn().mockReturnValueOnce({
-    //   toppings: {
-    //     data: [
-    //       { id: 1, name: 'Cheese' },
-    //       { id: 2, name: 'Pepperoni' },
-    //     ],
-    //   },
-    //   isLoading: false,
-    //   isError: false,
-    //   trigger: jest.fn(),
-    // });
+    const mockUseGetAllToppings = jest.fn().mockReturnValue({
+      toppings: {
+        data: [
+          { id: 1, name: 'Cheese' },
+          { id: 2, name: 'Pepperoni' },
+        ],
+      },
+      isLoading: false,
+      isError: false,
+      trigger: jest.fn(),
+    });
 
-    // console.log({ initialLoadToppings: initialLoadToppings.mock.results });
+    useGetAllToppings.mockImplementation(mockUseGetAllToppings);
+    createTopping.mockResolvedValueOnce({ id: 3, name: 'Mushrooms' });
 
-    // useGetAllToppings.mockImplementation(initialLoadToppings);
+    const { rerender } = render(<Toppings />);
+    const addToppingButton = screen.getByTestId('add-topping-button');
 
-    // render(<Toppings />);
-    // const addToppingButton = screen.getByTestId('add-topping-button');
+    fireEvent.click(addToppingButton);
 
-    // fireEvent.click(addToppingButton);
+    const addToppingInput = await screen.findByPlaceholderText('Enter new topping name');
+    fireEvent.change(addToppingInput, { target: { value: 'Mushrooms' } });
 
-    // const addToppingInput = await screen.findByPlaceholderText('Enter new topping name');
-    // fireEvent.change(addToppingInput, { target: { value: 'Mushrooms' } });
+    const okButton = await screen.findByText(/Ok/i);
+    fireEvent.click(okButton);
 
-    // const okButton = await screen.findByText(/Ok/i);
-    // createTopping.mockReturnValueOnce({ name: 'Mushrooms' });
-    // fireEvent.click(okButton);
+    await waitFor(() => expect(createTopping).toHaveBeenCalledWith('Mushrooms'));
 
-    // await waitFor(() => expect(createTopping).toHaveBeenCalledWith({ name: 'Mushrooms' }));
+    mockUseGetAllToppings.mockReturnValueOnce({
+      toppings: {
+        data: [
+          { id: 1, name: 'Cheese' },
+          { id: 2, name: 'Pepperoni' },
+          { id: 3, name: 'Mushrooms' },
+        ],
+      },
+      isLoading: false,
+      isError: false,
+      trigger: jest.fn(),
+    });
 
-    // const afterAddTopping = jest.fn().mockReturnValueOnce({
-    //   toppings: {
-    //     data: [
-    //       { id: 1, name: 'Cheese' },
-    //       { id: 2, name: 'Pepperoni' },
-    //       { id: 3, name: 'Mushrooms' },
-    //     ],
-    //   },
-    //   isLoading: false,
-    //   isError: false,
-    //   trigger: jest.fn(),
-    // });
+    rerender(<Toppings />);
 
-    // useGetAllToppings.mockImplementation(afterAddTopping);
-
-    // rerender(<Toppings />);
-    // // console.log({ CONTAINER: container });
-    // rerender(<Toppings />);
-    // const toppingElements = await screen.findAllByTestId('topping-name');
-    // expect(toppingElements).toHaveLength(3);
-    // expect(toppingElements[2]).toHaveTextContent('Mushrooms');
+    const toppingElements = await screen.findAllByTestId('topping-name');
+    expect(toppingElements).toHaveLength(3);
+    expect(toppingElements[2]).toHaveTextContent('Mushrooms');
   });
 });
