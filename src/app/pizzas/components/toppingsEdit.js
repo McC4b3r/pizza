@@ -1,35 +1,32 @@
 /* eslint-disable import/prefer-default-export */
 import React from 'react';
-import {
-  Box,
-  Center,
-  Spinner,
-  Text,
-  Heading,
-} from '@chakra-ui/react';
+import { Box, Center, Spinner, Text, Heading } from '@chakra-ui/react';
 import { useGetAllToppings } from '../../toppings/queries';
 
 export function ToppingsEdit({
   updatedPizzaToppings,
   setUpdatedPizzaToppings,
 }) {
-  const {
-    toppings, isLoading, isError,
-  } = useGetAllToppings();
+  const { toppings, isLoading, isError } = useGetAllToppings();
 
   if (isError) return <div>failed to load</div>;
-  if (isLoading) return <Center><Spinner mt={12} /></Center>;
+  if (isLoading)
+    return (
+      <Center>
+        <Spinner mt={12} />
+      </Center>
+    );
 
   const updatePizzaToppings = (topping) => {
-    setUpdatedPizzaToppings((prevToppings) => (
+    setUpdatedPizzaToppings((prevToppings) =>
       prevToppings.some((prevTop) => prevTop.id === topping.id)
         ? prevToppings.filter((prev) => prev.id !== topping.id)
         : [...prevToppings, { id: topping.id }]
-    ));
+    );
   };
 
-  const checkTopping = (toppingId) => (
-    updatedPizzaToppings.some((topping) => topping.id === toppingId));
+  const checkTopping = (toppingId) =>
+    updatedPizzaToppings.some((topping) => topping.id === toppingId);
 
   return (
     <Box>

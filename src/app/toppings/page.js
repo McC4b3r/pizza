@@ -56,7 +56,13 @@ export default function Toppings() {
   } = useGetAllToppings();
 
   if (isError) return <div>failed to load</div>;
-  if (isLoading) return <Center><Spinner mt={12} /></Center>;
+  if (isLoading) {
+    return (
+      <Center>
+        <Spinner mt={12} />
+      </Center>
+    );
+  }
 
   // select topping within list
   const handleToppingClick = (toppingId) => {
@@ -130,14 +136,24 @@ export default function Toppings() {
     setIsUpdatingTopping(false);
   };
 
-  const handleEnterKey = (event) => (
-    handleEnter(event, isAddingTopping, handleAddToppingSubmit, handleUpdateTopping)
+  const handleEnterKey = (event) => handleEnter(
+    event,
+    isAddingTopping,
+    handleAddToppingSubmit,
+    handleUpdateTopping,
   );
 
   return (
     <>
       <Link href="/">
-        <Button colorScheme="teal" leftIcon={<ArrowBackIcon />} mt={2} ml={2} size="sm" variant="ghost">
+        <Button
+          colorScheme="teal"
+          leftIcon={<ArrowBackIcon />}
+          mt={2}
+          ml={2}
+          size="sm"
+          variant="ghost"
+        >
           Home
         </Button>
       </Link>
@@ -146,7 +162,13 @@ export default function Toppings() {
       </Heading>
       <Box data-testid="toppingContainer">
         {!toppings.data.length && <DualAlert isTopping />}
-        <Grid mt={20} templateColumns="repeat(2, 1fr)" gap={4} mx="auto" maxW="xl">
+        <Grid
+          mt={20}
+          templateColumns="repeat(2, 1fr)"
+          gap={4}
+          mx="auto"
+          maxW="xl"
+        >
           {toppings.data.map((topping) => (
             <Card
               bg={selectedTopping === topping.id ? 'blue.100' : 'blue.50'}
@@ -161,7 +183,11 @@ export default function Toppings() {
                       <VStack flex={1}>
                         <Input
                           data-testid="topping-update-input"
-                          focusBorderColor={isDuplicateUpdateToppingName ? 'red.500' : 'blue.500'}
+                          focusBorderColor={
+                            isDuplicateUpdateToppingName
+                              ? 'red.5P00'
+                              : 'blue.500'
+                          }
                           placeholder={topping.name}
                           value={updatedToppingName}
                           onChange={handleUpdateToppingNameChange}
@@ -182,12 +208,20 @@ export default function Toppings() {
                             colorScheme="teal"
                             h="1.75rem"
                             size="xs"
-                            isDisabled={!updatedToppingName || isDuplicateUpdateToppingName}
+                            isDisabled={
+                              !updatedToppingName
+                              || isDuplicateUpdateToppingName
+                            }
                             onClick={handleUpdateTopping}
                           >
                             <CheckIcon />
                           </Button>
-                          <Button colorScheme="red" h="1.75rem" size="xs" onClick={handleUpdateCancel}>
+                          <Button
+                            colorScheme="red"
+                            h="1.75rem"
+                            size="xs"
+                            onClick={handleUpdateCancel}
+                          >
                             <CloseIcon />
                           </Button>
                         </ButtonGroup>
@@ -216,14 +250,11 @@ export default function Toppings() {
                   onKeyDown={handleEnterKey}
                   ref={addRef}
                 />
-                {
-                  isDuplicateAddToppingName
-                  && (
-                    <FormErrorMessage>
-                      That topping already exists
-                    </FormErrorMessage>
-                  )
-                }
+                {isDuplicateAddToppingName && (
+                  <FormErrorMessage>
+                    That topping already exists
+                  </FormErrorMessage>
+                )}
               </VStack>
             </Center>
             <Center mt={2}>
@@ -236,7 +267,12 @@ export default function Toppings() {
               >
                 Ok
               </Button>
-              <Button colorScheme="red" size="sm" ml={2} onClick={handleCancelAddTopping}>
+              <Button
+                colorScheme="red"
+                size="sm"
+                ml={2}
+                onClick={handleCancelAddTopping}
+              >
                 Cancel
               </Button>
             </Center>

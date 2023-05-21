@@ -27,7 +27,10 @@ import { ArrowBackIcon, CheckIcon, CloseIcon } from '@chakra-ui/icons';
 import { isDupeName, isToppingsEqual } from '../helpers';
 import { PizzaCreationForm } from './components/pizzaCreationForm';
 import {
-  useGetPizzas, updatePizzaName, updatePizzaToppings, deletePizza,
+  useGetPizzas,
+  updatePizzaName,
+  updatePizzaToppings,
+  deletePizza,
 } from './queries';
 import { UpdateFormInput } from './components/updateFormInput';
 import { ToppingsEdit } from './components/toppingsEdit';
@@ -83,14 +86,17 @@ export default function Pizzas() {
   const isupdatingEither = isUpdatingName || isUpdatingToppings;
 
   const {
-    data: pizzasData,
-    isLoading,
-    error,
-    trigger,
+    data: pizzasData, isLoading, error, trigger,
   } = useGetPizzas();
 
   if (error) return <div>failed to load</div>;
-  if (isLoading) return <Center><Spinner mt={12} /></Center>;
+  if (isLoading) {
+    return (
+      <Center>
+        <Spinner mt={12} />
+      </Center>
+    );
+  }
 
   const isDuplicateUpdateName = isDupeName(pizzasData, updatedPizzaName);
 
@@ -105,7 +111,10 @@ export default function Pizzas() {
     }
   };
 
-  const isDuplicateToppings = isToppingsEqual(pizzasData.data, updatedPizzaToppings);
+  const isDuplicateToppings = isToppingsEqual(
+    pizzasData.data,
+    updatedPizzaToppings,
+  );
 
   const handleToppingsChangeSubmit = (pizzaId) => {
     if (updatedPizzaToppings.length) {
@@ -123,10 +132,19 @@ export default function Pizzas() {
     trigger();
   };
 
+  // console.log(JSON.stringify(pizzasData.data[1]));
+
   return (
     <>
       <Link href="/">
-        <Button colorScheme="teal" leftIcon={<ArrowBackIcon />} mt={2} ml={2} size="sm" variant="ghost">
+        <Button
+          colorScheme="teal"
+          leftIcon={<ArrowBackIcon />}
+          mt={2}
+          ml={2}
+          size="sm"
+          variant="ghost"
+        >
           Home
         </Button>
       </Link>
@@ -138,44 +156,51 @@ export default function Pizzas() {
           <Heading size="md" textAlign="center" mb={4}>
             Signature Pies
           </Heading>
-          <Box borderRadius="lg" bg="blue.50" overflowY="scroll" height="570px" width="768px" p="8">
+          <Box
+            borderRadius="lg"
+            bg="blue.50"
+            overflowY="scroll"
+            height="570px"
+            width="768px"
+            p="8"
+          >
             {!pizzasData.data.length && <DualAlert isPizza />}
             <Grid order="initial" templateColumns="repeat(2, 1fr)" gap={4}>
               {pizzasData.data.map((pizza) => (
                 <Card
+                  data-testid="pizza-card"
                   textAlign="center"
                   bg={selectedPizza === pizza.id ? 'red.100' : 'red.50'}
-                  _hover={{ cursor: isupdatingEither ? null : 'pointer', bg: 'red.100' }}
+                  _hover={{
+                    cursor: isupdatingEither ? null : 'pointer',
+                    bg: 'red.100',
+                  }}
                   onClick={() => handlePizzaClick(pizza.id)}
                   key={pizza.id}
                 >
                   <CardHeader>
-                    {selectedPizza === pizza.id && isUpdatingName
-                      ? (
-                        <UpdateFormInput
-                          isDuplicate={isDuplicateUpdateName}
-                          submit={handleNameChangeSubmit}
-                          pizza={pizza}
-                          updatedPizzaName={updatedPizzaName}
-                          handleChange={handleUpdatePizzaNameChange}
-                          handleCancel={handleUpdateNameCancel}
-                          updateRef={updateRef}
-                        />
-                      )
-                      : (
-                        <Box as="span" flex="1">
-                          <Heading textAlign="center" size="sm">
-                            {pizza.name}
-                          </Heading>
-                        </Box>
-                      )}
+                    {selectedPizza === pizza.id && isUpdatingName ? (
+                      <UpdateFormInput
+                        isDuplicate={isDuplicateUpdateName}
+                        submit={handleNameChangeSubmit}
+                        pizza={pizza}
+                        updatedPizzaName={updatedPizzaName}
+                        handleChange={handleUpdatePizzaNameChange}
+                        handleCancel={handleUpdateNameCancel}
+                        updateRef={updateRef}
+                      />
+                    ) : (
+                      <Box as="span" flex="1">
+                        <Heading textAlign="center" size="sm">
+                          {pizza.name}
+                        </Heading>
+                      </Box>
+                    )}
                   </CardHeader>
                   <Center>
                     <Divider borderColor="gray.300" width="75%" />
                   </Center>
-                  <CardBody
-                    pb={2}
-                  >
+                  <CardBody pb={2}>
                     <Flex justifyContent="center">
                       <Box>
                         {selectedPizza === pizza.id && isUpdatingToppings && (
@@ -184,11 +209,7 @@ export default function Pizzas() {
                           </Heading>
                         )}
                         {pizza.toppings.map((topping, index) => (
-                          <Box
-                            my={1}
-                            key={index}
-                            fontStyle="italic"
-                          >
+                          <Box my={1} key={index} fontStyle="italic">
                             {topping.name}
                           </Box>
                         ))}
@@ -210,7 +231,9 @@ export default function Pizzas() {
                     <Center>
                       <ButtonGroup my={4}>
                         <Button
-                          isDisabled={isDuplicateToppings || !updatedPizzaToppings.length}
+                          isDisabled={
+                            isDuplicateToppings || !updatedPizzaToppings.length
+                          }
                           size="sm"
                           colorScheme="teal"
                           onClick={() => handleToppingsChangeSubmit(pizza.id)}
@@ -228,7 +251,7 @@ export default function Pizzas() {
                     </Center>
                   )}
                   <CardFooter padding={0}>
-                    {(isDuplicateToppings && selectedPizza === pizza.id) && (
+                    {isDuplicateToppings && selectedPizza === pizza.id && (
                       <Alert
                         borderRadius="md"
                         size="sm"
@@ -236,7 +259,9 @@ export default function Pizzas() {
                         status="error"
                       >
                         <AlertIcon size="sm" />
-                        <AlertTitle fontSize="xs">A pizza with those toppings already exists</AlertTitle>
+                        <AlertTitle fontSize="xs">
+                          A pizza with those toppings already exists
+                        </AlertTitle>
                       </Alert>
                     )}
                   </CardFooter>
@@ -246,18 +271,17 @@ export default function Pizzas() {
           </Box>
         </VStack>
       </Center>
-      {isCreatingPizza
-        && (
-          <PizzaCreationForm
-            isCreating={isCreatingPizza}
-            pizzasData={pizzasData}
-            close={handleClosePizzaCreationForm}
-            pizzaName={pizzaName}
-            setPizzaName={setPizzaName}
-            trigger={trigger}
-            addRef={addRef}
-          />
-        )}
+      {isCreatingPizza && (
+        <PizzaCreationForm
+          isCreating={isCreatingPizza}
+          pizzasData={pizzasData}
+          close={handleClosePizzaCreationForm}
+          pizzaName={pizzaName}
+          setPizzaName={setPizzaName}
+          trigger={trigger}
+          addRef={addRef}
+        />
+      )}
       <HStack mt={10} justify="center">
         <Button
           colorScheme="teal"

@@ -18,12 +18,12 @@ export const useGetAllToppings = () => {
   };
 };
 
-export const createTopping = (name) => (
-  axios.post(ROUTE_NAME, { name })
-    .then((res) => res.data))
+export const createTopping = (name) => axios
+  .post(ROUTE_NAME, { name })
+  .then((res) => res.data)
   .catch((e) => console.error(e));
 
-export const deleteTopping = async (id) => (axios({
+export const deleteTopping = async (id) => axios({
   method: 'post',
   url: ROUTE_NAME,
   headers: {
@@ -33,13 +33,14 @@ export const deleteTopping = async (id) => (axios({
   data: { id },
 })
   .then((res) => res.data)
-  .catch((e) => console.log(e)));
+  .catch((e) => console.log(e));
 
 export const updateTopping = (id, updatedName) => {
-  axios.put(ROUTE_NAME, {
-    id,
-    name: updatedName,
-  })
+  axios
+    .put(ROUTE_NAME, {
+      id,
+      name: updatedName,
+    })
     .then((res) => res.data)
     .catch((e) => console.log(e));
 };

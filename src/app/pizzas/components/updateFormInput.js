@@ -11,10 +11,7 @@ import {
   InputRightElement,
   VStack,
 } from '@chakra-ui/react';
-import {
-  CheckIcon,
-  CloseIcon,
-} from '@chakra-ui/icons';
+import { CheckIcon, CloseIcon } from '@chakra-ui/icons';
 import { provideDuplicateError, handleEnter } from '../../helpers';
 
 export function UpdateFormInput({
@@ -57,7 +54,12 @@ export function UpdateFormInput({
             >
               <CheckIcon />
             </Button>
-            <Button colorScheme="red" h="1.75rem" size="xs" onClick={handleCancel}>
+            <Button
+              colorScheme="red"
+              h="1.75rem"
+              size="xs"
+              onClick={handleCancel}
+            >
               <CloseIcon />
             </Button>
           </ButtonGroup>

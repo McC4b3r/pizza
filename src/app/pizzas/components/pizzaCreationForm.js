@@ -20,7 +20,10 @@ import { CheckCircleIcon, NotAllowedIcon } from '@chakra-ui/icons';
 import { useGetAllToppings } from '../../toppings/queries';
 import { createPizza } from '../queries';
 import {
-  isToppingsEqual, isDupeName, provideDuplicateError, handleEnter,
+  isToppingsEqual,
+  isDupeName,
+  provideDuplicateError,
+  handleEnter,
 } from '../../helpers';
 
 export function PizzaCreationForm({
@@ -43,11 +46,19 @@ export function PizzaCreationForm({
   }, [isLoading]);
 
   if (isError) return <div>failed to load</div>;
-  if (isLoading) return <Center><Spinner /></Center>;
+  if (isLoading) {
+    return (
+      <Center>
+        <Spinner />
+      </Center>
+    );
+  }
 
   const handleToppingClick = (toppingId) => {
     if (selectedToppings.some((topping) => topping.id === toppingId)) {
-      setSelectedToppings(selectedToppings.filter((topping) => topping.id !== toppingId));
+      setSelectedToppings(
+        selectedToppings.filter((topping) => topping.id !== toppingId),
+      );
     } else {
       setSelectedToppings([...selectedToppings, { id: toppingId }]);
     }
@@ -57,7 +68,10 @@ export function PizzaCreationForm({
 
   const isDuplicateName = isDupeName(pizzasData, pizzaName);
 
-  const isDuplicateToppings = isToppingsEqual(pizzasData.data, selectedToppings);
+  const isDuplicateToppings = isToppingsEqual(
+    pizzasData.data,
+    selectedToppings,
+  );
   const isAnythingDuplicate = !!(isDuplicateName || isDuplicateToppings);
 
   const handlePizzaSubmit = () => {
@@ -83,7 +97,13 @@ export function PizzaCreationForm({
               {toppings.data.map((topping) => (
                 <Box
                   onClick={() => handleToppingClick(topping.id)}
-                  bg={selectedToppings.some((selected) => selected.id === topping.id) ? 'gray.100' : ''}
+                  bg={
+                    selectedToppings.some(
+                      (selected) => selected.id === topping.id,
+                    )
+                      ? 'gray.100'
+                      : ''
+                  }
                   _hover={{ cursor: 'pointer', bg: 'gray.50' }}
                   key={topping.id}
                 >
@@ -106,22 +126,24 @@ export function PizzaCreationForm({
                     onChange={handlePizzaName}
                     ref={addRef}
                   />
-                  {isAnythingDuplicate
-                    && (
-                      <FormErrorMessage textAlign="center">
-                        {provideDuplicateError(isDuplicateName, isDuplicateToppings)}
-                      </FormErrorMessage>
-                    )}
+                  {isAnythingDuplicate && (
+                    <FormErrorMessage textAlign="center">
+                      {provideDuplicateError(
+                        isDuplicateName,
+                        isDuplicateToppings,
+                      )}
+                    </FormErrorMessage>
+                  )}
                 </VStack>
-                {pizzaName
-                  ? (
-                    <InputRightElement>
-                      {isAnythingDuplicate
-                        ? <NotAllowedIcon color="red.500" />
-                        : <CheckCircleIcon color="green.500" />}
-                    </InputRightElement>
-                  )
-                  : null}
+                {pizzaName ? (
+                  <InputRightElement>
+                    {isAnythingDuplicate ? (
+                      <NotAllowedIcon color="red.500" />
+                    ) : (
+                      <CheckCircleIcon color="green.500" />
+                    )}
+                  </InputRightElement>
+                ) : null}
               </InputGroup>
             </FormControl>
           </GridItem>
@@ -129,12 +151,16 @@ export function PizzaCreationForm({
         <HStack spacing={4} justifyContent="center">
           <Button
             onClick={handlePizzaSubmit}
-            isDisabled={isDuplicateName || !selectedToppings.length || isDuplicateToppings}
+            isDisabled={
+              isDuplicateName || !selectedToppings.length || isDuplicateToppings
+            }
             colorScheme="teal"
           >
             OK
           </Button>
-          <Button colorScheme="red" onClick={close}>Cancel</Button>
+          <Button colorScheme="red" onClick={close}>
+            Cancel
+          </Button>
         </HStack>
       </Box>
     </Center>
