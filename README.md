@@ -5,9 +5,8 @@ This app was created to showcase my full-stack programming ability. It is a pizz
 # Installation
 
 ### To set up the project locally, follow these steps:
-- Becuase this project is deployed on Vercel and uses the Vercel Postgres, you need a Vercel account linked to your Github account (or similar) to successfully run step 3 below. Sign up here: https://vercel.com/signup
-- In the spirit of Vercel making things difficult for everyone who isnt me (Ryan McCabe), to run this locally, you must fork the repo before the following steps may take place. 
-- Even more fun: If you are not me, you will have a difficult time (its impossible) to perform step 4 below and get credentials you need. For this reason, I have contained the contents of the necessary `.env` file in the email sent to `recruiter@strongmind.com`. It pains me to do this, but if you want to run this app locally, that's what's required. Please be nice and delete when you're done.
+
+- Note: If you are not me, you will have a difficult time (its impossible) to perform step 4 below and get credentials you need. For this reason, I have contained the contents of the necessary `.env` file in the email sent to `recruiter@strongmind.com`. It pains me to do this, but if you want to run this app locally, that's what's required. Please be nice and delete when you're done.
 
 1. Run `npm install` in this project's root directory to install the dependencies
 2. Run `npm i -g vercel@latest`
