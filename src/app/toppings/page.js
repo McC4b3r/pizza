@@ -161,7 +161,15 @@ export default function Toppings() {
         Toppings
       </Heading>
       <Box data-testid="toppingContainer">
-        {!toppings.data.length && <DualAlert isTopping />}
+        {!toppings.data.length &&
+          <Box
+            mr="auto"
+            ml="auto"
+            w="container.md"
+          >
+            <DualAlert isTopping />
+          </Box>
+        }
         <Grid
           mt={20}
           templateColumns="repeat(2, 1fr)"

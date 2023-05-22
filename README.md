@@ -7,11 +7,10 @@ This app was created to showcase my full-stack programming ability. It is a pizz
 ### To set up the project locally, follow these steps:
 
 1. Run `npm install` in this project's root directory to install the dependencies
-2. Ensure you have PostgreSQL installed on your machine with a server running. If you do not, see here: https://wiki.postgresql.org/wiki/Homebrew
-3. Create the db: `createdb -U user -h localhost -p 5432 pizzaparty`. Feel free to replace `user` with an existing user of your choice.
-4. From the root directory, create a .env file, paste the following: `DATABASE_URL="postgresql://user:@localhost:5432/pizzaparty?schema=public"`, and save the file.
-    - note: You can customize this databaseURL to fit your needs: `postgresql://USER:PASSWORD@HOST:PORT/DATABASE?schema=SCHEMA`. It must match up with the information you used to set up the db.
-5. Map the data model to the database schema: `npx prisma migrate dev --name init`.
+2. Run `npm i -g vercel@latest`
+3. Run `vercel env pull .env.local`
+4. Either remove the `.local` portion of the `.env.local`, or copy the contents from `.env.local` to a new `.env` file.
+5. Run `npx prisma db push`
 6. run `npm run dev` to start the development server.
 7. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
     - note: if port 3000 is already in use, another port will be chosen automatically and output in the terminal. Be sure that matches the port in the localhost url in your browser.
