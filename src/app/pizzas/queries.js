@@ -27,14 +27,12 @@ export const createPizza = (data) => {
   axios.post(ROUTE_NAME, { data }).then((res) => res.data);
 };
 
-export const updatePizzaName = (id, updatedPizzaName) => {
-  axios.put(ROUTE_NAME, {
-    id,
-    name: updatedPizzaName,
-  })
-    .then((res) => res.data)
-    .catch((e) => console.log(e));
-};
+export const updatePizzaName = (id, updatedPizzaName) => axios.put(ROUTE_NAME, {
+  id,
+  name: updatedPizzaName,
+})
+  .then((res) => res.data)
+  .catch((e) => console.log(e));
 
 export const updatePizzaToppings = (id, updatedPizzaToppings) => {
   axios.put(ROUTE_NAME, {

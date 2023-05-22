@@ -14,10 +14,6 @@ import { PizzaCreationForm } from '../../../../../src/app/pizzas/components/pizz
 jest.mock('../../../../../src/app/pizzas/queries');
 jest.mock('../../../../../src/app/toppings/queries');
 
-afterEach(() => {
-  jest.resetAllMocks();
-});
-
 const setup = () => {
   useGetAllToppings.mockReturnValue({
     toppings: {
@@ -74,17 +70,23 @@ const setup = () => {
   return { ...utils, ...mockFns };
 };
 
-test('creates a new pizza and adds toppings to it', async () => {
-  setup();
+describe('Pizza Creation Form', () => {
+  afterEach(() => {
+    jest.resetAllMocks();
+  });
 
-  fireEvent.change(await screen.findByPlaceholderText('Pizza name'), { target: { value: 'Lil Pep' } });
-  fireEvent.click(await screen.findByTestId('pcf-pizza-topping'));
-  fireEvent.click(await screen.findByText(/Ok/i));
+  test('creates a new pizza and adds toppings to it', async () => {
+    setup();
 
-  await waitFor(() => expect(createPizza).toHaveBeenCalledWith({
-    name: 'Lil Pep',
-    toppings: [
-      { id: 1 },
-    ],
-  }));
+    fireEvent.change(await screen.findByPlaceholderText('Pizza name'), { target: { value: 'Lil Pep' } });
+    fireEvent.click(await screen.findByTestId('pcf-pizza-topping'));
+    fireEvent.click(await screen.findByText(/Ok/i));
+
+    await waitFor(() => expect(createPizza).toHaveBeenCalledWith({
+      name: 'Lil Pep',
+      toppings: [
+        { id: 1 },
+      ],
+    }));
+  });
 });

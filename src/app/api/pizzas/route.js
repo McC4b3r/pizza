@@ -55,5 +55,6 @@ export const PUT = async (req) => {
     },
   });
   await prisma.$disconnect();
+  console.log(data);
   return NextResponse.json({ data });
 };

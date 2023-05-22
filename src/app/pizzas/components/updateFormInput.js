@@ -30,6 +30,7 @@ export function UpdateFormInput({
       <InputGroup>
         <VStack flex="1">
           <Input
+            data-testid="update-pizza-name-input"
             w="100%"
             focusBorderColor={isDuplicate ? 'red.500' : 'blue.500'}
             placeholder={pizza.name}
@@ -46,6 +47,7 @@ export function UpdateFormInput({
         <InputRightElement w="4.5rem">
           <ButtonGroup ml="-6px" spacing="4px">
             <Button
+              data-testid="update-pizza-name-submit"
               colorScheme="teal"
               h="1.75rem"
               size="xs"
