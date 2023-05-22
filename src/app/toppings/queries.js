@@ -21,7 +21,7 @@ export const useGetAllToppings = () => {
 export const createTopping = (name) => axios
   .post(ROUTE_NAME, { name })
   .then((res) => res.data)
-  .catch((e) => console.error(e));
+  .catch((e) => console.log(e));
 
 export const deleteTopping = async (id) => axios({
   method: 'post',

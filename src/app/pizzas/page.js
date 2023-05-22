@@ -272,18 +272,21 @@ export default function Pizzas() {
         </VStack>
       </Center>
       {isCreatingPizza && (
-        <PizzaCreationForm
-          isCreating={isCreatingPizza}
-          pizzasData={pizzasData}
-          close={handleClosePizzaCreationForm}
-          pizzaName={pizzaName}
-          setPizzaName={setPizzaName}
-          trigger={trigger}
-          addRef={addRef}
-        />
+        <Box data-testid="pizza-creation-form">
+          <PizzaCreationForm
+            isCreating={isCreatingPizza}
+            pizzasData={pizzasData}
+            close={handleClosePizzaCreationForm}
+            pizzaName={pizzaName}
+            setPizzaName={setPizzaName}
+            trigger={trigger}
+            addRef={addRef}
+          />
+        </Box>
       )}
       <HStack mt={10} justify="center">
         <Button
+          data-testid="pizza-creation-button"
           colorScheme="teal"
           size="lg"
           onClick={handleCreationClick}

@@ -69,7 +69,7 @@ export function PizzaCreationForm({
   const isDuplicateName = isDupeName(pizzasData, pizzaName);
 
   const isDuplicateToppings = isToppingsEqual(
-    pizzasData.data,
+    pizzasData?.data,
     selectedToppings,
   );
   const isAnythingDuplicate = !!(isDuplicateName || isDuplicateToppings);
@@ -86,7 +86,7 @@ export function PizzaCreationForm({
   const handleEnterKey = (event) => handleEnter(event, isCreating, handlePizzaSubmit);
 
   return (
-    <Center>
+    <Center data-testid="pizza-creation-form">
       <Box mt={8} w="lg" borderWidth="1px" borderRadius="lg" padding={4}>
         <Grid templateColumns="repeat(2, 1fr)" gap={24}>
           <GridItem>
@@ -96,6 +96,7 @@ export function PizzaCreationForm({
               </Heading>
               {toppings.data.map((topping) => (
                 <Box
+                  data-testid="pcf-pizza-topping"
                   onClick={() => handleToppingClick(topping.id)}
                   bg={
                     selectedToppings.some(
@@ -120,6 +121,7 @@ export function PizzaCreationForm({
               <InputGroup>
                 <VStack>
                   <Input
+                    data-tesetid="creation-form-input"
                     placeholder="Pizza name"
                     mb={2}
                     onKeyDown={handleEnterKey}
@@ -150,6 +152,7 @@ export function PizzaCreationForm({
         </Grid>
         <HStack spacing={4} justifyContent="center">
           <Button
+            data-testid="submit-pizza"
             onClick={handlePizzaSubmit}
             isDisabled={
               isDuplicateName || !selectedToppings.length || isDuplicateToppings
