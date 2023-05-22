@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
 import axios from 'axios';

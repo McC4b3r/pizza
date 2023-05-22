@@ -1,5 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import React, { useEffect, useState, useRef } from 'react';
+import PropTypes from 'prop-types';
 import {
   Box,
   Center,
@@ -67,6 +68,7 @@ export function PizzaCreationForm({
   const handlePizzaName = (e) => setPizzaName(e.target.value);
 
   const isDuplicateName = isDupeName(pizzasData, pizzaName);
+  console.log(JSON.stringify(pizzasData));
 
   const isDuplicateToppings = isToppingsEqual(
     pizzasData?.data,
@@ -169,3 +171,25 @@ export function PizzaCreationForm({
     </Center>
   );
 }
+
+PizzaCreationForm.propTypes = {
+  isCreating: PropTypes.bool.isRequired,
+  close: PropTypes.func.isRequired,
+  pizzasData: PropTypes.shape({
+    data: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired,
+        toppings: PropTypes.arrayOf(
+          PropTypes.shape({
+            id: PropTypes.number.isRequired,
+            name: PropTypes.string.isRequired,
+          }),
+        ).isRequired,
+      }),
+    ).isRequired,
+  }).isRequired,
+  trigger: PropTypes.func.isRequired,
+  pizzaName: PropTypes.string.isRequired,
+  setPizzaName: PropTypes.func.isRequired,
+};

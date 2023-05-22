@@ -62,7 +62,7 @@ export default function Pizzas() {
     }
   };
 
-  const handleUpdateNameClick = (e) => {
+  const handleUpdateNameClick = () => {
     setIsUpdatingName(true);
   };
 

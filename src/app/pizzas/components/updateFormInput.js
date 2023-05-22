@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import React from 'react';
-
+import PropTypes from 'prop-types';
 import {
   FormControl,
   FormErrorMessage,
@@ -70,3 +70,24 @@ export function UpdateFormInput({
     </FormControl>
   );
 }
+
+UpdateFormInput.propTypes = {
+  isDuplicate: PropTypes.bool.isRequired,
+  pizza: PropTypes.shape(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+      toppings: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.number.isRequired,
+          name: PropTypes.string.isRequired,
+        }),
+      ).isRequired,
+    }),
+  ).isRequired,
+  updatedPizzaName: PropTypes.string.isRequired,
+  handleChange: PropTypes.func.isRequired,
+  handleCancel: PropTypes.func.isRequired,
+  submit: PropTypes.func.isRequired,
+  updateRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) }).isRequired,
+};

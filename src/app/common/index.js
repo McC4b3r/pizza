@@ -1,5 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   Alert,
   AlertTitle,
@@ -36,3 +37,8 @@ export function DualAlert({
     </Alert>
   );
 }
+
+DualAlert.propTypes = {
+  isTopping: PropTypes.bool.isRequired,
+  isPizza: PropTypes.bool.isRequired,
+};

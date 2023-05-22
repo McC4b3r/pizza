@@ -1,5 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   Box,
   Center,
@@ -16,23 +17,21 @@ export function ToppingsEdit({
   const { toppings, isLoading, isError } = useGetAllToppings();
 
   if (isError) return <div>failed to load</div>;
-  if (isLoading)
+  if (isLoading) {
     return (
       <Center>
         <Spinner mt={12} />
       </Center>
     );
+  }
 
   const updatePizzaToppings = (topping) => {
-    setUpdatedPizzaToppings((prevToppings) =>
-      prevToppings.some((prevTop) => prevTop.id === topping.id)
-        ? prevToppings.filter((prev) => prev.id !== topping.id)
-        : [...prevToppings, { id: topping.id }]
-    );
+    setUpdatedPizzaToppings((prevToppings) => (prevToppings.some((prevTop) => prevTop.id === topping.id)
+      ? prevToppings.filter((prev) => prev.id !== topping.id)
+      : [...prevToppings, { id: topping.id }]));
   };
 
-  const checkTopping = (toppingId) =>
-    updatedPizzaToppings.some((topping) => topping.id === toppingId);
+  const checkTopping = (toppingId) => updatedPizzaToppings.some((topping) => topping.id === toppingId);
 
   return (
     <Box>
@@ -56,3 +55,13 @@ export function ToppingsEdit({
     </Box>
   );
 }
+
+ToppingsEdit.propTypes = {
+  updatedPizzaToppings: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
+  setUpdatedPizzaToppings: PropTypes.func.isRequired,
+};

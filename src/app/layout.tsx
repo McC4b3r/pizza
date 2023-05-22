@@ -3,7 +3,7 @@
 'use-client';
 
 import React from 'react';
-import { Providers } from './providers';
+import { Providers } from './providers.tsx';
 
 export default function RootLayout({
   children,
