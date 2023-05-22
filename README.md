@@ -12,11 +12,10 @@ This app was created to showcase my full-stack programming ability. It is a pizz
 1. Run `npm install` in this project's root directory to install the dependencies
 2. Run `npm i -g vercel@latest`
 3. Run `vercel link`
-4. Run `vercel env pull .env.local`
-5. Either remove the `.local` portion of the `.env.local`, or copy the contents from `.env.local` to a new `.env` file.
-6. Run `npx prisma db push`
-7. run `npm run dev` to start the development server.
-8. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. ~~Run `vercel env pull .env.local`~~ Copy the `.env` file contents from my submission email, create a new `.env` file at the root, paste it in. 
+5. Run `npx prisma db push`
+6. run `npm run dev` to start the development server.
+7. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
     - note: if port 3000 is already in use, another port will be chosen automatically and output in the terminal. Be sure that matches the port in the localhost url in your browser.
 
 # How to use
