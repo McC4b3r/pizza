@@ -1,34 +1,48 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# StrongMind Full Stack Pizza App
 
-## Getting Started
+This app was created to showcase my full-stack programming ability. It is a pizza making app that allows you (the user) to type in any pizza toppings you would like and submit it to the app. You are then able to "make pizzas" using the toppings you've added. All toppings can be created, deleted, and updated. All pizzas can be created, deleted, and have both the pizza names and the pizza toppings updated as well.
 
-First, run the development server:
+# Installation
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+### To set up the project locally, follow these steps:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. Run `npm install` in this project's root directory to install the dependencies
+2. Ensure you have PostgreSQL installed on your machine with a server running. If you do not, see here: https://wiki.postgresql.org/wiki/Homebrew
+3. Create the db: `createdb -U user -h localhost -p 5432 pizzaparty`. Feel free to replace `user` with an existing user of your choice.
+4. From the root directory, create a .env file, paste the following: `DATABASE_URL="postgresql://user:@localhost:5432/pizzaparty?schema=public"`, and save the file.
+    - note: You can customize this databaseURL to fit your needs: `postgresql://USER:PASSWORD@HOST:PORT/DATABASE?schema=SCHEMA`. It must match up with the information you used to set up the db.
+5. Map the data model to the database schema: `npx prisma migrate dev --name init`.
+6. run `npm run dev` to start the development server.
+7. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+    - note: if port 3000 is already in use, another port will be chosen automatically and output in the terminal. Be sure that matches the port in the localhost url in your browser.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+# How to use
+### Now that you're fully installed, lets play around with the app.
+- The main page will have two buttons: 'Manage Toppings' and 'Manage Pizzas'.
+- To manage pizzas, you'll need toppings first. Click the 'Manage Toppings' button.
+- If this is your first time spinning up the app, you will be notified that there are not any toppings yet. Click the 'Add' button to add a topping. An input field will populate asking you for a topping name.
+- Enter a topping name and press the 'OK' button or press the enter key.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### Now that you have a topping, lets create a pizza.
+ - From the toppings page, click the 'Home' button in the upper left of the page. Now click 'Manage Pizzas'.
+ - Click the 'Create' button and the pizza creation form will appear.
+ - Type in a name for your new pizza in the input field.
+ - To select toppings for your pizza, simply click the topping name under 'Available Toppings'.
+ - Click the 'OK' button or press the enter key.
 
-## Learn More
+### To update a pizza or topping:
+ - From the toppings page, click on the topping you want to update.
+     - Click 'Update'
+     - Type in a new name and press 'OK' or the enter key
+ - From othe pizzas page, click on the pizza you want to update.
+     - Click either 'Update Name' or 'Update Toppings'.
+     - Updating the name will make an input field appear for you to input a name. Press enter or the check mark button to save.
+     - Updating the Toppings will show a list of the existing toppings, and a list of available toppings. Click any of the available toppings, then press the green checkmark button within the pizza card.
 
-To learn more about Next.js, take a look at the following resources:
+### To delete a pizza or topping:
+ - You can only delete a topping from the toppings page. You can only delete a pizza from the pizzas page.
+ - Click the item you want to delete. Once selected, press the 'Delete' button and the item will be gone.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Tests
+To run test locally, run the `npm test` command from this project's root directory.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
