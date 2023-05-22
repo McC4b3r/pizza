@@ -14,6 +14,7 @@ import {
 import Pizzas from '../../../../src/app/pizzas/page';
 
 jest.mock('../../../../src/app/pizzas/queries');
+jest.mock('axios');
 
 const setupMock = (pizzasData) => {
   useGetPizzas.mockReturnValue({
@@ -131,7 +132,7 @@ describe('Pizzas Page', () => {
       },
     ]);
 
-    jest.spyOn(axios, 'get').mockResolvedValueOnce({
+    axios.get.mockResolvedValueOnce({
       data: {
         data: [
           { id: 1, name: 'Pepperoni' },
@@ -151,10 +152,11 @@ describe('Pizzas Page', () => {
     const availableToppings = await screen.findAllByTestId('edit-update-toppings');
     fireEvent.click(availableToppings[1]);
     fireEvent.click(availableToppings[2]);
+    const updateToppingSubmitButton = await screen.findByTestId('update-toppings-submit-button');
+    expect(updateToppingSubmitButton).not.toBeDisabled();
     fireEvent.click(availableToppings[3]);
 
     const errorMessage = await screen.findByText('A pizza with those toppings already exists');
-    const updateToppingSubmitButton = await screen.findByTestId('update-toppings-submit-button');
     expect(errorMessage).toBeInTheDocument();
     expect(updateToppingSubmitButton).toBeDisabled();
   });
