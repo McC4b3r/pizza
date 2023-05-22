@@ -1,9 +1,8 @@
 /* eslint-disable global-require */
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-undef */
-// import React from 'react';
-// import '@testing-library/jest-dom';
 import React from 'react';
+import axios from 'axios';
 import '@testing-library/jest-dom';
 import {
   render, screen, fireEvent, waitFor,
@@ -61,13 +60,11 @@ describe('Pizzas Page', () => {
 
     const { getByText, queryByTestId } = render(<Pizzas />);
 
-    // Verify that the PizzaCreationForm is not initially rendered
     expect(queryByTestId('pizza-creation-form')).toBeNull();
 
     const createButton = getByText('Create');
     fireEvent.click(createButton);
 
-    // Verify that the PizzaCreationForm is rendered
     expect(queryByTestId('pizza-creation-form')).toBeInTheDocument();
   });
 
@@ -114,5 +111,51 @@ describe('Pizzas Page', () => {
     const pizzas = await screen.findAllByTestId('pizza-card');
     expect(pizzas).toHaveLength(1);
     expect(pizzas[0]).toHaveTextContent('The StrongMind');
+  });
+
+  it('should not allow me to enter duplicate pizza toppings', async () => {
+    setupMock([
+      {
+        id: 1,
+        name: 'Lil Pep',
+        toppings: [{ id: 1, name: 'Pepperoni' }],
+      },
+      {
+        id: 2,
+        name: 'The StrongMind',
+        toppings: [
+          { id: 2, name: 'Sausage' },
+          { id: 3, name: 'Black Truffle' },
+          { id: 4, name: 'Jalapeño' },
+        ],
+      },
+    ]);
+
+    jest.spyOn(axios, 'get').mockResolvedValueOnce({
+      data: {
+        data: [
+          { id: 1, name: 'Pepperoni' },
+          { id: 2, name: 'Sausage' },
+          { id: 3, name: 'Black Truffle' },
+          { id: 4, name: 'Jalapeño' },
+        ],
+      },
+    });
+
+    const { getByText } = render(<Pizzas />);
+    const pizzas = await screen.findAllByTestId('pizza-card');
+
+    fireEvent.click(pizzas[0]);
+    fireEvent.click(getByText('Update Toppings'));
+
+    const availableToppings = await screen.findAllByTestId('edit-update-toppings');
+    fireEvent.click(availableToppings[1]);
+    fireEvent.click(availableToppings[2]);
+    fireEvent.click(availableToppings[3]);
+
+    const errorMessage = await screen.findByText('A pizza with those toppings already exists');
+    const updateToppingSubmitButton = await screen.findByTestId('update-toppings-submit-button');
+    expect(errorMessage).toBeInTheDocument();
+    expect(updateToppingSubmitButton).toBeDisabled();
   });
 });

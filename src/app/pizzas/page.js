@@ -157,6 +157,7 @@ export default function Pizzas() {
             Signature Pies
           </Heading>
           <Box
+            data-testid="main-pizzas-section"
             borderRadius="lg"
             bg="blue.50"
             overflowY="scroll"
@@ -208,8 +209,13 @@ export default function Pizzas() {
                             Existing
                           </Heading>
                         )}
-                        {pizza.toppings.map((topping, index) => (
-                          <Box my={1} key={index} fontStyle="italic">
+                        {pizza.toppings.map((topping) => (
+                          <Box
+                            data-testid="existing-toppings"
+                            my={1}
+                            key={topping.id}
+                            fontStyle="italic"
+                          >
                             {topping.name}
                           </Box>
                         ))}
@@ -231,6 +237,7 @@ export default function Pizzas() {
                     <Center>
                       <ButtonGroup my={4}>
                         <Button
+                          data-testid="update-toppings-submit-button"
                           isDisabled={
                             isDuplicateToppings || !updatedPizzaToppings.length
                           }

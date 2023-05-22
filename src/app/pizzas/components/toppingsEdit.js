@@ -1,6 +1,12 @@
 /* eslint-disable import/prefer-default-export */
 import React from 'react';
-import { Box, Center, Spinner, Text, Heading } from '@chakra-ui/react';
+import {
+  Box,
+  Center,
+  Spinner,
+  Text,
+  Heading,
+} from '@chakra-ui/react';
 import { useGetAllToppings } from '../../toppings/queries';
 
 export function ToppingsEdit({
@@ -33,15 +39,16 @@ export function ToppingsEdit({
       <Heading mb={2} size="sm">
         Available
       </Heading>
-      {toppings.data.map((topping, i) => (
+      {toppings.data.map((topping) => (
         <Text
+          data-testid="edit-update-toppings"
           my={1}
           borderRadius="md"
           bg={checkTopping(topping.id) ? 'blue.100' : null}
           _hover={{ cursor: 'pointer', bg: 'blue.100' }}
           _active={{ bg: 'blue.200' }}
           onClick={() => updatePizzaToppings(topping)}
-          key={i}
+          key={topping.id}
         >
           {topping.name}
         </Text>
