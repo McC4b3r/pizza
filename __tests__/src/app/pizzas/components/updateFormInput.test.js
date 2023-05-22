@@ -36,7 +36,7 @@ describe('Update Form Input', () => {
     await waitFor(() => expect(updatePizzaName).toHaveBeenCalledWith(1, 'The Test'));
   });
 
-  it('should not allow me to create a pizza with duplicate name', async () => {
+  it('should not allow me to update a pizzas name if that name already exists', async () => {
     render(
       <UpdateFormInput
         isDuplicate
