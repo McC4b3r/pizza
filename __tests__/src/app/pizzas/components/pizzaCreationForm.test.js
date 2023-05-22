@@ -29,7 +29,7 @@ describe('Pizza Creation Form', () => {
     });
   };
 
-  it('should allow me to create a pizza', async () => {
+  it('It should allow me to create a new pizza and add toppings to it', async () => {
     setupToppingsMock([{ id: 1, name: 'Pepperoni' }]);
     createPizza.mockResolvedValueOnce({
       name: 'Lil Pep',
