@@ -132,10 +132,8 @@ export default function Pizzas() {
     trigger();
   };
 
-  // console.log(JSON.stringify(pizzasData.data[1]));
-
   return (
-    <>
+    <Box>
       <Link href="/">
         <Button
           colorScheme="teal"
@@ -221,7 +219,7 @@ export default function Pizzas() {
                         ))}
                       </Box>
                       {selectedPizza === pizza.id && isUpdatingToppings && (
-                        <>
+                        <Box>
                           <Spacer />
                           <Box>
                             <ToppingsEdit
@@ -229,7 +227,7 @@ export default function Pizzas() {
                               setUpdatedPizzaToppings={setUpdatedPizzaToppings}
                             />
                           </Box>
-                        </>
+                        </Box>
                       )}
                     </Flex>
                   </CardBody>
@@ -327,6 +325,6 @@ export default function Pizzas() {
           Update Toppings
         </Button>
       </HStack>
-    </>
+    </Box>
   );
 }

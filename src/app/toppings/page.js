@@ -144,7 +144,7 @@ export default function Toppings() {
   );
 
   return (
-    <>
+    <Box>
       <Link href="/">
         <Button
           colorScheme="teal"
@@ -308,6 +308,6 @@ export default function Toppings() {
           Update
         </Button>
       </HStack>
-    </>
+    </Box>
   );
 }
