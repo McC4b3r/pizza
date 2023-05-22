@@ -89,5 +89,5 @@ UpdateFormInput.propTypes = {
   handleChange: PropTypes.func.isRequired,
   handleCancel: PropTypes.func.isRequired,
   submit: PropTypes.func.isRequired,
-  updateRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) }).isRequired,
+  updateRef: PropTypes.shape({ current: PropTypes.elementType }).isRequired,
 };
