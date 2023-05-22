@@ -4,7 +4,6 @@
 // import React from 'react';
 // import '@testing-library/jest-dom';
 import React from 'react';
-import '@testing-library/jest-dom';
 import {
   render, screen, fireEvent, waitFor,
 } from '@testing-library/react';
@@ -15,59 +14,77 @@ import { PizzaCreationForm } from '../../../../../src/app/pizzas/components/pizz
 jest.mock('../../../../../src/app/pizzas/queries');
 jest.mock('../../../../../src/app/toppings/queries');
 
-describe('Pizza Creation Form', () => {
-  afterEach(() => {
-    jest.resetAllMocks();
+afterEach(() => {
+  jest.resetAllMocks();
+});
+
+const setup = () => {
+  useGetAllToppings.mockReturnValue({
+    toppings: {
+      data: [
+        {
+          id: 1,
+          name: 'Pepperoni',
+        },
+      ],
+    },
+    isLoading: false,
+    isError: false,
+    trigger: jest.fn(),
   });
 
-  const setupToppingsMock = (toppingsData) => {
-    useGetAllToppings.mockReturnValue({
-      toppings: { data: toppingsData },
-      isLoading: false,
-      isError: false,
-      trigger: jest.fn(),
-    });
+  createPizza.mockResolvedValueOnce({
+    name: 'Lil Pep',
+    toppings: [
+      { id: 1 },
+    ],
+  });
+
+  const mockFns = {
+    trigger: jest.fn(),
+    close: jest.fn(),
+    setPizzaName: jest.fn(),
   };
 
-  it('It should allow me to create a new pizza and add toppings to it', async () => {
-    setupToppingsMock([{ id: 1, name: 'Pepperoni' }]);
-    createPizza.mockResolvedValueOnce({
-      name: 'Lil Pep',
-      toppings: [{ id: 1 }],
-    });
-
-    render(
-      <PizzaCreationForm
-        pizzasData={
-          {
-            data: [{
+  const utils = render(
+    <PizzaCreationForm
+      pizzasData={
+        {
+          data: [
+            {
               id: 2,
               name: 'The Test',
               toppings: [
-                { id: 2, name: 'Sausage' },
+                {
+                  id: 2,
+                  name: 'Sausage',
+                },
               ],
-            }],
-          }
+            },
+          ],
         }
-        trigger={jest.fn()}
-        close={jest.fn()}
-        pizzaName="Lil Pep"
-        setPizzaName={jest.fn()}
-      />,
-    );
+      }
+      pizzaName="Lil Pep"
+      trigger={jest.fn()}
+      close={jest.fn()}
+      setPizzaName={jest.fn()}
+    />,
+  );
 
-    fireEvent.change(
-      await screen.findByPlaceholderText('Pizza name'),
-      { target: { value: 'Lil Pep' } },
-    );
+  return { ...utils, ...mockFns };
+};
 
-    fireEvent.click(await screen.findByTestId('pcf-pizza-topping'));
+test('creates a new pizza and adds toppings to it', async () => {
+  setup();
 
-    fireEvent.click(await screen.findByText(/Ok/i));
+  fireEvent.change(await screen.findByPlaceholderText('Pizza name'), { target: { value: 'Lil Pep' } });
+  fireEvent.click(await screen.findByTestId('pcf-pizza-topping'));
+  fireEvent.click(await screen.findByText(/Ok/i));
 
-    await waitFor(() => expect(createPizza).toHaveBeenCalledWith({
-      name: 'Lil Pep',
-      toppings: [{ id: 1 }],
-    }));
-  });
+  await waitFor(() => expect(createPizza).toHaveBeenCalledWith({
+    name: 'Lil Pep',
+    toppings: [
+      { id: 1 },
+    ],
+  }));
 });
