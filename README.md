@@ -6,7 +6,7 @@ This app was created to showcase my full-stack programming ability. It is a pizz
 
 ### To set up the project locally, follow these steps:
 
-- Note: If you are not me, you will have a difficult time (its impossible) to perform step 4 below and get credentials you need. For this reason, I have contained the contents of the necessary `.env` file in the email sent to `recruiter@strongmind.com`. It pains me to do this, but if you want to run this app locally, for free tier Vercel.
+- Note: If you are not me, you will have a difficult time (its impossible) to perform step 4 below and get credentials you need. For this reason, I have contained the contents of the necessary `.env` file in the email sent to `recruiter@strongmind.com`. It pains me to do this, but if you want to run this app locally, for free tier Vercel, this is how it is.
 
 1. Run `npm install` in this project's root directory to install the dependencies
 2. Run `npm i -g vercel@latest`
