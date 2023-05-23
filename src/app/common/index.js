@@ -39,6 +39,11 @@ export function DualAlert({
 }
 
 DualAlert.propTypes = {
-  isTopping: PropTypes.bool.isRequired,
+  isTopping: PropTypes.bool,
   isPizza: PropTypes.bool.isRequired,
 };
+
+DualAlert.defaultProps = {
+  isTopping: false,
+};
+

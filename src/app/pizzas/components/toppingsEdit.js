@@ -60,8 +60,9 @@ ToppingsEdit.propTypes = {
   updatedPizzaToppings: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
-      name: PropTypes.string.isRequired,
+      name: PropTypes.string,
     }),
   ).isRequired,
   setUpdatedPizzaToppings: PropTypes.func.isRequired,
 };
+

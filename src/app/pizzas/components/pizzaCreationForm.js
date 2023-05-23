@@ -68,7 +68,6 @@ export function PizzaCreationForm({
   const handlePizzaName = (e) => setPizzaName(e.target.value);
 
   const isDuplicateName = isDupeName(pizzasData, pizzaName);
-  console.log(JSON.stringify(pizzasData));
 
   const isDuplicateToppings = isToppingsEqual(
     pizzasData?.data,
@@ -173,7 +172,7 @@ export function PizzaCreationForm({
 }
 
 PizzaCreationForm.propTypes = {
-  isCreating: PropTypes.bool.isRequired,
+  isCreating: PropTypes.bool,
   close: PropTypes.func.isRequired,
   pizzasData: PropTypes.shape({
     data: PropTypes.arrayOf(
@@ -193,3 +192,7 @@ PizzaCreationForm.propTypes = {
   pizzaName: PropTypes.string.isRequired,
   setPizzaName: PropTypes.func.isRequired,
 };
+
+PizzaCreationForm.defaultProps = {
+  isCreating: false,
+}

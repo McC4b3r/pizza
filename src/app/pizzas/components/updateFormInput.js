@@ -72,22 +72,28 @@ export function UpdateFormInput({
 }
 
 UpdateFormInput.propTypes = {
-  isDuplicate: PropTypes.bool.isRequired,
+  isDuplicate: PropTypes.bool,
   pizza: PropTypes.shape(
     PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      name: PropTypes.string.isRequired,
+      id: PropTypes.number,
+      name: PropTypes.string,
       toppings: PropTypes.arrayOf(
         PropTypes.shape({
-          id: PropTypes.number.isRequired,
-          name: PropTypes.string.isRequired,
+          id: PropTypes.number,
+          name: PropTypes.string,
         }),
-      ).isRequired,
+      ),
     }),
-  ).isRequired,
-  updatedPizzaName: PropTypes.string.isRequired,
-  handleChange: PropTypes.func.isRequired,
-  handleCancel: PropTypes.func.isRequired,
-  submit: PropTypes.func.isRequired,
-  updateRef: PropTypes.shape({ current: PropTypes.elementType }).isRequired,
+  ),
+  updatedPizzaName: PropTypes.string,
+  handleChange: PropTypes.func,
+  handleCancel: PropTypes.func,
+  submit: PropTypes.func,
+  updateRef: PropTypes.shape({ current: PropTypes.elementType }),
 };
+
+UpdateFormInput.defaultProps = {
+  isDuplicate: false,
+  pizza: {},
+  updateRef: null,
+}
