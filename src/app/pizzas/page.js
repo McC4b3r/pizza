@@ -20,6 +20,7 @@ import {
   deletePizza,
 } from './queries';
 import { PageContent } from './components/pageContent';
+import { CrudButtons } from './components/crudButtons'
 
 export default function Pizzas() {
   const [isCreatingPizza, setIsCreatingPizza] = useState(false);
@@ -159,42 +160,15 @@ export default function Pizzas() {
           />
         </Box>
       )}
-      <HStack mt={10} justify="center">
-        <Button
-          data-testid="pizza-creation-button"
-          colorScheme="teal"
-          size="lg"
-          onClick={handleCreationClick}
-          isDisabled={selectedPizza || isCreatingPizza}
-        >
-          Create
-        </Button>
-        <Button
-          colorScheme="red"
-          size="lg"
-          mr={2}
-          isDisabled={!selectedPizza || isupdatingEither}
-          onClick={() => handleDeletePizza(selectedPizza)}
-        >
-          Delete
-        </Button>
-        <Button
-          colorScheme="blue"
-          size="lg"
-          onClick={handleUpdateNameClick}
-          isDisabled={!selectedPizza || isupdatingEither}
-        >
-          Update Name
-        </Button>
-        <Button
-          colorScheme="blue"
-          size="lg"
-          onClick={handleUpdateToppingsClick}
-          isDisabled={!selectedPizza || isupdatingEither}
-        >
-          Update Toppings
-        </Button>
-      </HStack>
+      <CrudButtons
+        handleCreationClick={handleCreationClick}
+        selectedPizza={selectedPizza}
+        handleDeletePizza={handleDeletePizza}
+        isCreatingPizza={isCreatingPizza}
+        isupdatingEither={isupdatingEither}
+        handleUpdateNameClick={handleUpdateNameClick}
+        handleUpdateToppingsClick={handleUpdateToppingsClick}
+      />
     </Box>
   );
 }
