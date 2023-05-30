@@ -9,7 +9,7 @@ describe('Home Page', () => {
   it('renders the proper heading and buttons', () => {
     render(<Home />);
     const heading = screen.getByRole('heading', {
-      name: 'Welcome to StrongMind Pizza Co.',
+      name: 'Welcome to caberTek Pizza Co.',
     });
     expect(heading).toBeInTheDocument();
   });

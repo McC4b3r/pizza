@@ -9,22 +9,9 @@ import {
   Spinner,
   Box,
   HStack,
-  VStack,
-  Grid,
-  Card,
-  CardHeader,
-  CardBody,
-  Divider,
-  Flex,
-  Spacer,
-  ButtonGroup,
-  CardFooter,
-  Alert,
-  AlertIcon,
-  AlertTitle,
 } from '@chakra-ui/react';
-import { ArrowBackIcon, CheckIcon, CloseIcon } from '@chakra-ui/icons';
-import { isDupeName, isToppingsEqual } from '../helpers';
+import { ArrowBackIcon } from '@chakra-ui/icons';
+import { isDupeName } from '../helpers';
 import { PizzaCreationForm } from './components/pizzaCreationForm';
 import {
   useGetPizzas,
@@ -32,9 +19,7 @@ import {
   updatePizzaToppings,
   deletePizza,
 } from './queries';
-import { UpdateFormInput } from './components/updateFormInput';
-import { ToppingsEdit } from './components/toppingsEdit';
-import { DualAlert } from '../common/index';
+import { PageContent } from './components/pageContent';
 
 export default function Pizzas() {
   const [isCreatingPizza, setIsCreatingPizza] = useState(false);
@@ -111,11 +96,6 @@ export default function Pizzas() {
     }
   };
 
-  const isDuplicateToppings = isToppingsEqual(
-    pizzasData.data,
-    updatedPizzaToppings,
-  );
-
   const handleToppingsChangeSubmit = (pizzaId) => {
     if (updatedPizzaToppings.length) {
       updatePizzaToppings(pizzaId, updatedPizzaToppings);
@@ -149,133 +129,23 @@ export default function Pizzas() {
       <Heading as="h1" size="xl" textAlign="center" mt={10}>
         Pizzas
       </Heading>
-      <Center mt={10}>
-        <VStack>
-          <Heading size="md" textAlign="center" mb={4}>
-            Signature Pies
-          </Heading>
-          <Box
-            data-testid="main-pizzas-section"
-            borderRadius="lg"
-            bg="blue.50"
-            overflowY="scroll"
-            height="570px"
-            width="768px"
-            p="8"
-          >
-            {!pizzasData.data.length && <DualAlert isPizza />}
-            <Grid order="initial" templateColumns="repeat(2, 1fr)" gap={4}>
-              {pizzasData.data.map((pizza) => (
-                <Card
-                  data-testid="pizza-card"
-                  textAlign="center"
-                  bg={selectedPizza === pizza.id ? 'red.100' : 'red.50'}
-                  _hover={{
-                    cursor: isupdatingEither ? null : 'pointer',
-                    bg: 'red.100',
-                  }}
-                  onClick={() => handlePizzaClick(pizza.id)}
-                  key={pizza.id}
-                >
-                  <CardHeader>
-                    {selectedPizza === pizza.id && isUpdatingName ? (
-                      <UpdateFormInput
-                        isDuplicate={isDuplicateUpdateName}
-                        submit={handleNameChangeSubmit}
-                        pizza={pizza}
-                        updatedPizzaName={updatedPizzaName}
-                        handleChange={handleUpdatePizzaNameChange}
-                        handleCancel={handleUpdateNameCancel}
-                        updateRef={updateRef}
-                      />
-                    ) : (
-                      <Box as="span" flex="1">
-                        <Heading textAlign="center" size="sm">
-                          {pizza.name}
-                        </Heading>
-                      </Box>
-                    )}
-                  </CardHeader>
-                  <Center>
-                    <Divider borderColor="gray.300" width="75%" />
-                  </Center>
-                  <CardBody pb={2}>
-                    <Flex justifyContent="center">
-                      <Box>
-                        {selectedPizza === pizza.id && isUpdatingToppings && (
-                          <Heading mb={2} size="sm">
-                            Existing
-                          </Heading>
-                        )}
-                        {pizza.toppings.map((topping) => (
-                          <Box
-                            data-testid="existing-toppings"
-                            my={1}
-                            key={topping.id}
-                            fontStyle="italic"
-                          >
-                            {topping.name}
-                          </Box>
-                        ))}
-                      </Box>
-                      {selectedPizza === pizza.id && isUpdatingToppings && (
-                        <Box>
-                          <Spacer />
-                          <Box>
-                            <ToppingsEdit
-                              updatedPizzaToppings={updatedPizzaToppings}
-                              setUpdatedPizzaToppings={setUpdatedPizzaToppings}
-                            />
-                          </Box>
-                        </Box>
-                      )}
-                    </Flex>
-                  </CardBody>
-                  {selectedPizza === pizza.id && isUpdatingToppings && (
-                    <Center>
-                      <ButtonGroup my={4}>
-                        <Button
-                          data-testid="update-toppings-submit-button"
-                          isDisabled={
-                            isDuplicateToppings || !updatedPizzaToppings.length
-                          }
-                          size="sm"
-                          colorScheme="teal"
-                          onClick={() => handleToppingsChangeSubmit(pizza.id)}
-                        >
-                          <CheckIcon />
-                        </Button>
-                        <Button
-                          onClick={handleUpdateToppingsCancel}
-                          size="sm"
-                          colorScheme="red"
-                        >
-                          <CloseIcon />
-                        </Button>
-                      </ButtonGroup>
-                    </Center>
-                  )}
-                  <CardFooter padding={0}>
-                    {isDuplicateToppings && selectedPizza === pizza.id && (
-                      <Alert
-                        borderRadius="md"
-                        size="sm"
-                        variant="solid"
-                        status="error"
-                      >
-                        <AlertIcon size="sm" />
-                        <AlertTitle fontSize="xs">
-                          A pizza with those toppings already exists
-                        </AlertTitle>
-                      </Alert>
-                    )}
-                  </CardFooter>
-                </Card>
-              ))}
-            </Grid>
-          </Box>
-        </VStack>
-      </Center>
+      <PageContent
+        pizzasData={pizzasData}
+        selectedPizza={selectedPizza}
+        isupdatingEither={isupdatingEither}
+        handlePizzaClick={handlePizzaClick}
+        isUpdatingName={isUpdatingName}
+        isUpdatingToppings={isUpdatingToppings}
+        handleNameChangeSubmit={handleNameChangeSubmit}
+        updatedPizzaName={updatedPizzaName}
+        handleUpdatePizzaNameChange={handleUpdatePizzaNameChange}
+        handleUpdateNameCancel={handleUpdateNameCancel}
+        handleUpdateToppingsCancel={handleUpdateToppingsCancel}
+        updateRef={updateRef}
+        handleToppingsChangeSubmit={handleToppingsChangeSubmit}
+        updatedPizzaToppings={updatedPizzaToppings}
+        setUpdatedPizzaToppings={setUpdatedPizzaToppings}
+      />
       {isCreatingPizza && (
         <Box data-testid="pizza-creation-form">
           <PizzaCreationForm
