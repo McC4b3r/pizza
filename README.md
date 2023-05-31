@@ -1,4 +1,4 @@
-# StrongMind Full Stack Pizza App
+# Full Stack Pizza App
 
 This app was created to showcase my full-stack programming ability. It is a pizza making app that allows you (the user) to type in any pizza toppings you would like and submit it to the app. You are then able to "make pizzas" using the toppings you've added. All toppings can be created, deleted, and updated. All pizzas can be created, deleted, and have both the pizza names and the pizza toppings updated as well.
 
