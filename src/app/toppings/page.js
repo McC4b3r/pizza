@@ -4,7 +4,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import {
   Heading,
   Button,
-  HStack,
   Box,
   Center,
   Spinner,
@@ -18,8 +17,9 @@ import {
   updateTopping,
   deleteTopping,
 } from './queries';
-import { ToppingsGrid } from './components/toppingsGrid'
-import { CreationInputForm } from './components/creationInputForm'
+import { ToppingsGrid } from './components/toppingsGrid';
+import { CreationInputForm } from './components/creationInputForm';
+import { CrudButtons } from './components/crudButtons';
 
 export default function Toppings() {
   const [selectedTopping, setSelectedTopping] = useState('');
@@ -81,6 +81,7 @@ export default function Toppings() {
 
   const isDuplicateAddToppingName = isDupeName(toppings, addToppingName);
   const isDuplicateUpdateToppingName = isDupeName(toppings, updatedToppingName);
+
   // submit new topping
   const handleAddToppingSubmit = () => {
     if (addToppingName.trim() !== '' && !isDuplicateAddToppingName) {
@@ -173,35 +174,14 @@ export default function Toppings() {
           handleCancelAddTopping={handleCancelAddTopping}
         />
       )}
-      <HStack mt={10} justify="center">
-        <Button
-          data-testid="add-topping-button"
-          colorScheme="teal"
-          size="lg"
-          isDisabled={isAddButtonDisabled}
-          onClick={handleAddButtonClick}
-        >
-          Add
-        </Button>
-        <Button
-          data-testid="delete-topping-button"
-          colorScheme="red"
-          size="lg"
-          mr={2}
-          onClick={handleDeleteTopping}
-          isDisabled={!selectedTopping || isUpdatingTopping}
-        >
-          Delete
-        </Button>
-        <Button
-          colorScheme="blue"
-          size="lg"
-          onClick={handleUpdateButtonClick}
-          isDisabled={!selectedTopping || isUpdatingTopping}
-        >
-          Update
-        </Button>
-      </HStack>
+      <CrudButtons
+        isAddButtonDisabled={isAddButtonDisabled}
+        handleAddButtonClick={handleAddButtonClick}
+        handleDeleteTopping={handleDeleteTopping}
+        selectedTopping={selectedTopping}
+        isUpdatingTopping={isUpdatingTopping}
+        handleUpdateButtonClick={handleUpdateButtonClick}
+      />
     </Box>
   );
 }
