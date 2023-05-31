@@ -17,9 +17,11 @@ import {
   updateTopping,
   deleteTopping,
 } from './queries';
-import { ToppingsGrid } from './components/toppingsGrid';
-import { CreationInputForm } from './components/creationInputForm';
-import { CrudButtons } from './components/crudButtons';
+import {
+  ToppingsGrid,
+  CreationInputForm,
+  CrudButtons
+} from './components';
 
 export default function Toppings() {
   const [selectedTopping, setSelectedTopping] = useState('');
