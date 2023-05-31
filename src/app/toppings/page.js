@@ -43,10 +43,13 @@ export default function Toppings() {
 
   // query
   const {
-    toppings, isLoading, isError, trigger,
+    toppings,
+    isLoading,
+    isError,
+    trigger,
   } = useGetAllToppings();
 
-  if (isError) return <div>failed to load</div>;
+  if (isError) return <div>Something's wrong with the data</div>;
   if (isLoading) {
     return (
       <Center>
