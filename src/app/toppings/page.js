@@ -6,21 +6,11 @@ import {
   Button,
   HStack,
   Box,
-  Input,
-  InputGroup,
-  InputRightElement,
   Center,
-  FormControl,
-  FormErrorMessage,
-  VStack,
   Spinner,
   Link,
-  ButtonGroup,
-  Card,
-  CardBody,
-  Grid,
 } from '@chakra-ui/react';
-import { ArrowBackIcon, CheckIcon, CloseIcon } from '@chakra-ui/icons';
+import { ArrowBackIcon } from '@chakra-ui/icons';
 import { handleEnter, isDupeName } from '../helpers';
 import {
   createTopping,
@@ -28,7 +18,8 @@ import {
   updateTopping,
   deleteTopping,
 } from './queries';
-import { DualAlert } from '../common';
+import { ToppingsGrid } from './components/toppingsGrid'
+import { CreationInputForm } from './components/creationInputForm'
 
 export default function Toppings() {
   const [selectedTopping, setSelectedTopping] = useState('');
@@ -38,8 +29,6 @@ export default function Toppings() {
   const [updatedToppingName, setUpdatedToppingName] = useState('');
   const updateRef = useRef(null);
   const addRef = useRef(null);
-
-  // console.log({ addToppingName });
 
   useEffect(() => {
     if (isUpdatingTopping && updateRef.current) {
@@ -160,132 +149,29 @@ export default function Toppings() {
       <Heading as="h1" size="xl" textAlign="center" mt={10}>
         Toppings
       </Heading>
-      <Box data-testid="toppingContainer">
-        {!toppings.data.length &&
-          <Box
-            mr="auto"
-            ml="auto"
-            w="container.md"
-          >
-            <DualAlert isTopping />
-          </Box>
-        }
-        <Grid
-          mt={20}
-          templateColumns="repeat(2, 1fr)"
-          gap={4}
-          mx="auto"
-          maxW="xl"
-        >
-          {toppings.data.map((topping) => (
-            <Card
-              bg={selectedTopping === topping.id ? 'blue.100' : 'blue.50'}
-              _hover={{ cursor: 'pointer', bg: 'blue.100' }}
-              onClick={() => handleToppingClick(topping.id)}
-              key={topping.id}
-            >
-              <CardBody data-testid="topping-name">
-                {selectedTopping === topping.id && isUpdatingTopping ? (
-                  <FormControl isInvalid={isDuplicateUpdateToppingName}>
-                    <InputGroup>
-                      <VStack flex={1}>
-                        <Input
-                          data-testid="topping-update-input"
-                          focusBorderColor={
-                            isDuplicateUpdateToppingName
-                              ? 'red.5P00'
-                              : 'blue.500'
-                          }
-                          placeholder={topping.name}
-                          value={updatedToppingName}
-                          onChange={handleUpdateToppingNameChange}
-                          onKeyDown={handleEnterKey}
-                          ref={updateRef}
-                          bg="gray.50"
-                        />
-                        {isDuplicateUpdateToppingName && (
-                          <FormErrorMessage>
-                            That topping already exists.
-                          </FormErrorMessage>
-                        )}
-                      </VStack>
-                      <InputRightElement>
-                        <ButtonGroup ml="-36px" spacing="4px">
-                          <Button
-                            data-testid="update-topping-submit"
-                            colorScheme="teal"
-                            h="1.75rem"
-                            size="xs"
-                            isDisabled={
-                              !updatedToppingName
-                              || isDuplicateUpdateToppingName
-                            }
-                            onClick={handleUpdateTopping}
-                          >
-                            <CheckIcon />
-                          </Button>
-                          <Button
-                            colorScheme="red"
-                            h="1.75rem"
-                            size="xs"
-                            onClick={handleUpdateCancel}
-                          >
-                            <CloseIcon />
-                          </Button>
-                        </ButtonGroup>
-                      </InputRightElement>
-                    </InputGroup>
-                  </FormControl>
-                ) : (
-                  topping.name
-                )}
-              </CardBody>
-            </Card>
-          ))}
-        </Grid>
-      </Box>
+      <ToppingsGrid
+        toppings={toppings}
+        selectedTopping={selectedTopping}
+        handleToppingClick={handleToppingClick}
+        isUpdatingTopping={isUpdatingTopping}
+        isDuplicateUpdateToppingName={isDuplicateUpdateToppingName}
+        updatedToppingName={updatedToppingName}
+        handleUpdateToppingNameChange={handleUpdateToppingNameChange}
+        handleEnterKey={handleEnterKey}
+        updateRef={updateRef}
+        handleUpdateTopping={handleUpdateTopping}
+        handleUpdateCancel={handleUpdateCancel}
+      />
       {isAddingTopping && (
-        <Box mt={6}>
-          <FormControl isInvalid={isDuplicateAddToppingName}>
-            <Center>
-              <VStack>
-                <Input
-                  id="addInput"
-                  width="250px"
-                  placeholder="Enter new topping name"
-                  value={addToppingName}
-                  onChange={handleToppingNameChange}
-                  onKeyDown={handleEnterKey}
-                  ref={addRef}
-                />
-                {isDuplicateAddToppingName && (
-                  <FormErrorMessage>
-                    That topping already exists
-                  </FormErrorMessage>
-                )}
-              </VStack>
-            </Center>
-            <Center mt={2}>
-              <Button
-                colorScheme="teal"
-                size="sm"
-                ml={2}
-                onClick={handleAddToppingSubmit}
-                isDisabled={isDuplicateAddToppingName || !addToppingName}
-              >
-                Ok
-              </Button>
-              <Button
-                colorScheme="red"
-                size="sm"
-                ml={2}
-                onClick={handleCancelAddTopping}
-              >
-                Cancel
-              </Button>
-            </Center>
-          </FormControl>
-        </Box>
+        <CreationInputForm
+          isDuplicateAddToppingName={isDuplicateAddToppingName}
+          addToppingName={addToppingName}
+          handleToppingNameChange={handleToppingNameChange}
+          handleEnterKey={handleEnterKey}
+          addRef={addRef}
+          handleAddToppingSubmit={handleAddToppingSubmit}
+          handleCancelAddTopping={handleCancelAddTopping}
+        />
       )}
       <HStack mt={10} justify="center">
         <Button
