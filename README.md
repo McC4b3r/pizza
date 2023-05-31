@@ -6,12 +6,12 @@ This app was created to showcase my full-stack programming ability. It is a pizz
 
 ### To set up the project locally, follow these steps:
 
-- Note: If you are not me, you will have a difficult time (its impossible) to perform step 4 below and get credentials you need. For this reason, I have contained the contents of the necessary `.env` file in the email sent to `recruiter@strongmind.com`. It pains me to do this, but if you want to run this app locally, for free tier Vercel, this is how it is.
+- Note: If you are not me, you will have a difficult time (its impossible) to perform step 4 below and get credentials you need. To remedy this*, create an account with Vercel(https://vercel.com), and set up your own Vercel PostgreSQL (https://vercel.com/docs/storage/vercel-postgres/quickstart). Once you have an account and a Vercel PostgreSQL db created, clone or fork this repo and do the following:
 
 1. Run `npm install` in this project's root directory to install the dependencies
 2. Run `npm i -g vercel@latest`
 3. Run `vercel link`
-4. ~~Run `vercel env pull .env.local`~~ Copy the `.env` file contents from my submission email, create a new `.env` file at the root, paste it in. 
+4. Run `vercel env pull .env.local`*
 5. Run `npx prisma db push`
 6. run `npm run dev` to start the development server.
 7. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.

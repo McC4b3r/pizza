@@ -55,13 +55,7 @@ export default function Toppings() {
 
   // select topping within list
   const handleToppingClick = (toppingId) => {
-    if (!isUpdatingTopping) {
-      if (selectedTopping === toppingId) {
-        setSelectedTopping('');
-      } else {
-        setSelectedTopping(toppingId);
-      }
-    }
+    !isUpdatingTopping && setSelectedTopping(selectedTopping === toppingId ? '' : toppingId);
   };
 
   const isAddButtonDisabled = !!selectedTopping || isAddingTopping;
