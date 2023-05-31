@@ -1,12 +1,12 @@
 # Full Stack Pizza App
 
-This app was created to showcase my full-stack programming ability. It is a pizza making app that allows you (the user) to type in any pizza toppings you would like and submit it to the app. You are then able to "make pizzas" using the toppings you've added. All toppings can be created, deleted, and updated. All pizzas can be created, deleted, and have both the pizza names and the pizza toppings updated as well.
+This is a Full-Stack CRUD Demo. It is a pizza making app that allows you (the user) to type in any pizza toppings you would like and submit it to the app. You are then able to "make pizzas" using the toppings you've added. All toppings can be created, deleted, and updated. All pizzas can be created, deleted, and have both the pizza names and the pizza toppings updated.
 
 # Installation
 
 ### To set up the project locally, follow these steps:
 
-- Note: If you are not me, you will have a difficult time (its impossible) to perform step 4* below and get credentials you need. To remedy this, create an account with Vercel(https://vercel.com), and set up your own Vercel PostgreSQL (https://vercel.com/docs/storage/vercel-postgres/quickstart). Once you have an account and a Vercel PostgreSQL db created, clone or fork this repo and do the following:
+- Note: If you are not me, you will have a difficult time (its impossible) to perform step 4* below and get credentials you need. To remedy this, create an account with [Vercel](https://vercel.com), and set up your own [Vercel PostgreSQL] (https://vercel.com/docs/storage/vercel-postgres/quickstart). Once you have an account and a Vercel PostgreSQL db created, clone or fork this repo and do the following:
 
 1. Run `npm install` in this project's root directory to install the dependencies
 2. Run `npm i -g vercel@latest`
