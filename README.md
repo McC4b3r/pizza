@@ -6,7 +6,7 @@ This app was created to showcase my full-stack programming ability. It is a pizz
 
 ### To set up the project locally, follow these steps:
 
-- Note: If you are not me, you will have a difficult time (its impossible) to perform step 4 below and get credentials you need. To remedy this*, create an account with Vercel(https://vercel.com), and set up your own Vercel PostgreSQL (https://vercel.com/docs/storage/vercel-postgres/quickstart). Once you have an account and a Vercel PostgreSQL db created, clone or fork this repo and do the following:
+- Note: If you are not me, you will have a difficult time (its impossible) to perform step 4* below and get credentials you need. To remedy this, create an account with Vercel(https://vercel.com), and set up your own Vercel PostgreSQL (https://vercel.com/docs/storage/vercel-postgres/quickstart). Once you have an account and a Vercel PostgreSQL db created, clone or fork this repo and do the following:
 
 1. Run `npm install` in this project's root directory to install the dependencies
 2. Run `npm i -g vercel@latest`
